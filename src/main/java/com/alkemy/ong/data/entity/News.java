@@ -33,8 +33,8 @@ public class News {
     @Column(nullable = false)
     private String image;
 
-    @OneToOne
-    @Column(nullable = false)
+    //@OneToOne
+    //@Column(nullable = false)
     //private Category category;
 
     @CreationTimestamp
