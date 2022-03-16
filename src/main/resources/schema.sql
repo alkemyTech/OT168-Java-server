@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS alkemy_ong;
+USE alkemy_ong;
+
+CREATE TABLE activities (
+  id INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(250) NOT NULL,
+  `content` TEXT NOT NULL,
+  `image` VARCHAR(250) NOT NULL,
+  `creation`  TIMESTAMP DEFAULT NOW(),
+  `status` BOOLEAN NOT NULL DEFAULT '1',
+  PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3;
+
+CREATE TABLE contacts (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(250) NOT NULL,
+  `phone` VARCHAR(250) NOT NULL,
+  `email` VARCHAR(250) NOT NULL,
+  `message`  TEXT NOT NULL,
+  `deletedAt` DATETIME DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3;
