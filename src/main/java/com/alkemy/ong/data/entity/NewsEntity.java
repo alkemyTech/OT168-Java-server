@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class News {
+public class NewsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +43,6 @@ public class News {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
-    private Boolean status;
+    private Boolean deleted;
 
 }

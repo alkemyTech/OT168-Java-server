@@ -8,5 +8,5 @@ content VARCHAR (100) NOT NULL,
 image VARCHAR (25) NOT NULL,
 create_at TIMESTAMP,
 update_at TIMESTAMP,
-status TINYINT
+deleted TINYINT
 );
