@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,25 +24,24 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long newsId;
 
-    @NotNull
     @Column(nullable = false)
     private String name;
 
-    @NotNull
     @Column(nullable = false)
     private String content;
 
-    @NotNull
     @Column(nullable = false)
     private String image;
 
-    @NotNull
     @OneToOne
     @Column(nullable = false)
-    private Category category;
+    //private Category category;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    @CreationTimestamp
+    private LocalDateTime createAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
 
     private Boolean status;
 
