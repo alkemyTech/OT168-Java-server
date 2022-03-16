@@ -1,8 +1,6 @@
 package com.alkemy.ong.web;
 
 import com.alkemy.ong.data.News;
-import com.alkemy.ong.data.NewsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
