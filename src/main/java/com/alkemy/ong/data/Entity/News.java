@@ -1,4 +1,4 @@
-package com.alkemy.ong.data;
+package com.alkemy.ong.data.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class News {
     //private Category category;
 
     @CreationTimestamp
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updateAt;
