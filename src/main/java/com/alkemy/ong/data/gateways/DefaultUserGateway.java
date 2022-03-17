@@ -1,6 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
-import com.alkemy.ong.domain.roles.UserGateway;
+import com.alkemy.ong.domain.users.UserGateway;
 import org.springframework.stereotype.Component;
 
 @Component
