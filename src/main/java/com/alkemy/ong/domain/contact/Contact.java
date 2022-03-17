@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.models;
+package com.alkemy.ong.domain.contact;
 
 import lombok.*;
 

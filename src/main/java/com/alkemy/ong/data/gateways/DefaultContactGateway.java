@@ -2,8 +2,8 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.ContactEntity;
 import com.alkemy.ong.data.repositories.ContactRepository;
-import com.alkemy.ong.domain.gateways.ContactGateway;
-import com.alkemy.ong.domain.models.Contact;
+import com.alkemy.ong.domain.contact.ContactGateway;
+import com.alkemy.ong.domain.contact.Contact;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.models.Contact;
-import com.alkemy.ong.domain.services.ContactService;
+import com.alkemy.ong.domain.contact.Contact;
+import com.alkemy.ong.domain.contact.ContactService;
 import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,7 +1,5 @@
-package com.alkemy.ong.domain.services;
+package com.alkemy.ong.domain.contact;
 
-import com.alkemy.ong.domain.gateways.ContactGateway;
-import com.alkemy.ong.domain.models.Contact;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

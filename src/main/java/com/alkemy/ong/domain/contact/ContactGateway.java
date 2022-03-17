@@ -1,6 +1,4 @@
-package com.alkemy.ong.domain.gateways;
-
-import com.alkemy.ong.domain.models.Contact;
+package com.alkemy.ong.domain.contact;
 
 import java.util.List;
 
