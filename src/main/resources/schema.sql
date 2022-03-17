@@ -35,3 +35,21 @@ CREATE TABLE `alkemy_ong`.`users`
     CONSTRAINT `FK_role` FOREIGN KEY (`fk_role`) REFERENCES `alkemy_ong`.`roles` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
+
+DROP TABLE IF EXISTS `alkemy_ong`.`members`;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `alkemy_ong`.`members`
+(
+    `id`           BIGINT(255)  NOT NULL AUTO_INCREMENT,
+    `name`         VARCHAR(50) NOT NULL,
+    `facebookUrl`  VARCHAR(50) DEFAULT NULL,
+    `instagramUrl` VARCHAR(30) DEFAULT NULL,
+    `linkedinUrl`  VARCHAR(50) DEFAULT NULL,
+    `image`        VARCHAR(255) NOT NULL,
+    `description`  VARCHAR(50) DEFAULT NULL,
+    `createdAt`    TIMESTAMP   DEFAULT NOW(),
+    `updateAt`     TIMESTAMP   DEFAULT NOW(),
+    `deleted`      BIT         DEFAULT 0,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3;
