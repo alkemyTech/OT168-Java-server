@@ -4,11 +4,11 @@ import com.alkemy.ong.domain.usecases.UserGateway;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserGatewayImpl implements UserGateway {
+public class DefaultUserGateway implements UserGateway {
 
     private final UserGateway userGateway;
 
-    public UserGatewayImpl (UserGateway userGateway){
+    public DefaultUserGateway(UserGateway userGateway){
         this.userGateway=userGateway;
     }
 }
