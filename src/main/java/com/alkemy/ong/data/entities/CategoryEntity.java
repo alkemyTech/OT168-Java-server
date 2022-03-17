@@ -47,12 +47,18 @@ public class CategoryEntity {
 	private String image;
 
 	@CreationTimestamp
+	@Column(name = "createdat")
 	private LocalDateTime createdAt;
 
 	@UpdateTimestamp
+	@Column(name = "updateat")
 	private LocalDateTime updateAt;
 
 	private Boolean deleted;
+
+	public CategoryEntity() {
+		super();
+	}
 
 	public CategoryEntity(Long id, String name, String description, String image, LocalDateTime createdAt,
 			LocalDateTime updateAt, Boolean deleted) {

@@ -2,6 +2,8 @@ package com.alkemy.ong.domain.usecases.category;
 
 import java.time.LocalDateTime;
 
+import com.alkemy.ong.web.controllers.category.dto.CategoryDTO;
+
 import lombok.*;
 
 @AllArgsConstructor
@@ -91,6 +93,28 @@ public class Category{
 
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
+	}
+	
+	public static Category from(CategoryDTO categoryDTO) {
+		return new Category(
+				categoryDTO.getId(), 
+				categoryDTO.getName(), 
+				categoryDTO.getDescription(), 
+				categoryDTO.getImage(),
+				categoryDTO.getCreatedAt(), 
+				categoryDTO.getUpdateAt(), 
+				categoryDTO.getDeleted());
+	}
+
+	public CategoryDTO fromThis() {
+		return new CategoryDTO(
+				id, 
+				name, 
+				description, 
+				image, 
+				createdAt, 
+				updateAt, 
+				deleted);
 	}
     
 }
