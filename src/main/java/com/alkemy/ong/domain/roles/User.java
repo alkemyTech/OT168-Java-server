@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.users;
+package com.alkemy.ong.domain.roles;
 
 import com.alkemy.ong.domain.roles.Role;
 import lombok.*;
