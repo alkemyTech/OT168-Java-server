@@ -1,5 +1,6 @@
-package com.alkemy.ong.domain.usecases;
+package com.alkemy.ong.domain.users;
 
+import com.alkemy.ong.domain.usecases.Role;
 import lombok.*;
 
 import java.time.LocalDateTime;
