@@ -1,17 +1,8 @@
-package com.alkemy.ong.data.entities;
+package com.alkemy.ong.web.controllers.category.dto;
 
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.UpdateTimestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.alkemy.ong.domain.usecases.category.Category;
 
@@ -23,38 +14,21 @@ import lombok.Setter;
 import lombok.ToString;
 
 @AllArgsConstructor
-@Entity(name = "categories")
-@EqualsAndHashCode(of = { "name", "description", "image" })
-@Getter
 @NoArgsConstructor
+@EqualsAndHashCode
+@Getter
 @Setter
-@SQLDelete(sql = "UPDATE news SET deleted = false WHERE id = ?")
-@Table(name = "categories")
-@ToString(of = { "name", "description", "image" })
-public class CategoryEntity {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+@ToString
+public class CategoryDTO {
 	private Long id;
-
-	@Column(nullable = false)
 	private String name;
-
-	@Column(nullable = true)
 	private String description;
-
-	@Column(nullable = true)
 	private String image;
-
-	@CreationTimestamp
 	private LocalDateTime createdAt;
-
-	@UpdateTimestamp
 	private LocalDateTime updateAt;
-
 	private Boolean deleted;
 
-	public CategoryEntity(Long id, String name, String description, String image, LocalDateTime createdAt,
+	public CategoryDTO(Long id, String name, String description, String image, LocalDateTime createdAt,
 			LocalDateTime updateAt, Boolean deleted) {
 		super();
 		this.id = id;
@@ -66,8 +40,8 @@ public class CategoryEntity {
 		this.deleted = deleted;
 	}
 
-	public static CategoryEntity from(Category category) {
-		return new CategoryEntity(
+	private static CategoryDTO from(Category category) {
+		return new CategoryDTO(
 				category.getId(), 
 				category.getName(), 
 				category.getDescription(), 
@@ -76,7 +50,7 @@ public class CategoryEntity {
 				category.getUpdateAt(), 
 				category.getDeleted());
 	}
-
+	
 	public Category fromThis() {
 		return new Category(
 				id, 
@@ -87,5 +61,11 @@ public class CategoryEntity {
 				updateAt, 
 				deleted);
 	}
-
+	
+	public static List<CategoryDTO> from(List<Category> categories){
+		return categories
+				.parallelStream()
+				.map(CategoryDTO::from)
+				.collect(Collectors.toList());		
+	}
 }
