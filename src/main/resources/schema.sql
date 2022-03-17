@@ -11,6 +11,7 @@ CREATE TABLE `alkemy_ong`.`roles`
     `description` VARCHAR(50) DEFAULT NULL,
     `createdAt`   TIMESTAMP   DEFAULT NOW(),
     `updateAt`    TIMESTAMP   DEFAULT NOW(),
+    `deleted`     BIT         DEFAULT 1,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;

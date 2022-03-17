@@ -33,4 +33,6 @@ public class RoleEntity {
 
     @UpdateTimestamp
     private LocalDateTime updateAt;
+
+    private Boolean deleted;
 }
