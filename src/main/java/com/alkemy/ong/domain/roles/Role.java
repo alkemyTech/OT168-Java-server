@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.usecases;
+package com.alkemy.ong.domain.roles;
 
 import lombok.*;
 
