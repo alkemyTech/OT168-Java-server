@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.gateway;
+package com.alkemy.ong.domain.gateways;
 
 import com.alkemy.ong.domain.models.Contact;
 

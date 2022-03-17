@@ -2,7 +2,7 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.ContactEntity;
 import com.alkemy.ong.data.repositories.ContactRepository;
-import com.alkemy.ong.domain.gateway.ContactGateway;
+import com.alkemy.ong.domain.gateways.ContactGateway;
 import com.alkemy.ong.domain.models.Contact;
 import org.springframework.stereotype.Component;
 
