@@ -4,11 +4,11 @@ import com.alkemy.ong.domain.usecases.RoleGateway;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RoleGatewayImpl implements RoleGateway {
+public class DefaultRoleGateway implements RoleGateway {
 
     private final RoleGateway roleGateway;
 
-    public RoleGatewayImpl (RoleGateway roleGateway){
+    public DefaultRoleGateway(RoleGateway roleGateway){
         this.roleGateway=roleGateway;
     }
 }
