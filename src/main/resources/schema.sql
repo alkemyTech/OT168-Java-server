@@ -6,9 +6,9 @@ CREATE TABLE activities (
   `name` VARCHAR(250) NOT NULL,
   `content` TEXT NOT NULL,
   `image` VARCHAR(250) NOT NULL,
-  `createdAt` TIMESTAMP NOT NULL,
-  `updateAt` TIMESTAMP NOT NULL,
-  `deleted` BOOLEAN NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT NULL,
+  `deleted` BOOLEAN DEFAULT false,
   PRIMARY KEY (id)
 );
 
@@ -18,6 +18,8 @@ CREATE TABLE contacts (
   `phone` VARCHAR(250) NOT NULL,
   `email` VARCHAR(250) NOT NULL,
   `message`  TEXT NOT NULL,
-  `deletedAt` TIMESTAMP DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT NULL,
+  `deleted_at` TIMESTAMP DEFAULT NULL,
   PRIMARY KEY (id)
 );
