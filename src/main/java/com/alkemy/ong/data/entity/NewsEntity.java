@@ -41,7 +41,7 @@ public class NewsEntity {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
     private Boolean deleted;
 
