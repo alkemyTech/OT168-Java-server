@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemy.ong.domain.usecases.category.Category;
 import com.alkemy.ong.domain.usecases.category.CategoryService;
-import com.alkemy.ong.web.controllers.category.dto.CategoryDTO;
+import com.alkemy.ong.web.controllers.category.dto.CategorySlimDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,10 +25,10 @@ public class CategoryController {
 	}
 	
 	@GetMapping
-	public List<CategoryDTO> getAllCategories(){
+	public List<CategorySlimDTO> getAllCategories(){
 		return categoryService.findAll()
 				.stream()
-				.map(Category::fromThis)
+				.map(Category::fromThisSlimDTO)
 				.collect(Collectors.toList());				
 	}
 	

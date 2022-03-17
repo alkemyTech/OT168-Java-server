@@ -1,4 +1,4 @@
-package com.alkemy.ong.data.gatewaysImpl;
+package com.alkemy.ong.data.gateways;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,11 +11,11 @@ import com.alkemy.ong.domain.usecases.category.Category;
 import com.alkemy.ong.domain.usecases.category.CategoryGateway;
 
 @Component
-public class CategoryGatewayImpl implements CategoryGateway{
+public class DefaultCategoryGateway implements CategoryGateway{
 
 	private final CategoryRepository categoriRepository;
 	
-	public CategoryGatewayImpl(CategoryRepository categoriRepository) {
+	public DefaultCategoryGateway(CategoryRepository categoriRepository) {
 		this.categoriRepository = categoriRepository;
 	}
 	

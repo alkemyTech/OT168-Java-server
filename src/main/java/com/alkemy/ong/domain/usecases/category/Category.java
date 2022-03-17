@@ -1,8 +1,11 @@
 package com.alkemy.ong.domain.usecases.category;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
+
 import com.alkemy.ong.web.controllers.category.dto.CategoryDTO;
+import com.alkemy.ong.web.controllers.category.dto.CategorySlimDTO;
 
 import lombok.*;
 
@@ -12,7 +15,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class Category{
+public class Category implements Serializable{
 
 	private Long id;
     private String name;
@@ -115,6 +118,14 @@ public class Category{
 				createdAt, 
 				updateAt, 
 				deleted);
+	}
+	
+	public static Category fromSlimDTO(CategorySlimDTO categorySlimDTO) {
+		return new Category(categorySlimDTO.getName());
+	}
+
+	public CategorySlimDTO fromThisSlimDTO() {
+		return new CategorySlimDTO(name);
 	}
     
 }
