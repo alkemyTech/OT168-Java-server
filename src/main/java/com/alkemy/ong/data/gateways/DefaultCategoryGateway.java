@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.alkemy.ong.data.entities.CategoryEntity;
 import com.alkemy.ong.data.repositories.CategoryRepository;
-import com.alkemy.ong.domain.usecases.category.Category;
-import com.alkemy.ong.domain.usecases.category.CategoryGateway;
+import com.alkemy.ong.domain.category.Category;
+import com.alkemy.ong.domain.category.CategoryGateway;
 
 @Component
 public class DefaultCategoryGateway implements CategoryGateway{

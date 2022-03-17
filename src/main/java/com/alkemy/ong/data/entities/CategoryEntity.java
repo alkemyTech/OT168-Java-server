@@ -13,7 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.alkemy.ong.domain.usecases.category.Category;
+import com.alkemy.ong.domain.category.Category;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

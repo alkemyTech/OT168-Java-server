@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.usecases.category;
+package com.alkemy.ong.domain.category;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

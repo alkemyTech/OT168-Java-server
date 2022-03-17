@@ -1,6 +1,6 @@
 package com.alkemy.ong.web.controllers.category.dto;
 
-import com.alkemy.ong.domain.usecases.category.Category;
+import com.alkemy.ong.domain.category.Category;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
