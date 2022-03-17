@@ -1,4 +1,4 @@
-package com.alkemy.ong.data.gatewaysImpl;
+package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.domain.usecases.UserGateway;
 import org.springframework.stereotype.Component;
