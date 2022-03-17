@@ -15,7 +15,7 @@ public class ContactService {
         this.contactGateway = contactGateway;
     }
 
-    public Contact saveContacts(Contact contact) throws Exception {
+    public Contact saveContact(Contact contact) throws Exception {
         try {
             contactGateway.save(contact);
             return contact;
