@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "Update deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @Where(clause = "deleted_at IS NULL")
 @Table(name = "contacts")
-public class ContactEntity  implements Serializable {
+public class ContactEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
