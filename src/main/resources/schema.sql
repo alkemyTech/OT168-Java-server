@@ -9,7 +9,8 @@ CREATE TABLE `alkemy_ong`.`roles`
     `id`          BIGINT(255) NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(20) NOT NULL,
     `description` VARCHAR(50) DEFAULT NULL,
-    `created`     TIMESTAMP   DEFAULT NOW(),
+    `createdAt`   TIMESTAMP   DEFAULT NOW(),
+    `updateAt`    TIMESTAMP   DEFAULT NOW(),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
@@ -24,8 +25,9 @@ CREATE TABLE `alkemy_ong`.`users`
     `email`     VARCHAR(30) UNIQUE NOT NULL,
     `password`  VARCHAR(50)        NOT NULL,
     `photo`     VARCHAR(255) DEFAULT NULL,
-    `created`   TIMESTAMP   DEFAULT NOW(),
-    `active`    BIT         DEFAULT 1,
+    `createdAt` TIMESTAMP    DEFAULT NOW(),
+    `updateAt`  TIMESTAMP    DEFAULT NOW(),
+    `deleted`   BIT          DEFAULT 1,
     `fk_role`   BIGINT(255)        NOT NULL,
     PRIMARY KEY (`id`),
     KEY `FK_role` (`fk_role`),
