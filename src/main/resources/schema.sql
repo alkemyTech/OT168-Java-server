@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS `alkemy_ong`.`members`;
 CREATE TABLE `alkemy_ong`.`members`
 (
     `id`           BIGINT(255)  NOT NULL AUTO_INCREMENT,
-    `name`         VARCHAR(50) DEFAULT NULL,
+    `name`         VARCHAR(50) NOT NULL,
     `facebookUrl`  VARCHAR(50) DEFAULT NULL,
     `instagramUrl` VARCHAR(30) DEFAULT NULL,
     `linkedinUrl`  VARCHAR(50) DEFAULT NULL,
