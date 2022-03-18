@@ -1,14 +1,15 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.domain.users.UserGateway;
+import com.alkemy.ong.data.repositories.UserRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DefaultUserGateway implements UserGateway {
 
-    private final UserGateway userGateway;
+    private final UserRepository userRepository;
 
-    public DefaultUserGateway(UserGateway userGateway){
-        this.userGateway=userGateway;
+    public DefaultUserGateway(UserRepository userRepository){
+        this.userRepository=userRepository;
     }
 }
