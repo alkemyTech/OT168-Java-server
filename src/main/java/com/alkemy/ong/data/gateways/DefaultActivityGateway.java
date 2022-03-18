@@ -17,6 +17,12 @@ public class DefaultActivityGateway implements ActivityGateway {
 
     @Override
     public Activity save(Activity activity) {
+        ActivityEntity activityEntity = toEntity(activity);
+        activityRepository.save(activityEntity);
+        return activity;
+    }
+
+    private ActivityEntity toEntity (Activity activity){
         ActivityEntity activityEntity = ActivityEntity.builder()
                 .id(activity.getId())
                 .name(activity.getName())
@@ -24,8 +30,7 @@ public class DefaultActivityGateway implements ActivityGateway {
                 .image(activity.getImage())
                 .deleted(false)
                 .build();
-        activityRepository.save(activityEntity);
-        return activity;
+        return activityEntity;
     }
-  }
 
+  }

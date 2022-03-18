@@ -3,10 +3,8 @@ package com.alkemy.ong.web.controllers;
 import com.alkemy.ong.domain.activity.Activity;
 import com.alkemy.ong.domain.activity.ActivityService;
 import lombok.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -20,13 +18,18 @@ public class ActivityController {
     }
 
     @PostMapping()
-    public void saveActivity(@RequestBody ActivityDTO activityDTO) throws Exception {
+    public ResponseEntity<ActivityDTO> saveActivity(@RequestBody ActivityDTO activityDTO) throws Exception {
+        activityService.saveActivity(toModel(activityDTO));
+        return ResponseEntity.ok(activityDTO);
+    }
+
+    private Activity toModel(ActivityDTO activityDTO){
         Activity activity = Activity.builder()
                 .name(activityDTO.getName())
                 .content(activityDTO.getContent())
                 .image(activityDTO.getImage())
                 .build();
-        activityService.saveActivity(activity);
+        return activity;
     }
 }
 
