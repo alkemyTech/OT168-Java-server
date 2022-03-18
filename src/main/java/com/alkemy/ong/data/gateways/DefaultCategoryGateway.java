@@ -1,7 +1,7 @@
 package com.alkemy.ong.data.gateways;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class DefaultCategoryGateway implements CategoryGateway{
 		return categoriRepository.findAll()
 				.stream()
 				.map(CategoryEntity::fromThis)
-				.collect(Collectors.toList());
+				.collect(toList());
 	}
 
 }
