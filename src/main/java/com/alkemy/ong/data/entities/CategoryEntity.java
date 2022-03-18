@@ -47,12 +47,12 @@ public class CategoryEntity {
 	private String image;
 
 	@CreationTimestamp
-	@Column(name = "createdat")
+	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 
 	@UpdateTimestamp
-	@Column(name = "updateat")
-	private LocalDateTime updateAt;
+	@Column(name = "updated_at")
+	private LocalDateTime updatedAt;
 
 	private Boolean deleted;
 
@@ -68,7 +68,7 @@ public class CategoryEntity {
 		this.description = description;
 		this.image = image;
 		this.createdAt = createdAt;
-		this.updateAt = updateAt;
+		this.updatedAt = updateAt;
 		this.deleted = deleted;
 	}
 
@@ -90,7 +90,7 @@ public class CategoryEntity {
 				description, 
 				image, 
 				createdAt, 
-				updateAt, 
+				updatedAt, 
 				deleted);
 	}
 
