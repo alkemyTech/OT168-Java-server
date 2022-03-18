@@ -1,9 +1,6 @@
 package com.alkemy.ong.data.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE news SET status = false WHERE newsId = ?")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 
 public class NewsEntity {
 
@@ -33,9 +31,10 @@ public class NewsEntity {
     @Column(nullable = false)
     private String image;
 
-    //@OneToOne
-    //@Column(nullable = false)
-    //private Category category;
+   /* @OneToOne
+    @Column(nullable = false)
+    private Category category;
+    */
 
     @CreationTimestamp
     private LocalDateTime createdAt;
