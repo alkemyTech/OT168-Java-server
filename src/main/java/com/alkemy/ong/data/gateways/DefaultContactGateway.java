@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Component
 public class DefaultContactGateway implements ContactGateway {
 
@@ -24,8 +26,7 @@ public class DefaultContactGateway implements ContactGateway {
 
         models = contactRepository.findAll().stream()
                 .map(c -> toModel(c))
-                .collect(Collectors.toList());
-
+                .collect(toList());
         return models;
     }
 
