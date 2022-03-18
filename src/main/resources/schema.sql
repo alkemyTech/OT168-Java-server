@@ -8,7 +8,7 @@ CREATE TABLE activities (
   `image` VARCHAR(250) NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT NULL,
-  `deleted` BOOLEAN DEFAULT false,
+  `deleted` BOOLEAN DEFAULT 0,
   PRIMARY KEY (id)
 );
 
@@ -20,7 +20,7 @@ CREATE TABLE contacts (
   `message`  TEXT NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT NULL,
-  `deleted_at` TIMESTAMP DEFAULT NULL,
+  `deleted` BOOLEAN DEFAULT 0,
   PRIMARY KEY (id)
 );
 

@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SQLDelete(sql = "Update deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "Update deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 @Table(name = "contacts")
 public class ContactEntity {
 
@@ -44,7 +44,6 @@ public class ContactEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    private Boolean deleted;
 
 }

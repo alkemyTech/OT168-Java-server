@@ -17,5 +17,5 @@ public class Contact {
     private String message;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
+    private Boolean deleted;
 }

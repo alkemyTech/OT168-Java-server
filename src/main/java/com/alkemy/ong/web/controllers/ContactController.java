@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/contacts")
@@ -23,25 +23,26 @@ public class ContactController {
     @GetMapping()
     public List<ContactDTO> getAllContacts() throws Exception {
 
-        List<ContactDTO> dto = new ArrayList();
-        List<Contact> contacts = contactService.getContacts();
+        List<ContactDTO> dto;
 
-        if (!contacts.isEmpty()) {
-            for (Contact contact : contacts) {
-                ContactDTO c = ContactDTO.builder()
-                        .id(contact.getId())
-                        .name(contact.getName())
-                        .phone(contact.getPhone())
-                        .email(contact.getEmail())
-                        .message(contact.getMessage())
-                        .createdAt(contact.getCreatedAt())
-                        .updatedAt(contact.getUpdatedAt())
-                        .deletedAt(contact.getDeletedAt())
-                        .build();
-                dto.add(c);
-            }
-        }
+           dto = contactService.getContacts().stream()
+                    .map(c -> toDto(c))
+                    .collect(Collectors.toList());
         return dto;
+    }
+
+    private ContactDTO toDto (Contact contact){
+        ContactDTO c = ContactDTO.builder()
+                .id(contact.getId())
+                .name(contact.getName())
+                .phone(contact.getPhone())
+                .email(contact.getEmail())
+                .message(contact.getMessage())
+                .createdAt(contact.getCreatedAt())
+                .updatedAt(contact.getUpdatedAt())
+                .deleted(contact.getDeleted())
+                .build();
+        return c;
     }
 }
 
@@ -58,5 +59,5 @@ class ContactDTO{
     private String message;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
+    private Boolean deleted;
 }

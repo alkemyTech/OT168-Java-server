@@ -6,8 +6,8 @@ import com.alkemy.ong.domain.contact.ContactGateway;
 import com.alkemy.ong.domain.contact.Contact;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DefaultContactGateway implements ContactGateway {
@@ -20,29 +20,37 @@ public class DefaultContactGateway implements ContactGateway {
 
     @Override
     public List<Contact> findAll() {
-        List<Contact> models = new ArrayList();
-        List<ContactEntity> contacts = contactRepository.findAll();
+        List<Contact> models;
 
-        if (!contacts.isEmpty()) {
-            for (ContactEntity contact : contacts) {
-                Contact c = Contact.builder()
-                        .id(contact.getId())
-                        .name(contact.getName())
-                        .phone(contact.getPhone())
-                        .email(contact.getEmail())
-                        .message(contact.getMessage())
-                        .createdAt(contact.getCreatedAt())
-                        .updatedAt(contact.getUpdatedAt())
-                        .deletedAt(contact.getDeletedAt())
-                        .build();
-                models.add(c);
-            }
-        }
+        models = contactRepository.findAll().stream()
+                .map(c -> toModel(c))
+                .collect(Collectors.toList());
+
         return models;
     }
 
     @Override
     public Contact save(Contact contact) {
+        ContactEntity contactEntity = toEntity(contact);
+        contactRepository.save(contactEntity);
+        return contact;
+    }
+
+    private Contact toModel(ContactEntity contactEntity){
+        Contact c = Contact.builder()
+                .id(contactEntity.getId())
+                .name(contactEntity.getName())
+                .phone(contactEntity.getPhone())
+                .email(contactEntity.getEmail())
+                .message(contactEntity.getMessage())
+                .createdAt(contactEntity.getCreatedAt())
+                .updatedAt(contactEntity.getUpdatedAt())
+                .deleted(contactEntity.getDeleted())
+                .build();
+        return c;
+    }
+
+    private ContactEntity toEntity(Contact contact){
         ContactEntity contactEntity = ContactEntity.builder()
                 .id(contact.getId())
                 .name(contact.getName())
@@ -51,9 +59,8 @@ public class DefaultContactGateway implements ContactGateway {
                 .message(contact.getMessage())
                 .createdAt(contact.getCreatedAt())
                 .updatedAt(contact.getUpdatedAt())
-                .deletedAt(contact.getDeletedAt())
+                .deleted(contact.getDeleted())
                 .build();
-        contactRepository.save(contactEntity);
-        return contact;
+        return contactEntity;
     }
 }
