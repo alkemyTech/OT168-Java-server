@@ -29,9 +29,11 @@ public class RoleEntity {
     private String description;
 
     @CreationTimestamp
+    @Column(name = "createdat")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(name = "updateat")
     private LocalDateTime updateAt;
 
     private Boolean deleted;
