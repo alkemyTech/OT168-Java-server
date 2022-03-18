@@ -4,6 +4,8 @@ import com.alkemy.ong.domain.slides.Slides;
 import com.alkemy.ong.domain.slides.SlidesService;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,11 +24,11 @@ public class SlidesController {
     }
 
     @GetMapping
-    public List<SlidesResponseDTO> getAllSlides(){
+    public ResponseEntity<List<SlidesResponseDTO>> getAllSlides(){
         List<Slides> slidesList =this.slidesService.findAll();
-        return slidesList.stream()
+        return ResponseEntity.status(HttpStatus.OK).body(slidesList.stream()
                 .map(slide -> slides2SlidesResponseDTO(slide))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     public static SlidesResponseDTO slides2SlidesResponseDTO(Slides slides){
