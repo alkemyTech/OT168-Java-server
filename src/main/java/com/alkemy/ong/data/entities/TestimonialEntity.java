@@ -1,4 +1,4 @@
-package com.alkemy.ong.data.entity;
+package com.alkemy.ong.data.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,15 +14,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "testimonials")
-// Lombok annotations
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-// Soft delete
 @SQLDelete(sql = "UPDATE testimonials SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false")
-public class Testimonial {
+public class TestimonialEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +34,12 @@ public class Testimonial {
     private String content;
 
     @CreationTimestamp
-    private LocalDateTime created;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     private Boolean deleted;
 }
