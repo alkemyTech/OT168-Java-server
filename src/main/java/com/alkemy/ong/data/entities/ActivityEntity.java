@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,16 +12,17 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE news SET status = false WHERE newsId = ?")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "news")
-public class NewsEntity {
+@SQLDelete(sql = "Update deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
+@Table(name = "activities")
+public class ActivityEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long newsId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -31,13 +33,8 @@ public class NewsEntity {
     @Column(nullable = false)
     private String image;
 
-   /* @OneToOne
-    @Column(nullable = false)
-    private Category category;
-    */
-
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(updatable = false, nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
