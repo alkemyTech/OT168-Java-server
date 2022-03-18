@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS alkemy_ong.categories (
   `name` VARCHAR(255) NOT NULL,
   `description` VARCHAR(255),
   `image` VARCHAR(255),
-  `createdAt` TIMESTAMP DEFAULT NOW(),
-  `updateAt` TIMESTAMP,
-  `deleted` TINYINT (1)
+  `created_at` TIMESTAMP DEFAULT NOW(),
+  `updated_at` TIMESTAMP,
+  `deleted` TINYINT
 );
