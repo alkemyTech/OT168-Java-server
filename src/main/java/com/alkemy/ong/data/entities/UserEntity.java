@@ -23,10 +23,10 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "firstname")
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "lastname")
     private String lastName;
 
     @Column(nullable = false, unique = true)
@@ -38,9 +38,11 @@ public class UserEntity {
     private String photo;
 
     @CreationTimestamp
+    @Column(name = "createdat")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(name = "updateat")
     private LocalDateTime updateAt;
 
     private Boolean deleted;
