@@ -23,7 +23,6 @@ public class NewsController {
         this.newsService = newsService;
     }
 
-
     //la respuesta tiene q ser un ResponseEntity.ok para q devuelva 200 y el body el newsDto
     @GetMapping("/{newsId}")
     public ResponseEntity<News> findById(@PathVariable("newsId") Long newsId) {
@@ -35,7 +34,6 @@ public class NewsController {
             return (ResponseEntity<News>) ResponseEntity
                     .status(HttpStatus.NOT_FOUND);
         }
-
 
 
     //Podemos mejorarlo creando un metodo privado tipo buildDto(model) q retorne el dto.
