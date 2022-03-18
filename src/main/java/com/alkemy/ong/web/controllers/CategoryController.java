@@ -2,6 +2,7 @@ package com.alkemy.ong.web.controllers;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,11 +25,11 @@ public class CategoryController {
 	}
 
 	@GetMapping
-	public List<CategorySlimDTO> getAllCategories() {
+	public ResponseEntity<List<CategorySlimDTO>> getAllCategories() {
 		List<CategorySlimDTO> categorySlimDTO;
 		categorySlimDTO = categoryService.findAll().stream().map(cat -> categoryToCategorySlimDTO(cat))
 				.collect(toList());
-		return categorySlimDTO;
+		return ResponseEntity.ok(categorySlimDTO);
 	}
 
 	private CategorySlimDTO categoryToCategorySlimDTO(Category category) {
