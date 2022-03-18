@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.news.exceptions;
+package com.alkemy.ong.domain.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
 

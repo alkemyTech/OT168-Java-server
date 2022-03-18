@@ -1,14 +1,15 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
 import lombok.*;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/news")
@@ -23,11 +24,8 @@ public class NewsController {
     @GetMapping("/{newsId}")
     public ResponseEntity<News> findById(@PathVariable("newsId") Long newsId) {
         News news = newsService.findById(newsId);
-        if (news != null) {
-            buildDTO(news);
-        }
+        buildDTO(news);
         return ResponseEntity.ok(news);
-
     }
 
     private NewsDTO buildDTO(News news) {

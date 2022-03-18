@@ -4,8 +4,9 @@ import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.data.repositories.NewsRepository;
 import com.alkemy.ong.domain.news.NewsGateway;
 import com.alkemy.ong.domain.news.News;
-import com.alkemy.ong.domain.news.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import lombok.SneakyThrows;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,7 +21,7 @@ public class DefaultNewsGateway implements NewsGateway {
     @SneakyThrows
     @Override
     public News findById(Long newsId) {
-        NewsEntity newsEntity = newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("El ID no existe"));
+        NewsEntity newsEntity = newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         return toModel(newsEntity);
     }
 
