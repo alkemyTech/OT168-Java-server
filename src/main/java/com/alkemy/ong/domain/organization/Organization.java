@@ -13,7 +13,7 @@ public class Organization {
     private String name;
     private String image;
     private String address;
-    private Integer phone;
+    private Long phone;
     private String email;
     private String about_us_text;
     private String welcome_text;
