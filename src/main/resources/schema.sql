@@ -29,10 +29,10 @@ CREATE TABLE `alkemy_ong`.`users`
     `createdAt` TIMESTAMP    DEFAULT NOW(),
     `updateAt`  TIMESTAMP    DEFAULT NOW(),
     `deleted`   BIT          DEFAULT 0,
-    `fk_role`   BIGINT(255)        NOT NULL,
+    `roleEntity`   BIGINT(255)        NOT NULL,
     PRIMARY KEY (`id`),
-    KEY `FK_role` (`fk_role`),
-    CONSTRAINT `FK_role` FOREIGN KEY (`fk_role`) REFERENCES `alkemy_ong`.`roles` (`id`)
+    KEY `FK_role` (`roleEntity`),
+    CONSTRAINT `FK_role` FOREIGN KEY (`roleEntity`) REFERENCES `alkemy_ong`.`roles` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 

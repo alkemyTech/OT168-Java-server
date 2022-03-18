@@ -46,6 +46,6 @@ public class UserEntity {
     private Boolean deleted;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "fk_role", nullable = false)
-    private RoleEntity fk_role;
+    @JoinColumn(name = "roleEntity", nullable = false)
+    private RoleEntity roleEntity;
 }
