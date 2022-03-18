@@ -20,7 +20,7 @@ public class DefaultNewsGateway implements NewsGateway {
     @SneakyThrows
     @Override
     public News findById(Long newsId) {
-        NewsEntity newsEntity = newsRepository.findById(newsId).orElseThrow(ResourceNotFoundException::new);
+        NewsEntity newsEntity = newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("El ID no existe"));
         return toModel(newsEntity);
     }
 
@@ -37,6 +37,5 @@ public class DefaultNewsGateway implements NewsGateway {
                 .build();
         return news;
     }
-
 
 }

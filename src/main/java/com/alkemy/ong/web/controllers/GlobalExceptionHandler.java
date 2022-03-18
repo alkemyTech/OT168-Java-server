@@ -20,4 +20,3 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     new HttpHeaders(), HttpStatus.CONFLICT, request);
         }
     }
-

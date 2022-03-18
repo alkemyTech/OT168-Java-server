@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
+@Table(name = "news")
 public class NewsEntity {
 
     @Id
@@ -37,9 +37,11 @@ public class NewsEntity {
     */
 
     @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     private Boolean deleted;
