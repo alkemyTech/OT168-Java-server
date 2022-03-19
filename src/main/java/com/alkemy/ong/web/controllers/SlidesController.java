@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
-@RequestMapping("/api/v1/slides")
+@RequestMapping("/slides")
 public class SlidesController {
 
     private final SlidesService slidesService;
@@ -25,13 +27,13 @@ public class SlidesController {
 
     @GetMapping
     public ResponseEntity<List<SlidesResponseDTO>> getAllSlides(){
-        List<Slides> slidesList =this.slidesService.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(slidesList.stream()
-                .map(slide -> slides2SlidesResponseDTO(slide))
-                .collect(Collectors.toList()));
+        List<Slides> slidesList =slidesService.findAll();
+        return ResponseEntity.ok(slidesList.stream()
+                .map(slide -> toDto(slide))
+                .collect(toList()));
     }
 
-    public static SlidesResponseDTO slides2SlidesResponseDTO(Slides slides){
+    private SlidesResponseDTO toDto(Slides slides){
         return SlidesResponseDTO.builder()
                 .imageUrl(slides.getImageUrl())
                 .order(slides.getOrder())

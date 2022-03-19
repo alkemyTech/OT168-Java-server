@@ -14,6 +14,6 @@ public class SlidesService {
     }
 
     public List<Slides> findAll(){
-        return this.slidesGateway.findAll();
+        return slidesGateway.findAll();
     }
 }

@@ -7,7 +7,8 @@ import com.alkemy.ong.domain.slides.SlidesGateway;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultSlidesGateway implements SlidesGateway {
@@ -20,13 +21,13 @@ public class DefaultSlidesGateway implements SlidesGateway {
 
     @Override
     public List<Slides> findAll() {
-        List<SlidesEntity> slidesEntity = this.slidesRepository.findAll();
+        List<SlidesEntity> slidesEntity = slidesRepository.findAll();
         return slidesEntity.stream()
-                .map(slide -> slidesEntity2Slides(slide))
-                .collect(Collectors.toList());
+                .map(slide -> toModel(slide))
+                .collect(toList());
     }
 
-    public static Slides slidesEntity2Slides(SlidesEntity entity){
+    private Slides toModel(SlidesEntity entity){
         return Slides.builder()
                 .idSlides(entity.getIdSlides())
                 .imageUrl(entity.getImageUrl())
