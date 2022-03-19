@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping()
@@ -24,15 +25,12 @@ public class MemberController {
 
     @GetMapping("/members")
     public ResponseEntity<List<MemberDTO>> findAll(){
-
-        List<MemberDTO> memberDTOList = memberService.findAll()
+        
+        return ResponseEntity.ok().body(memberService.findAll()
                 .stream()
-                .map(memberModel -> toDTO(memberModel))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok().body(memberDTOList);
+                .map(m -> toDTO(m))
+                .collect(toList()));
     }
-
 
     private MemberDTO toDTO(Member member) {
         return MemberDTO.builder()
