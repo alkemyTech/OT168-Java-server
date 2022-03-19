@@ -3,9 +3,13 @@ package com.alkemy.ong.web.controllers;
 import com.alkemy.ong.domain.activity.Activity;
 import com.alkemy.ong.domain.activity.ActivityService;
 import lombok.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @RestController
@@ -18,7 +22,7 @@ public class ActivityController {
     }
 
     @PostMapping()
-    public ResponseEntity<ActivityDTO> saveActivity(@RequestBody ActivityDTO activityDTO) throws Exception {
+    public ResponseEntity<ActivityDTO> saveActivity(@Valid @RequestBody ActivityDTO activityDTO) throws Exception {
         activityService.saveActivity(toModel(activityDTO));
         return ResponseEntity.ok(activityDTO);
     }
@@ -40,7 +44,9 @@ public class ActivityController {
 @NoArgsConstructor
 class ActivityDTO {
     private Long id;
+    @NotEmpty(message = "Name can't be empty")
     private String name;
+    @NotEmpty(message = "Content can't be empty")
     private String content;
     private String image;
     private LocalDateTime createdAt;

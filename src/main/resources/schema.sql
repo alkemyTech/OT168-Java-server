@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS `alkemy_ong`;
 CREATE DATABASE IF NOT EXISTS `alkemy_ong`;
 USE `alkemy_ong`;
 
@@ -112,4 +111,14 @@ CREATE TABLE if NOT EXISTS slides (
     updated_at TIMESTAMP NOT NULL,
     deleted BIT(1) NOT NULL DEFAULT 0,
     organization_id BIGINT unsigned NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS testimonials (
+id BIGINT(255) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR (255) NOT NULL,
+image VARCHAR (255),
+content VARCHAR (255),
+created_at TIMESTAMP DEFAULT NOW(),
+updated_at TIMESTAMP,
+deleted TINYINT(1)
 );
