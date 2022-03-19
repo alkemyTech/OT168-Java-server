@@ -43,7 +43,7 @@ public class UserEntity {
 
     @UpdateTimestamp
     @Column(name = "updateat")
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
     private Boolean deleted;
 

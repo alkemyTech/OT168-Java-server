@@ -44,7 +44,7 @@ public class MemberEntity {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updatedat")
+    @Column(name = "updateddat")
     private LocalDateTime updatedAt;
 
     private Boolean deleted;
