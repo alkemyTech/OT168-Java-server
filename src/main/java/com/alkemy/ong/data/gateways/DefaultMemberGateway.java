@@ -22,11 +22,10 @@ public class DefaultMemberGateway implements MemberGateway {
     @Override
     public List<Member> findAll() {
 
-        List<Member> memberList = memberRepository.findAll().stream()
-                .map(memberEntity -> toModel(memberEntity))
+        return memberRepository.findAll()
+                .stream()
+                .map(m -> toModel(m))
                 .collect(Collectors.toList());
-
-        return memberList;
     }
 
     private Member toModel(MemberEntity memberEntity) {
@@ -39,15 +38,9 @@ public class DefaultMemberGateway implements MemberGateway {
                 .image(memberEntity.getImage())
                 .description(memberEntity.getDescription())
                 .createdAt(memberEntity.getCreatedAt())
-                .updateAt(memberEntity.getUpdatedAt())
+                .updatedAt(memberEntity.getUpdatedAt())
                 .deleted(memberEntity.getDeleted())
                 .build();
         return memberModel;
     }
 }
-/*
-List<ContactDTO> dto;
-
-           dto = contactService.getContacts().stream()
-                    .map(c -> toDto(c))
-                    .collect(Collectors.toList());*/
