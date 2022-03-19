@@ -39,7 +39,7 @@ public class DefaultMemberGateway implements MemberGateway {
                 .image(memberEntity.getImage())
                 .description(memberEntity.getDescription())
                 .createdAt(memberEntity.getCreatedAt())
-                .updateAt(memberEntity.getUpdateAt())
+                .updatedAt(memberEntity.getUpdatedAt())
                 .deleted(memberEntity.getDeleted())
                 .build();
         return memberModel;

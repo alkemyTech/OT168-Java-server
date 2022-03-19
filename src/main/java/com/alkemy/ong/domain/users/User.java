@@ -19,7 +19,7 @@ public class User {
     private String password;
     private String photo;
     private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
     private Boolean deleted;
     private Role fk_role;
 }

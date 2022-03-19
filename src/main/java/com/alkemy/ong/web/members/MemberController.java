@@ -44,7 +44,7 @@ public class MemberController {
                 .image(member.getImage())
                 .description(member.getDescription())
                 .createdAt(member.getCreatedAt())
-                .updateAt(member.getUpdateAt())
+                .updatedAt(member.getUpdatedAt())
                 .deleted(member.getDeleted())
                 .build();
 
@@ -67,6 +67,6 @@ class MemberDTO {
     private String image;
     private String description;
     private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
     private Boolean deleted;
 }
