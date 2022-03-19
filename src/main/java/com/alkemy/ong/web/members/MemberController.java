@@ -25,7 +25,7 @@ public class MemberController {
 
     @GetMapping("/members")
     public ResponseEntity<List<MemberDTO>> findAll(){
-        
+
         return ResponseEntity.ok().body(memberService.findAll()
                 .stream()
                 .map(m -> toDTO(m))
