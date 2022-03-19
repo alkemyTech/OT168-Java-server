@@ -10,7 +10,7 @@ CREATE TABLE `alkemy_ong`.`roles`
     `name`        VARCHAR(20) NOT NULL,
     `description` VARCHAR(50) DEFAULT NULL,
     `createdat`   TIMESTAMP   DEFAULT NOW(),
-    `updateat`    TIMESTAMP   DEFAULT NOW(),
+    `updatedat`    TIMESTAMP   DEFAULT NOW(),
     `deleted`     BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -27,7 +27,7 @@ CREATE TABLE `alkemy_ong`.`users`
     `password`  VARCHAR(50)        NOT NULL,
     `photo`     VARCHAR(255) DEFAULT NULL,
     `createdat` TIMESTAMP    DEFAULT NOW(),
-    `updateat`  TIMESTAMP    DEFAULT NOW(),
+    `updatedat`  TIMESTAMP    DEFAULT NOW(),
     `deleted`   BIT          DEFAULT 0,
     `roleEntity`   BIGINT(255)        NOT NULL,
     PRIMARY KEY (`id`),
@@ -48,7 +48,7 @@ CREATE TABLE `alkemy_ong`.`members`
     `image`        VARCHAR(255) NOT NULL,
     `description`  VARCHAR(50) DEFAULT NULL,
     `createdat`    TIMESTAMP   DEFAULT NOW(),
-    `updateat`     TIMESTAMP   DEFAULT NOW(),
+    `updatedat`     TIMESTAMP   DEFAULT NOW(),
     `deleted`      BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
