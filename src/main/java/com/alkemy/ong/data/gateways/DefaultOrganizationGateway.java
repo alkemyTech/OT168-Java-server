@@ -19,12 +19,12 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
 
     @Override
     public Organization findById(Long id) {
-        Optional<OrganizationEntity> organizationEntity = this.organizationRepository.findById(id);
+        Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(id);
         //TODO: orElseThrow  custom exception
-        return organizationEntity2Organization(organizationEntity.get());
+        return toModel(organizationEntity.get());
     }
 
-    public static Organization organizationEntity2Organization(OrganizationEntity entity){
+    public static Organization toModel(OrganizationEntity entity){
         return Organization.builder()
                                                 .idOrganization(entity.getIdOrganization())
                                                 .name(entity.getName())

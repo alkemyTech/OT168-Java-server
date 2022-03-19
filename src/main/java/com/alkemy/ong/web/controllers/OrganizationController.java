@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/v1/organizations")
+@RequestMapping("/organizations")
 public class OrganizationController {
 
     private final OrganizationService organizationService;
@@ -24,11 +24,11 @@ public class OrganizationController {
 
     @GetMapping("/public/{id}")
     public ResponseEntity<OrganizationResponseDTO> getOrganization(@PathVariable Long id){
-        Organization organization = this.organizationService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(organization2OrganizationResponseDTO(organization));
+        Organization organization = organizationService.findById(id);
+        return ResponseEntity.ok(toDto(organization));
     }
 
-    public static OrganizationResponseDTO organization2OrganizationResponseDTO(Organization organization){
+    private  OrganizationResponseDTO toDto(Organization organization){
 
         return OrganizationResponseDTO.builder()
                                             .name(organization.getName())
