@@ -50,6 +50,22 @@ public class MemberController {
 
         return memberDTO;
     }
+
+    private Member toModel(MemberDTO memberDTO) {
+        Member memberModel = Member.builder()
+                .id(memberDTO.getId())
+                .name(memberDTO.getName())
+                .facebookUrl(memberDTO.getFacebookUrl())
+                .instagramUrl(memberDTO.getInstagramUrl())
+                .linkedinUrl(memberDTO.getLinkedinUrl())
+                .image(memberDTO.getImage())
+                .description(memberDTO.getDescription())
+                .createdAt(memberDTO.getCreatedAt())
+                .updatedAt(memberDTO.getUpdatedAt())
+                .deleted(memberDTO.getDeleted())
+                .build();
+        return memberModel;
+    }
 }
 
 @NoArgsConstructor
