@@ -9,6 +9,9 @@ import com.alkemy.ong.data.entities.CategoryEntity;
 import com.alkemy.ong.data.repositories.CategoryRepository;
 import com.alkemy.ong.domain.category.Category;
 import com.alkemy.ong.domain.category.CategoryGateway;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+
+import lombok.SneakyThrows;
 
 @Component
 public class DefaultCategoryGateway implements CategoryGateway {
@@ -24,6 +27,14 @@ public class DefaultCategoryGateway implements CategoryGateway {
 		List<Category> categories;
 		categories = categoryRepository.findAll().stream().map(cat -> categoryEntityToCategory(cat)).collect(toList());
 		return categories;
+	}
+
+	@SneakyThrows
+	@Override
+	public Category findById(Long id) {
+		CategoryEntity categoryEntity = categoryRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("The id %d doesn't exist.", id));
+		return categoryEntityToCategory(categoryEntity);
 	}
 
 	public static Category categoryEntityToCategory(CategoryEntity categoryEntity) {
