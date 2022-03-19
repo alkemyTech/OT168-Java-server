@@ -22,23 +22,18 @@ public class DefaultMemberGateway implements MemberGateway {
     @Override
     public List<Member> findAll() {
 
-        List<Member> memberList = memberRepository.findAll().stream()
+        return memberRepository.findAll().stream()
                 .map(memberEntity -> toModel(memberEntity))
                 .collect(Collectors.toList());
-
-        return memberList;
     }
 
     @Override
     public Member save(Member member) {
-
-        MemberEntity memberEntity = memberRepository.save(toEntity(member));
-        return toModel(memberEntity);
-
+        return toModel(memberRepository.save(toEntity(member)));
     }
 
     private Member toModel(MemberEntity memberEntity) {
-        Member memberModel = Member.builder()
+        return Member.builder()
                 .id(memberEntity.getId())
                 .name(memberEntity.getName())
                 .facebookUrl(memberEntity.getFacebookUrl())
@@ -50,12 +45,21 @@ public class DefaultMemberGateway implements MemberGateway {
                 .updatedAt(memberEntity.getUpdatedAt())
                 .deleted(memberEntity.getDeleted())
                 .build();
-        return memberModel;
+    }
+
+    private MemberEntity toEntity(Member member) {
+
+        return MemberEntity.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .facebookUrl(member.getFacebookUrl())
+                .instagramUrl(member.getInstagramUrl())
+                .linkedinUrl(member.getLinkedinUrl())
+                .image(member.getImage())
+                .description(member.getDescription())
+                .createdAt(member.getCreatedAt())
+                .updatedAt(member.getUpdatedAt())
+                .deleted(member.getDeleted())
+                .build();
     }
 }
-/*
-List<ContactDTO> dto;
-
-           dto = contactService.getContacts().stream()
-                    .map(c -> toDto(c))
-                    .collect(Collectors.toList());*/
