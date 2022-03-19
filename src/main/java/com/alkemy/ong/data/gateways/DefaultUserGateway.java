@@ -8,7 +8,5 @@ public class DefaultUserGateway implements UserGateway {
 
     private final UserGateway userGateway;
 
-    public DefaultUserGateway(UserGateway userGateway){
-        this.userGateway=userGateway;
-    }
+    public DefaultUserGateway(UserGateway userGateway){this.userGateway=userGateway;}
 }

@@ -8,7 +8,5 @@ public class DefaultRoleGateway implements RoleGateway {
 
     private final RoleGateway roleGateway;
 
-    public DefaultRoleGateway(RoleGateway roleGateway){
-        this.roleGateway=roleGateway;
-    }
+    public DefaultRoleGateway(RoleGateway roleGateway){this.roleGateway=roleGateway;}
 }

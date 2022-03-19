@@ -8,7 +8,5 @@ public class DefaultMemberGateway implements MemberGateway {
 
     private final MemberGateway memberGateway;
 
-    public DefaultMemberGateway(MemberGateway memberGateway){
-        this.memberGateway=memberGateway;
-    }
+    public DefaultMemberGateway(MemberGateway memberGateway){this.memberGateway=memberGateway;}
 }
