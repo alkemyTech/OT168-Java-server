@@ -14,7 +14,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @RestController
-@RequestMapping()
+@RequestMapping
 public class MemberController {
 
     private final MemberService memberService;
