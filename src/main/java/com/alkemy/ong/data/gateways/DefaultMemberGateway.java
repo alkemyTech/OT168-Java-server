@@ -23,7 +23,7 @@ public class DefaultMemberGateway implements MemberGateway {
     public List<Member> findAll() {
 
         return memberRepository.findAll().stream()
-                .map(memberEntity -> toModel(memberEntity))
+                .map(m -> toModel(m))
                 .collect(Collectors.toList());
     }
 

@@ -3,10 +3,10 @@ package com.alkemy.ong.web.members;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
 import lombok.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -28,14 +28,18 @@ public class MemberController {
     @GetMapping("/members")
     public ResponseEntity<List<MemberDTO>> findAll(){
 
-        List<MemberDTO> memberDTOList = memberService.findAll()
+        return ResponseEntity.ok().body(memberService.findAll()
                 .stream()
-                .map(memberModel -> toDTO(memberModel))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok().body(memberDTOList);
+                .map(m -> toDTO(m))
+                .collect(Collectors.toList()));
     }
 
+    @PostMapping("/members")
+    public ResponseEntity<MemberDTO> save(@Validated @RequestBody MemberDTO memberDTO) {
+        return  ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(toDTO(memberService.save(toModel(memberDTO))));
+    }
 
     private MemberDTO toDTO(Member member) {
         MemberDTO memberDTO = MemberDTO.builder()
