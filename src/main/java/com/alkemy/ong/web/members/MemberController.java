@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,6 +79,10 @@ public class MemberController {
 class MemberDTO {
 
     private Long id;
+
+    @Valid
+    @NotBlank(message = "Name field cannot be empty or null")
+    @Pattern(regexp = "[a-zA-Z ]{0,50}", message = "Name field no admit numbers")
     private String name;
     private String facebookUrl;
     private String instagramUrl;
