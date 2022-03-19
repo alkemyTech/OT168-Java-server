@@ -9,8 +9,8 @@ CREATE TABLE `alkemy_ong`.`roles`
     `id`          BIGINT(255) NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(20) NOT NULL,
     `description` VARCHAR(50) DEFAULT NULL,
-    `createdat`   TIMESTAMP   DEFAULT NOW(),
-    `updateat`    TIMESTAMP   DEFAULT NOW(),
+    `createddat`   TIMESTAMP   DEFAULT NOW(),
+    `updatedat`    TIMESTAMP   DEFAULT NOW(),
     `deleted`     BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -48,7 +48,7 @@ CREATE TABLE `alkemy_ong`.`members`
     `image`        VARCHAR(255) NOT NULL,
     `description`  VARCHAR(50) DEFAULT NULL,
     `createdat`    TIMESTAMP   DEFAULT NOW(),
-    `updateat`     TIMESTAMP   DEFAULT NOW(),
+    `updatedat`     TIMESTAMP   DEFAULT NOW(),
     `deleted`      BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
