@@ -1,8 +1,10 @@
 package com.alkemy.ong.data.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -11,39 +13,35 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE news SET status = false WHERE newsId = ?")
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Table(name = "news")
-public class NewsEntity {
+@AllArgsConstructor
+@Table(name = "members", schema = "alkemy_ong")
+public class MemberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long newsId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String content;
+    private String facebookUrl;
+
+    private String instagramUrl;
+
+    private String linkedinUrl;
 
     @Column(nullable = false)
     private String image;
 
-   /* @OneToOne
-    @Column(nullable = false)
-    private Category category;
-    */
+    private String description;
 
     @CreationTimestamp
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDateTime updateAt;
 
     private Boolean deleted;
-
 }
+
