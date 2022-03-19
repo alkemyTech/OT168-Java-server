@@ -16,5 +16,9 @@ public class MemberService {
         return memberGateway.findAll();
     }
 
+    public Member save(Member member){
+        return memberGateway.save(member);
+    }
+
 }
 
