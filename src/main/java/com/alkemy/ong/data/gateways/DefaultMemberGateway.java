@@ -1,3 +1,4 @@
+/*
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.domain.members.MemberGateway;
@@ -12,3 +13,5 @@ public class DefaultMemberGateway implements MemberGateway {
         this.memberGateway=memberGateway;
     }
 }
+
+ */

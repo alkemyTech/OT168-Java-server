@@ -1,5 +1,7 @@
 package com.alkemy.ong.domain.news;
 
+import com.alkemy.ong.data.entities.CategoryEntity;
+import com.alkemy.ong.domain.category.Category;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,18 +15,12 @@ import java.time.LocalDateTime;
 public class News {
 
     private Long newsId;
-
     private String name;
-
     private String content;
-
     private String image;
-
-    //private Category category;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
-
     private Boolean deleted;
+    private CategoryEntity categoryId;
+    private String type;
 }

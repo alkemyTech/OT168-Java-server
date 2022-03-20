@@ -1,4 +1,4 @@
-package com.alkemy.ong.data.gateways;
+/*package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.domain.users.UserGateway;
 import org.springframework.stereotype.Component;
@@ -12,3 +12,4 @@ public class DefaultUserGateway implements UserGateway {
         this.userGateway=userGateway;
     }
 }
+*/

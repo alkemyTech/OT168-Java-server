@@ -6,7 +6,6 @@ import com.alkemy.ong.domain.news.NewsGateway;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import lombok.SneakyThrows;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,16 +24,24 @@ public class DefaultNewsGateway implements NewsGateway {
         return toModel(newsEntity);
     }
 
+    @SneakyThrows
+    @Override
+    public News saveNews(NewsEntity newsEntity) {
+        newsRepository.save(newsEntity);
+        return toModel(newsEntity);
+    }
+
     private News toModel (NewsEntity newsEntity) {
         News news = News.builder()
                 .newsId(newsEntity.getNewsId())
                 .name(newsEntity.getName())
                 .content(newsEntity.getContent())
                 .image(newsEntity.getImage())
-                //.category(newsEntity.getCategory())
                 .createdAt(newsEntity.getCreatedAt())
                 .updatedAt(newsEntity.getUpdatedAt())
                 .deleted(newsEntity.getDeleted())
+                .categoryId(newsEntity.getCategoryId())
+                .type(newsEntity.getType())
                 .build();
         return news;
     }

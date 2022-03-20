@@ -1,4 +1,4 @@
-package com.alkemy.ong.data.gateways;
+/*package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.domain.roles.RoleGateway;
 import org.springframework.stereotype.Component;
@@ -12,3 +12,4 @@ public class DefaultRoleGateway implements RoleGateway {
         this.roleGateway=roleGateway;
     }
 }
+*/

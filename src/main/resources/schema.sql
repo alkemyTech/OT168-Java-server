@@ -1,6 +1,21 @@
-DROP DATABASE IF EXISTS `alkemy_ong`;
-CREATE DATABASE IF NOT EXISTS `alkemy_ong`;
-USE `alkemy_ong`;
+DROP DATABASE IF EXISTS alkemy_ong;
+
+CREATE DATABASE IF NOT EXISTS alkemy_ong;
+USE alkemy_ong;
+
+DROP TABLE IF EXISTS news;
+CREATE TABLE IF NOT EXISTS news (
+news_id BIGINT(255) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR (20) NOT NULL,
+content VARCHAR (100) NOT NULL,
+image VARCHAR (25) NOT NULL,
+created_at TIMESTAMP DEFAULT NOW(),
+updated_at TIMESTAMP,
+deleted TINYINT,
+category_id BIGINT(255) NOT NULL,
+type VARCHAR(20),
+CONSTRAINT type_category FOREIGN KEY(category_id) REFERENCES categories (id),
+);
 
 DROP TABLE IF EXISTS `alkemy_ong`.`roles`;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -53,17 +68,6 @@ CREATE TABLE `alkemy_ong`.`members`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
-CREATE DATABASE IF NOT EXISTS alkemy_ong;
-USE alkemy_ong;
-
-news_id BIGINT(255) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR (20) NOT NULL,
-content VARCHAR (100) NOT NULL,
-image VARCHAR (25) NOT NULL,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP,
-deleted TINYINT
-);
 
 CREATE TABLE IF NOT EXISTS organizations (
   id_organization BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
