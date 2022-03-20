@@ -84,9 +84,9 @@ public class MemberController {
 class MemberDTO {
 
     private Long id;
-
+    //"^[^ ][a-zA-Z ]{0,50}"
     @NotBlank(message = "Name field cannot be empty or be null.")
-    @Pattern(regexp = "^[^ ][a-zA-Z ]{0,50}", message = "Name field cannot admit number or begin with white spaces.")
+    @Pattern(regexp = "^[^ ][a-zA-Z ].*[^ ]${0,50}", message = "Name field cannot admit number, begin or finish with white spaces.")
     private String name;
     private String facebookUrl;
     private String instagramUrl;
