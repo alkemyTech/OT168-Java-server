@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping()
+@RequestMapping
 public class MemberController {
 
     private final MemberService memberService;
