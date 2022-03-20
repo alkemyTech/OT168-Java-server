@@ -26,13 +26,7 @@ public class NewsController {
         return ResponseEntity.ok(news);
     }
 
-    //POST /news - Deberá validar la existencia de los campos enviados,
-    //para almacenar el registro en la tabla News. Antes de almacenarla,
-    // deberá asignarle la columna type con el valor "news".
-
-
-
-
+   
     private NewsDTO buildDTO(News news) {
         NewsDTO newsDTO = NewsDTO.builder()
                 .newsId(news.getNewsId())
