@@ -8,7 +8,7 @@ import com.alkemy.ong.data.repositories.MemberRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultMemberGateway implements MemberGateway {
@@ -24,7 +24,7 @@ public class DefaultMemberGateway implements MemberGateway {
 
         return memberRepository.findAll().stream()
                 .map(m -> toModel(m))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override

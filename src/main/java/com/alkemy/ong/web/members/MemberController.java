@@ -85,8 +85,8 @@ class MemberDTO {
 
     private Long id;
 
-    @NotBlank(message = "Name field cannot be empty or null")
-    @Pattern(regexp = "[a-zA-Z ]{0,50}", message = "Name field no admit numbers")
+    @NotBlank(message = "Name field cannot be empty or be null.")
+    @Pattern(regexp = "^[^ ][a-zA-Z ]{0,50}", message = "Name field cannot admit number or begin with white spaces.")
     private String name;
     private String facebookUrl;
     private String instagramUrl;
