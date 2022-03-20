@@ -80,11 +80,11 @@ public class MemberController {
 @Getter
 @Setter
 @Builder
+@Valid
 class MemberDTO {
 
     private Long id;
 
-    @Valid
     @NotBlank(message = "Name field cannot be empty or null")
     @Pattern(regexp = "[a-zA-Z ]{0,50}", message = "Name field no admit numbers")
     private String name;
