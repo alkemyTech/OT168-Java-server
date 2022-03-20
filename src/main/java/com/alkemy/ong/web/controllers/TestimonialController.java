@@ -1,7 +1,10 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.data.entities.TestimonialEntity;
+import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialService;
 import lombok.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,39 +13,61 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
+@RequestMapping("/testimonials")
 public class TestimonialController {
 
     private final TestimonialService testimonialService;
 
-    public TestimonialController(TestimonialService testimonialService){
+    public TestimonialController(TestimonialService testimonialService) {
         this.testimonialService = testimonialService;
     }
 
-    @RequestMapping("/testimonials")
     @PostMapping
-    public void createTestimonial(@RequestBody TestimonialDTO testimonialDTO) throws Exception{
+    public ResponseEntity<TestimonialDTO> createTestimonial(@RequestBody TestimonialDTO testimonialDTO) throws Exception {
         try {
-            if (testimonialDTO.name == null || testimonialDTO.name.isEmpty()) {
+            if (testimonialDTO.getName() == null || testimonialDTO.getName().isEmpty()) {
                 throw new Exception("Field 'name' is required.");
-            } else if (testimonialDTO.content == null || testimonialDTO.content.isEmpty()) {
+            } else if (testimonialDTO.getContent() == null || testimonialDTO.getContent().isEmpty()) {
                 throw new Exception("Field 'content' is required.");
             } else {
-                // TODO: develop Save method in 'TestimonialService'.
+                return ResponseEntity.ok(model2DTO(testimonialService.save(dto2Model(testimonialDTO))));
             }
         } catch (Exception ex) {
             throw new Exception(ex.getMessage());
         }
     }
 
-    /**
-     * TestimonialDTO
-     */
+    private Testimonial dto2Model(TestimonialDTO testimonialDTO) {
+        Testimonial testimonial = Testimonial.builder()
+                .name(testimonialDTO.getName())
+                .image(testimonialDTO.getImage())
+                .content(testimonialDTO.getContent())
+                .createdAt(testimonialDTO.getCreatedAt())
+                .updatedAt(testimonialDTO.getUpdatedAt())
+                .deleted(testimonialDTO.getDeleted())
+                .build();
+        return testimonial;
+    }
+
+    private TestimonialDTO model2DTO(Testimonial testimonial) {
+        TestimonialDTO testimonialDTO = TestimonialDTO.builder()
+                .id(testimonial.getId())
+                .name(testimonial.getName())
+                .image(testimonial.getImage())
+                .content(testimonial.getContent())
+                .createdAt(testimonial.getCreatedAt())
+                .updatedAt(testimonial.getUpdatedAt())
+                .deleted(testimonial.getDeleted())
+                .build();
+        return testimonialDTO;
+    }
+}
     @Getter
     @Setter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    static class TestimonialDTO{
+    class TestimonialDTO{
         private Long id;
 
         private String name;
@@ -51,11 +76,9 @@ public class TestimonialController {
 
         private String content;
 
-        private LocalDateTime created;
+        private LocalDateTime createdAt;
 
-        private LocalDateTime updated;
+        private LocalDateTime updatedAt;
 
         private Boolean deleted;
     }
-
-}

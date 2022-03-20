@@ -11,4 +11,5 @@ public class TestimonialService {
         this.testimonialGateway = testimonialGateway;
     }
 
+    public Testimonial save(Testimonial testimonial){return testimonialGateway.save(testimonial);}
 }

@@ -100,7 +100,7 @@ image VARCHAR (255),
 content VARCHAR (255),
 created_at TIMESTAMP DEFAULT NOW(),
 updated_at TIMESTAMP,
-deleted TINYINT(1)
+deleted BIT(1) NOT NULL DEFAULT 0
 );
 
 CREATE DATABASE IF NOT EXISTS alkemy_ong;
