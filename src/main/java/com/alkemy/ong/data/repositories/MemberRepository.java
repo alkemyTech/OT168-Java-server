@@ -11,4 +11,5 @@ public interface MemberRepository extends JpaRepository<MemberEntity,Long> {
     List<MemberEntity> findAll();
     MemberEntity save(MemberEntity member);
     Optional<MemberEntity> findById(Long aLong);
+    void deleteById(Long id);
 }
