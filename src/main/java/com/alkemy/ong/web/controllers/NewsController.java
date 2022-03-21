@@ -34,7 +34,6 @@ public class NewsController {
     //para almacenar el registro en la tabla News. Antes de almacenarla,
     // deberá asignarle la columna type con el valor "news".
 
-    @SneakyThrows
     @PostMapping()
         public ResponseEntity<NewsDTO> saveNews(@Validated @RequestBody NewsEntity newsEntity){
         News news = newsService.saveNews(newsEntity);
