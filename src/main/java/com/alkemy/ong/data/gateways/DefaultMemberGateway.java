@@ -42,6 +42,13 @@ public class DefaultMemberGateway implements MemberGateway {
                 .orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist.")));
     }
 
+    @Override
+    public void delete(Long id) {
+        findById(id);
+        memberRepository.deleteById(id);
+    }
+
+
     private Member toModel(MemberEntity memberEntity) {
         return Member.builder()
                 .id(memberEntity.getId())
