@@ -20,6 +20,6 @@ public class Member implements Serializable {
     private String image;
     private String description;
     private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
     private Boolean deleted;
 }
