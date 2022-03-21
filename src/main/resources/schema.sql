@@ -9,13 +9,8 @@ CREATE TABLE `alkemy_ong`.`roles`
     `id`          BIGINT(255) NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(20) NOT NULL,
     `description` VARCHAR(50) DEFAULT NULL,
-<<<<<<< HEAD
     `createdat`   TIMESTAMP   DEFAULT NOW(),
     `updatedat`    TIMESTAMP   DEFAULT NOW(),
-=======
-    `createdAt`   TIMESTAMP   DEFAULT NOW(),
-    `updateAt`    TIMESTAMP   DEFAULT NOW(),
->>>>>>> origin
     `deleted`     BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
