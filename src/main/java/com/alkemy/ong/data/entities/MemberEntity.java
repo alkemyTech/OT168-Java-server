@@ -25,10 +25,13 @@ public class MemberEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "facebookurl")
     private String facebookUrl;
 
+    @Column(name = "instagramurl")
     private String instagramUrl;
 
+    @Column(name = "linkedinurl")
     private String linkedinUrl;
 
     @Column(nullable = false)
@@ -37,10 +40,12 @@ public class MemberEntity {
     private String description;
 
     @CreationTimestamp
+    @Column(name = "createdat")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updateAt;
+    @Column(name = "updateddat")
+    private LocalDateTime updatedAt;
 
     private Boolean deleted;
 }

@@ -29,10 +29,12 @@ public class RoleEntity {
     private String description;
 
     @CreationTimestamp
+    @Column(name = "createdat")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updateAt;
+    @Column(name = "updatedat")
+    private LocalDateTime updatedAt;
 
     private Boolean deleted;
 }
