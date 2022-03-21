@@ -5,7 +5,6 @@ import com.alkemy.ong.domain.activity.ActivityService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,7 +22,7 @@ public class ActivityController {
 
     @SneakyThrows
     @PostMapping()
-    public ResponseEntity<ActivityDTO> saveActivity(@Validated @RequestBody ActivityDTO activityDTO){
+    public ResponseEntity<ActivityDTO> saveActivity(@Valid @RequestBody ActivityDTO activityDTO){
         activityService.saveActivity(toModel(activityDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(activityDTO);
     }
@@ -45,10 +44,8 @@ public class ActivityController {
 @NoArgsConstructor
 class ActivityDTO {
     private Long id;
-    @Valid
     @NotEmpty(message = "Name can't be empty")
     private String name;
-    @Valid
     @NotEmpty(message = "Content can't be empty")
     private String content;
     private String image;
