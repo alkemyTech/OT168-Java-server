@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.organization;
 
+import com.alkemy.ong.data.entities.SlidesEntity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -20,7 +21,7 @@ public class Organization {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean deleted;
-    //private List<> slides = new ArrayList<>();
+    //private List<Slides> slides = new ArrayList<>();
     //TODO: Esta lista tiene que traer el slide que es model no el entity y este aún no esta creado!!
 
 }
