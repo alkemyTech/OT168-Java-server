@@ -17,23 +17,21 @@ import static java.util.stream.Collectors.toList;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value
-            = {ResourceNotFoundException.class, ResourceNotFoundException.class})
-    protected ResponseEntity<Object> handleConflict(
-            RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = "This should be application specific.";
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
+        @ExceptionHandler(value
+                = { ResourceNotFoundException.class, ResourceNotFoundException.class })
+        protected ResponseEntity<Object> handleConflict(
+                RuntimeException ex, WebRequest request) {
+            return handleExceptionInternal(ex, ex.getMessage(),
+                    new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        List<String> msgs = ex.getBindingResult()
+        List<String> message = ex.getBindingResult()
                 .getAllErrors()
                 .stream()
-                .map(m -> m.getDefaultMessage())
+                .map(m->m.getDefaultMessage())
                 .collect(toList());
-
-        return new ResponseEntity(msgs, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
     }
 }
