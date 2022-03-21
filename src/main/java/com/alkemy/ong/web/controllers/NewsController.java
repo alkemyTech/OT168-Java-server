@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
@@ -31,10 +32,24 @@ public class NewsController {
     }
 
     @PostMapping
-    public ResponseEntity<News> saveNews(@Validated @RequestBody NewsEntity newsEntity){
-        News news = newsService.saveNews(newsEntity);
-        buildDTO(news);
-        return ResponseEntity.ok(news);
+    public ResponseEntity<NewsDTO> saveNews(@Valid @RequestBody NewsDTO newsDTO){
+        newsService.saveNews(buildModel(newsDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(newsDTO);
+    }
+
+    private News buildModel (NewsDTO newsDTO) {
+        News news = News.builder()
+                .newsId(newsDTO.getNewsId())
+                .name(newsDTO.getName())
+                .content(newsDTO.getContent())
+                .image(newsDTO.getImage())
+                .createdAt(newsDTO.getCreatedAt())
+                .updatedAt(newsDTO.getUpdatedAt())
+                .deleted(newsDTO.getDeleted())
+                //.categoryId(newsEntity.getCategoryId())
+                .type(newsDTO.getType())
+                .build();
+        return news;
     }
 
     private NewsDTO buildDTO(News news) {
@@ -47,7 +62,7 @@ public class NewsController {
                 .updatedAt(news.getUpdatedAt())
                 .deleted(news.getDeleted())
                 //.categoryId(news.getCategoryId())
-                //.type(news.getType())
+                .type(news.getType())
                 .build();
         return newsDTO;
     }
@@ -72,5 +87,5 @@ class NewsDTO {
     private LocalDateTime updatedAt;
     private Boolean deleted;
     //private CategoryEntity categoryId;
-    //private String type = "news";
+    private String type = "news";
 }

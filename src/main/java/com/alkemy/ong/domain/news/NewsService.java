@@ -16,8 +16,8 @@ public class NewsService {
         return newsGateway.findById(newsId);
     }
 
-    public News saveNews(NewsEntity newsEntity){
-        return newsGateway.saveNews(newsEntity);
+    public News saveNews(News news){
+        return newsGateway.saveNews(news);
     }
 
 

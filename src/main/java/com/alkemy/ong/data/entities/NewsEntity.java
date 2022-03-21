@@ -48,5 +48,5 @@ public class NewsEntity {
     @JoinColumn (name = "category_id")
     private CategoryEntity categoryId;*/
 
-    //private String type;
+    private String type;
 }

@@ -22,5 +22,5 @@ public class News {
     private LocalDateTime updatedAt;
     private Boolean deleted;
     //private CategoryEntity categoryId;
-    //private String type;
+    private String type;
 }
