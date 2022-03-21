@@ -23,7 +23,7 @@ public class DefaultCategoryGateway implements CategoryGateway {
 	@Override
 	public List<Category> findAll() {
 		List<Category> categories;
-		categories = categoryRepository.findAll().stream().map(cat -> ToModel(cat)).collect(toList());
+		categories = categoryRepository.findAll().stream().map(cat -> toModel(cat)).collect(toList());
 		return categories;
 	}
 
@@ -31,14 +31,26 @@ public class DefaultCategoryGateway implements CategoryGateway {
 	public Category findById(Long id) {
 		CategoryEntity categoryEntity = categoryRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("The id %d doesn't exist.", id));
-		return ToModel(categoryEntity);
+		return toModel(categoryEntity);
+	}
+	
+	@Override
+	public Category save(Category category) {
+		return toModel(categoryRepository.save(toEntity(category)));
 	}
 
-	private Category ToModel(CategoryEntity categoryEntity) {
+	private Category toModel(CategoryEntity categoryEntity) {
 		Category newCategory = Category.builder().id(categoryEntity.getId()).name(categoryEntity.getName())
-				.description(categoryEntity.getDescription()).createdAt(categoryEntity.getCreatedAt())
+				.description(categoryEntity.getDescription()).image(categoryEntity.getImage()).createdAt(categoryEntity.getCreatedAt())
 				.updatedAt(categoryEntity.getUpdatedAt()).deleted(categoryEntity.getDeleted()).build();
 		return newCategory;
+	}
+	
+	private CategoryEntity toEntity(Category category) {
+		CategoryEntity newCategoryEntity = CategoryEntity.builder().id(category.getId()).name(category.getName())
+				.description(category.getDescription()).image(category.getImage()).createdAt(category.getCreatedAt())
+				.updatedAt(category.getUpdatedAt()).deleted(category.getDeleted()).build();
+		return newCategoryEntity;
 	}
 
 }
