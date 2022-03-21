@@ -19,10 +19,16 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
     @SneakyThrows
     public Testimonial save(Testimonial testimonial){
         try {
-            TestimonialEntity testimonialEntity = testimonialRepository.save(toEntity(testimonial));
-            return toModel(testimonialEntity);
+            if (testimonial.getName() == null || testimonial.getName().isEmpty()) {
+                throw new Exception("Field 'name' is required.");
+            } else if (testimonial.getContent() == null || testimonial.getContent().isEmpty()) {
+                throw new Exception("Field 'content' is required.");
+            } else {
+                TestimonialEntity testimonialEntity = testimonialRepository.save(toEntity(testimonial));
+                return toModel(testimonialEntity);
+            }
         } catch (Exception ex) {
-            throw new Exception("Testimonial could not be saved.");
+            throw new Exception("Testimonial could not be saved: " + ex.getMessage());
         }
     }
 
@@ -52,6 +58,6 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
             if (testimonialModel.getDeleted() == null) {
                 testimonial.setDeleted(false);
             }
-        return testimonial;
+            return testimonial;
     }
 }

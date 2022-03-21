@@ -4,13 +4,13 @@ import com.alkemy.ong.data.entities.TestimonialEntity;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialService;
 import lombok.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/testimonials")
@@ -23,17 +23,11 @@ public class TestimonialController {
     }
 
     @PostMapping
-    public ResponseEntity<TestimonialDTO> createTestimonial(@RequestBody TestimonialDTO testimonialDTO) throws Exception {
+    public ResponseEntity createTestimonial(@RequestBody TestimonialDTO testimonialDTO) throws Exception {
         try {
-            if (testimonialDTO.getName() == null || testimonialDTO.getName().isEmpty()) {
-                throw new Exception("Field 'name' is required.");
-            } else if (testimonialDTO.getContent() == null || testimonialDTO.getContent().isEmpty()) {
-                throw new Exception("Field 'content' is required.");
-            } else {
-                return ResponseEntity.ok(model2DTO(testimonialService.save(dto2Model(testimonialDTO))));
-            }
+            return new ResponseEntity<>(model2DTO(testimonialService.save(dto2Model(testimonialDTO))), HttpStatus.ACCEPTED);
         } catch (Exception ex) {
-            throw new Exception(ex.getMessage());
+            return new ResponseEntity<>(ex.fillInStackTrace().getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
