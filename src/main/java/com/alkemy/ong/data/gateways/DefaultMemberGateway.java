@@ -31,10 +31,6 @@ public class DefaultMemberGateway implements MemberGateway {
     @Override
     public Member save(Member member) {
         return toModel(memberRepository.save(toEntity(member)));
-        return memberRepository.findAll()
-                .stream()
-                .map(m -> toModel(m))
-                .collect(toList());
     }
 
     private Member toModel(MemberEntity memberEntity) {
