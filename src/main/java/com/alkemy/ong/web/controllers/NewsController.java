@@ -1,14 +1,12 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.category.Category;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
 import lombok.*;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 
 @RestController
@@ -28,6 +26,7 @@ public class NewsController {
         return ResponseEntity.ok(news);
     }
 
+   
     private NewsDTO buildDTO(News news) {
         NewsDTO newsDTO = NewsDTO.builder()
                 .newsId(news.getNewsId())
@@ -52,19 +51,12 @@ public class NewsController {
 class NewsDTO {
 
     private Long newsId;
-
     private String name;
-
     private String content;
-
     private String image;
-
-    //private Category category;
-
+    private Category category;
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
-
     private Boolean deleted;
 
 }

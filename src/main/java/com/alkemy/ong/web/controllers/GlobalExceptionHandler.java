@@ -16,8 +16,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 = { ResourceNotFoundException.class, ResourceNotFoundException.class })
         protected ResponseEntity<Object> handleConflict(
                 RuntimeException ex, WebRequest request) {
-            String bodyOfResponse = "This should be application specific.";
-            return handleExceptionInternal(ex, bodyOfResponse,
+            return handleExceptionInternal(ex, ex.getMessage(),
                     new HttpHeaders(), HttpStatus.NOT_FOUND, request);
         }
+        
     }
