@@ -65,8 +65,9 @@ CREATE TABLE alkemy_ong.news
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     deleted    TINYINT
+    );
 
-CREATE TABLE activities (
+CREATE TABLE IF NOT EXISTS activities (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(250) NOT NULL,
   `content` TEXT NOT NULL,
@@ -77,7 +78,7 @@ CREATE TABLE activities (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE contacts (
+CREATE TABLE IF NOT EXISTS contacts (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(250) NOT NULL,
   `phone` VARCHAR(250) NOT NULL,
