@@ -16,5 +16,10 @@ public class MemberService {
         return memberGateway.findAll();
     }
 
+    public Member save(Member member){
+        member.setName(member.getName().trim());
+        return memberGateway.save(member);
+    }
+
 }
 
