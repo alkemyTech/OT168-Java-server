@@ -14,7 +14,7 @@ updated_at TIMESTAMP,
 deleted TINYINT,
 category_id BIGINT(255) NOT NULL,
 type VARCHAR(20),
-CONSTRAINT type_category FOREIGN KEY(category_id) REFERENCES categories (id),
+CONSTRAINT type_category FOREIGN KEY(category_id) REFERENCES categories (id)
 );
 
 DROP TABLE IF EXISTS `alkemy_ong`.`roles`;
