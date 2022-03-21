@@ -1,20 +1,20 @@
-package com.alkemy.ong.domain.roles;
+package com.alkemy.ong.domain.activity;
 
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Role implements Serializable{
-
+@AllArgsConstructor
+@NoArgsConstructor
+public class Activity {
     private Long id;
     private String name;
-    private String description;
+    private String content;
+    private String image;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Boolean deleted;
 }
