@@ -9,8 +9,8 @@ CREATE TABLE `alkemy_ong`.`roles`
     `id`          BIGINT(255) NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(20) NOT NULL,
     `description` VARCHAR(50) DEFAULT NULL,
-    `createdAt`   TIMESTAMP   DEFAULT NOW(),
-    `updateAt`    TIMESTAMP   DEFAULT NOW(),
+    `createddat`   TIMESTAMP   DEFAULT NOW(),
+    `updatedat`    TIMESTAMP   DEFAULT NOW(),
     `deleted`     BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -21,13 +21,13 @@ DROP TABLE IF EXISTS `alkemy_ong`.`users`;
 CREATE TABLE `alkemy_ong`.`users`
 (
     `id`        BIGINT(255)        NOT NULL AUTO_INCREMENT,
-    `firstName` VARCHAR(50)        NOT NULL,
-    `lastName`  VARCHAR(50)        NOT NULL,
+    `firstname` VARCHAR(50)        NOT NULL,
+    `lastname`  VARCHAR(50)        NOT NULL,
     `email`     VARCHAR(30) UNIQUE NOT NULL,
     `password`  VARCHAR(50)        NOT NULL,
     `photo`     VARCHAR(255) DEFAULT NULL,
-    `createdAt` TIMESTAMP    DEFAULT NOW(),
-    `updateAt`  TIMESTAMP    DEFAULT NOW(),
+    `createdat` TIMESTAMP    DEFAULT NOW(),
+    `updatedat`  TIMESTAMP    DEFAULT NOW(),
     `deleted`   BIT          DEFAULT 0,
     `roleEntity`   BIGINT(255)        NOT NULL,
     PRIMARY KEY (`id`),
@@ -42,13 +42,13 @@ CREATE TABLE `alkemy_ong`.`members`
 (
     `id`           BIGINT(255)  NOT NULL AUTO_INCREMENT,
     `name`         VARCHAR(50) NOT NULL,
-    `facebookUrl`  VARCHAR(50) DEFAULT NULL,
-    `instagramUrl` VARCHAR(30) DEFAULT NULL,
-    `linkedinUrl`  VARCHAR(50) DEFAULT NULL,
+    `facebookurl`  VARCHAR(50) DEFAULT NULL,
+    `instagramurl` VARCHAR(30) DEFAULT NULL,
+    `linkedinurl`  VARCHAR(50) DEFAULT NULL,
     `image`        VARCHAR(255) NOT NULL,
     `description`  VARCHAR(50) DEFAULT NULL,
-    `createdAt`    TIMESTAMP   DEFAULT NOW(),
-    `updateAt`     TIMESTAMP   DEFAULT NOW(),
+    `createdat`    TIMESTAMP   DEFAULT NOW(),
+    `updatedat`     TIMESTAMP   DEFAULT NOW(),
     `deleted`      BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -56,13 +56,15 @@ CREATE TABLE `alkemy_ong`.`members`
 CREATE DATABASE IF NOT EXISTS alkemy_ong;
 USE alkemy_ong;
 
-news_id BIGINT(255) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR (20) NOT NULL,
-content VARCHAR (100) NOT NULL,
-image VARCHAR (25) NOT NULL,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP,
-deleted TINYINT
+CREATE TABLE alkemy_ong.news
+(
+    news_id    BIGINT(255)  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name       VARCHAR(20)  NOT NULL,
+    content    VARCHAR(100) NOT NULL,
+    image      VARCHAR(25)  NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    deleted    TINYINT
 );
 
 CREATE TABLE IF NOT EXISTS organizations (
