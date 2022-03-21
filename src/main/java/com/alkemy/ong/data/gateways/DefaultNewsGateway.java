@@ -24,7 +24,6 @@ public class DefaultNewsGateway implements NewsGateway {
         return toModel(newsEntity);
     }
 
-    @SneakyThrows
     @Override
     public News saveNews(NewsEntity newsEntity) {
         newsRepository.save(newsEntity);
@@ -40,10 +39,9 @@ public class DefaultNewsGateway implements NewsGateway {
                 .createdAt(newsEntity.getCreatedAt())
                 .updatedAt(newsEntity.getUpdatedAt())
                 .deleted(newsEntity.getDeleted())
-                .categoryId(newsEntity.getCategoryId())
-                .type(newsEntity.getType())
+                //.categoryId(newsEntity.getCategoryId())
+                //.type(newsEntity.getType())
                 .build();
         return news;
     }
-
 }

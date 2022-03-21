@@ -1,4 +1,4 @@
-/*package com.alkemy.ong.data.gateways;
+package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.domain.roles.RoleGateway;
 import com.alkemy.ong.data.repositories.RoleRepository;
@@ -13,4 +13,3 @@ public class DefaultRoleGateway implements RoleGateway {
         this.roleRepository=roleRepository;
     }
 }
-*/

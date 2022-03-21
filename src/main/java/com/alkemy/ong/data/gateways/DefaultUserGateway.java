@@ -1,4 +1,4 @@
-/*package com.alkemy.ong.data.gateways;
+package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.domain.users.UserGateway;
 import com.alkemy.ong.data.repositories.UserRepository;
@@ -13,4 +13,3 @@ public class DefaultUserGateway implements UserGateway {
         this.userRepository=userRepository;
     }
 }
-*/

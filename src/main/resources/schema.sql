@@ -61,7 +61,8 @@ CREATE TABLE alkemy_ong.news
     image      VARCHAR(25)  NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
-    deleted    TINYINT
+    deleted    TINYINT,
+    type VARCHAR(20)
 );
 
 CREATE TABLE activities (

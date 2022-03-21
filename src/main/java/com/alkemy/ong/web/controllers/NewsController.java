@@ -30,15 +30,12 @@ public class NewsController {
         return ResponseEntity.ok(news);
     }
 
-    //POST /news - Deberá validar la existencia de los campos enviados,
-    //para almacenar el registro en la tabla News. Antes de almacenarla,
-    // deberá asignarle la columna type con el valor "news".
-
-    @PostMapping()
-        public ResponseEntity<NewsDTO> saveNews(@Validated @RequestBody NewsEntity newsEntity){
+    @PostMapping
+    public ResponseEntity<News> saveNews(@Validated @RequestBody NewsEntity newsEntity){
         News news = newsService.saveNews(newsEntity);
-        return (ResponseEntity<NewsDTO>) ResponseEntity.status(HttpStatus.CREATED);
-        }
+        buildDTO(news);
+        return ResponseEntity.ok(news);
+    }
 
     private NewsDTO buildDTO(News news) {
         NewsDTO newsDTO = NewsDTO.builder()
@@ -49,8 +46,8 @@ public class NewsController {
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
                 .deleted(news.getDeleted())
-                .categoryId(news.getCategoryId())
-                .type(news.getType())
+                //.categoryId(news.getCategoryId())
+                //.type(news.getType())
                 .build();
         return newsDTO;
     }
@@ -74,6 +71,6 @@ class NewsDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean deleted;
-    private CategoryEntity categoryId;
-    private String type = "news";
+    //private CategoryEntity categoryId;
+    //private String type = "news";
 }
