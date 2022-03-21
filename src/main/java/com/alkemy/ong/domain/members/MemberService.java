@@ -21,5 +21,10 @@ public class MemberService {
         return memberGateway.save(member);
     }
 
+    public void delete(Long id){
+        memberGateway.delete(id);
+    }
+
+
 }
 
