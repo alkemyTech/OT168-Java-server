@@ -13,7 +13,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping
@@ -21,28 +22,28 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    public MemberController(MemberService memberService){
-        this.memberService=memberService;
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @GetMapping("/members")
-    public ResponseEntity<List<MemberDTO>> findAll(){
+    public ResponseEntity<List<MemberDTO>> findAll() {
 
         return ResponseEntity.ok().body(memberService.findAll()
                 .stream()
                 .map(m -> toDTO(m))
-                .collect(Collectors.toList()));
+                .collect(toList()));
     }
 
     @PostMapping("/members")
     public ResponseEntity<MemberDTO> save(@Validated @RequestBody MemberDTO memberDTO) {
-        return  ResponseEntity
+        return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(toDTO(memberService.save(toModel(memberDTO))));
     }
 
     private MemberDTO toDTO(Member member) {
-        MemberDTO memberDTO = MemberDTO.builder()
+        return MemberDTO.builder()
                 .id(member.getId())
                 .name(member.getName())
                 .facebookUrl(member.getFacebookUrl())
@@ -54,12 +55,10 @@ public class MemberController {
                 .updatedAt(member.getUpdatedAt())
                 .deleted(member.getDeleted())
                 .build();
-
-        return memberDTO;
     }
 
     private Member toModel(MemberDTO memberDTO) {
-        Member memberModel = Member.builder()
+        return Member.builder()
                 .id(memberDTO.getId())
                 .name(memberDTO.getName())
                 .facebookUrl(memberDTO.getFacebookUrl())
@@ -71,7 +70,6 @@ public class MemberController {
                 .updatedAt(memberDTO.getUpdatedAt())
                 .deleted(memberDTO.getDeleted())
                 .build();
-        return memberModel;
     }
 }
 
@@ -84,9 +82,9 @@ public class MemberController {
 class MemberDTO {
 
     private Long id;
-    //"^[^ ][a-zA-Z ]{0,50}"
+
     @NotBlank(message = "Name field cannot be empty or be null.")
-    @Pattern(regexp = "^[^ ][a-zA-Z ].*[^ ]${0,50}", message = "Name field cannot admit number, begin or finish with white spaces.")
+    @Pattern(regexp = "[a-zA-Z ]{0,50}", message = "Name field cannot admit number.")
     private String name;
     private String facebookUrl;
     private String instagramUrl;
@@ -95,5 +93,5 @@ class MemberDTO {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean deleted;
+    private Boolean deleted = false;
 }
