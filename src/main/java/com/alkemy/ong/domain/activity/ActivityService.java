@@ -11,7 +11,7 @@ public class ActivityService {
         this.activityGateway = activityGateway;
     }
 
-    public Activity saveActivity(Activity activity) throws Exception {
+    public Activity saveActivity(Activity activity) {
             activityGateway.save(activity);
             return activity;
     }

@@ -21,8 +21,8 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-    @SneakyThrows
-    @PostMapping()
+
+    @PostMapping
     public ResponseEntity<ActivityDTO> saveActivity(@Valid @RequestBody ActivityDTO activityDTO){
         activityService.saveActivity(toModel(activityDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(activityDTO);
