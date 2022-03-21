@@ -11,8 +11,6 @@ import com.alkemy.ong.domain.category.Category;
 import com.alkemy.ong.domain.category.CategoryGateway;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 
-import lombok.SneakyThrows;
-
 @Component
 public class DefaultCategoryGateway implements CategoryGateway {
 
@@ -25,30 +23,22 @@ public class DefaultCategoryGateway implements CategoryGateway {
 	@Override
 	public List<Category> findAll() {
 		List<Category> categories;
-		categories = categoryRepository.findAll().stream().map(cat -> categoryEntityToCategory(cat)).collect(toList());
+		categories = categoryRepository.findAll().stream().map(cat -> ToModel(cat)).collect(toList());
 		return categories;
 	}
 
-	@SneakyThrows
 	@Override
 	public Category findById(Long id) {
 		CategoryEntity categoryEntity = categoryRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("The id %d doesn't exist.", id));
-		return categoryEntityToCategory(categoryEntity);
+		return ToModel(categoryEntity);
 	}
 
-	public static Category categoryEntityToCategory(CategoryEntity categoryEntity) {
+	private Category ToModel(CategoryEntity categoryEntity) {
 		Category newCategory = Category.builder().id(categoryEntity.getId()).name(categoryEntity.getName())
 				.description(categoryEntity.getDescription()).createdAt(categoryEntity.getCreatedAt())
 				.updatedAt(categoryEntity.getUpdatedAt()).deleted(categoryEntity.getDeleted()).build();
 		return newCategory;
-	}
-
-	public static CategoryEntity categoryToCategoryEntity(Category category) {
-		CategoryEntity newCategoryEntity = CategoryEntity.builder().id(category.getId()).name(category.getName())
-				.description(category.getDescription()).createdAt(category.getCreatedAt())
-				.updatedAt(category.getUpdatedAt()).deleted(category.getDeleted()).build();
-		return newCategoryEntity;
 	}
 
 }

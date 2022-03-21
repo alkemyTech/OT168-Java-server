@@ -30,7 +30,7 @@ public class CategoryController {
 	@GetMapping
 	public ResponseEntity<List<CategorySlimDTO>> getAllCategories() {
 		List<CategorySlimDTO> categorySlimDTO;
-		categorySlimDTO = categoryService.findAll().stream().map(cat -> categoryToCategorySlimDTO(cat))
+		categorySlimDTO = categoryService.findAll().stream().map(cat -> toSlimDTO(cat))
 				.collect(toList());
 		return ResponseEntity.ok(categorySlimDTO);
 	}
@@ -38,16 +38,16 @@ public class CategoryController {
 	@GetMapping("/{id}")
 	public ResponseEntity<CategoryDTO> getCategoryByID(@PathVariable("id") Long id){
 		Category category = categoryService.findById(id);
-		CategoryDTO categoryDTO = categoryToCategoryDTO(category);
+		CategoryDTO categoryDTO = toDTO(category);
 		return ResponseEntity.ok(categoryDTO);
 	}
 
-	private CategorySlimDTO categoryToCategorySlimDTO(Category category) {
+	private CategorySlimDTO toSlimDTO(Category category) {
 		CategorySlimDTO newCategorySlimDTO = CategorySlimDTO.builder().name(category.getName()).build();
 		return newCategorySlimDTO;
 	}
 	
-	private CategoryDTO categoryToCategoryDTO(Category category) {
+	private CategoryDTO toDTO(Category category) {
 		CategoryDTO newCategoryDTO = CategoryDTO.builder()
 				.id(category.getId())
 				.name(category.getName())
