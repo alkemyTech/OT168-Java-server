@@ -5,7 +5,6 @@ import com.alkemy.ong.domain.members.MemberService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,7 +35,7 @@ public class MemberController {
     }
 
     @PostMapping("/members")
-    public ResponseEntity<MemberDTO> save(@Validated @RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<MemberDTO> save(@Valid @RequestBody MemberDTO memberDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(toDTO(memberService.save(toModel(memberDTO))));
