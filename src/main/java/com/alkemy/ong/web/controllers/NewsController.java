@@ -25,10 +25,9 @@ public class NewsController {
     }
 
     @GetMapping("/{newsId}")
-    public ResponseEntity<News> findById(@PathVariable("newsId") Long newsId) {
+    public ResponseEntity<NewsDTO> findById(@PathVariable("newsId") Long newsId) {
         News news = newsService.findById(newsId);
-        buildDTO(news);
-        return ResponseEntity.ok(news);
+        return ResponseEntity.ok(buildDTO(news));
     }
 
     @PostMapping
