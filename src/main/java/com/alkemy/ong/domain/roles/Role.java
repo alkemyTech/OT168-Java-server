@@ -17,4 +17,6 @@ public class Role implements Serializable{
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Boolean deletedAt;
+
 }

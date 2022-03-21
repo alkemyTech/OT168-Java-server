@@ -8,4 +8,5 @@ import java.util.List;
 public interface MemberRepository extends JpaRepository<MemberEntity,Long> {
 
     List<MemberEntity> findAll();
+    MemberEntity save(MemberEntity member);
 }
