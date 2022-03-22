@@ -7,7 +7,6 @@ import com.alkemy.ong.domain.members.MemberGateway;
 
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.repositories.MemberRepository;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,7 +24,6 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public List<Member> findAll() {
-
         return memberRepository.findAll().stream()
                 .map(m -> toModel(m))
                 .collect(toList());
@@ -36,7 +34,6 @@ public class DefaultMemberGateway implements MemberGateway {
         return toModel(memberRepository.save(toEntity(member)));
     }
 
-    @SneakyThrows
     @Override
     public Member findById(Long id) {
         return toModel(memberRepository.findById(id)
@@ -49,7 +46,6 @@ public class DefaultMemberGateway implements MemberGateway {
         memberRepository.deleteById(id);
     }
 
-    @SneakyThrows
     @Override
     public Member update(Long id, Member member) {
         Member m = findById(id);
@@ -79,7 +75,6 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     private MemberEntity toEntity(Member member) {
-
         return MemberEntity.builder()
                 .id(member.getId())
                 .name(member.getName())

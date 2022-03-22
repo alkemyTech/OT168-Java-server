@@ -43,7 +43,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/members/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         memberService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

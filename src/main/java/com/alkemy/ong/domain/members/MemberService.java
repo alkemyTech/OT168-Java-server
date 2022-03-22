@@ -29,7 +29,4 @@ public class MemberService {
         member.setName(member.getName().trim());
         return memberGateway.update(id,member);
     }
-
-
 }
-
