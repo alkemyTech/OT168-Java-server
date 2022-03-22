@@ -1,6 +1,5 @@
 package com.alkemy.ong.data.gateways;
 
-import com.alkemy.ong.domain.exceptions.BadRequestException;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberGateway;
@@ -49,14 +48,9 @@ public class DefaultMemberGateway implements MemberGateway {
     @Override
     public Member update(Long id, Member member) {
         Member m = findById(id);
-
-        if(!m.getDeleted()){
-            member.setCreatedAt(m.getCreatedAt());
-            member.setId(m.getId());
-            return toModel(memberRepository.save(toEntity(member)));
-        }else{
-            throw new BadRequestException("The request cannot be processed because the member is not active");
-        }
+        member.setCreatedAt(m.getCreatedAt());
+        member.setId(m.getId());
+        return toModel(memberRepository.save(toEntity(member)));
     }
 
     private Member toModel(MemberEntity memberEntity) {
