@@ -48,6 +48,13 @@ public class DefaultMemberGateway implements MemberGateway {
         memberRepository.deleteById(id);
     }
 
+    @Override
+    public Member update(Long id, Member member) {
+        member.setCreatedAt(findById(id).getCreatedAt());
+        member.setId(id);
+        return toModel(memberRepository.save(toEntity(member)));
+    }
+
 
     private Member toModel(MemberEntity memberEntity) {
         return Member.builder()
