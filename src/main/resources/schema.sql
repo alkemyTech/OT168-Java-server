@@ -8,8 +8,8 @@ CREATE TABLE `alkemy_ong`.`roles`
     `id`          BIGINT(255) NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(20) NOT NULL,
     `description` VARCHAR(50) DEFAULT NULL,
-    `createdAt`   TIMESTAMP   DEFAULT NOW(),
-    `updateAt`    TIMESTAMP   DEFAULT NOW(),
+    `createdat`   TIMESTAMP   DEFAULT NOW(),
+    `updatedat`    TIMESTAMP   DEFAULT NOW(),
     `deleted`     BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -25,8 +25,8 @@ CREATE TABLE `alkemy_ong`.`users`
     `email`     VARCHAR(30) UNIQUE NOT NULL,
     `password`  VARCHAR(50)        NOT NULL,
     `photo`     VARCHAR(255) DEFAULT NULL,
-    `createdAt` TIMESTAMP    DEFAULT NOW(),
-    `updateAt`  TIMESTAMP    DEFAULT NOW(),
+    `createdat` TIMESTAMP    DEFAULT NOW(),
+    `updatedat`  TIMESTAMP    DEFAULT NOW(),
     `deleted`   BIT          DEFAULT 0,
     `roleEntity`   BIGINT(255)        NOT NULL,
     PRIMARY KEY (`id`),
@@ -46,8 +46,8 @@ CREATE TABLE `alkemy_ong`.`members`
     `linkedinUrl`  VARCHAR(50) DEFAULT NULL,
     `image`        VARCHAR(255) NOT NULL,
     `description`  VARCHAR(50) DEFAULT NULL,
-    `createdAt`    TIMESTAMP   DEFAULT NOW(),
-    `updateAt`     TIMESTAMP   DEFAULT NOW(),
+    `createdat`    TIMESTAMP   DEFAULT NOW(),
+    `updatedat`     TIMESTAMP   DEFAULT NOW(),
     `deleted`      BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -61,11 +61,16 @@ CREATE TABLE alkemy_ong.news
     image      VARCHAR(25)  NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
+<<<<<<< HEAD
     deleted    TINYINT,
     type VARCHAR(20)
 );
+=======
+    deleted    TINYINT
+    );
+>>>>>>> 0aa12011badc1466ec2f832b11b30b8860e1a055
 
-CREATE TABLE activities (
+CREATE TABLE IF NOT EXISTS activities (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(250) NOT NULL,
   `content` TEXT NOT NULL,
@@ -76,7 +81,7 @@ CREATE TABLE activities (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE contacts (
+CREATE TABLE IF NOT EXISTS contacts (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(250) NOT NULL,
   `phone` VARCHAR(250) NOT NULL,

@@ -9,8 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -57,7 +55,15 @@ public class OrganizationEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
-    private List<SlidesEntity> slides = new ArrayList<>();
-
+    @Override
+    public String toString() {
+        return "idOrganization=" + idOrganization + '\'' +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", address='" + address + '\'' +
+                ", phone=" + phone +
+                ", email='" + email + '\'' +
+                ", welcomeText='" + welcomeText + '\'' +
+                ", aboutUsText='" + aboutUsText + '\'';
+    }
 }
