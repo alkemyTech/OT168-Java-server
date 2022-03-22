@@ -9,7 +9,6 @@ public class DefaultUserGateway implements UserGateway {
 
     private final UserRepository userRepository;
 
-
     public DefaultUserGateway(UserRepository userRepository){
         this.userRepository=userRepository;
     }

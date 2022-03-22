@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberGateway;
 
@@ -22,18 +23,27 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public List<Member> findAll() {
-
         return memberRepository.findAll().stream()
                 .map(m -> toModel(m))
                 .collect(toList());
     }
-
 
     @Override
     public Member save(Member member) {
         return toModel(memberRepository.save(toEntity(member)));
     }
 
+    @Override
+    public Member findById(Long id) {
+        return toModel(memberRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist.")));
+    }
+
+    @Override
+    public void delete(Long id) {
+        findById(id);
+        memberRepository.deleteById(id);
+    }
 
     private Member toModel(MemberEntity memberEntity) {
         return Member.builder()
@@ -50,10 +60,7 @@ public class DefaultMemberGateway implements MemberGateway {
                 .build();
     }
 
-
-
     private MemberEntity toEntity(Member member) {
-
         return MemberEntity.builder()
                 .id(member.getId())
                 .name(member.getName())
@@ -68,4 +75,3 @@ public class DefaultMemberGateway implements MemberGateway {
                 .build();
     }
 }
-

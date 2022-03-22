@@ -41,6 +41,12 @@ public class MemberController {
                 .body(toDTO(memberService.save(toModel(memberDTO))));
     }
 
+    @DeleteMapping("/members/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        memberService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     private MemberDTO toDTO(Member member) {
         return MemberDTO.builder()
                 .id(member.getId())
