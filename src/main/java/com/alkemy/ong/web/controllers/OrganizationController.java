@@ -23,14 +23,14 @@ public class OrganizationController {
     }
 
     @GetMapping("/public/{id}")
-    public ResponseEntity<OrganizationResponseDTO> getOrganization(@PathVariable Long id){
+    public ResponseEntity<OrganizationDTO> getOrganization(@PathVariable Long id){
         Organization organization =  organizationService.findById(id);
         return ResponseEntity.ok(toDto(organization));
     }
 
-    private  OrganizationResponseDTO toDto(Organization organization){
+    private  OrganizationDTO toDto(Organization organization){
 
-        return OrganizationResponseDTO.builder()
+        return OrganizationDTO.builder()
                                             .name(organization.getName())
                                             .image(organization.getImage())
                                             .address(organization.getAddress())
@@ -40,7 +40,7 @@ public class OrganizationController {
 
     @Data
     @Builder
-    public static class OrganizationResponseDTO{
+    public static class OrganizationDTO{
         private String name;
         private String image;
         private Long phone;

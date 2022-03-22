@@ -23,7 +23,7 @@ public class DefaultSlidesGateway implements SlidesGateway {
     public List<Slides> findAll() {
         List<SlidesEntity> slidesEntity = slidesRepository.findAll();
         return slidesEntity.stream()
-                .map(entity -> toModel(entity))
+                .map(s -> toModel(s))
                 .collect(toList());
     }
 

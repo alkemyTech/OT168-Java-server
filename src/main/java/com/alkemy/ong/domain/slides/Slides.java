@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class Slides {
-
     private Long idSlides;
     private String imageUrl;
     private String text;
@@ -19,8 +18,6 @@ public class Slides {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Organization organization;
-
-
 
     @Override
     public String toString() {

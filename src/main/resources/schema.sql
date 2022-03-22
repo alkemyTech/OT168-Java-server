@@ -113,7 +113,7 @@ CREATE TABLE if NOT EXISTS slides (
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
     deleted BIT(1) NOT NULL DEFAULT 0,
-    id_organization BIGINT unsigned NOT NULL
+    organization_id BIGINT unsigned NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS testimonials (

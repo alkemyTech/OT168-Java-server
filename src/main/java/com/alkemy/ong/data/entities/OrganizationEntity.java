@@ -1,8 +1,5 @@
 package com.alkemy.ong.data.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -12,8 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -60,7 +55,6 @@ public class OrganizationEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-
     @Override
     public String toString() {
         return "idOrganization=" + idOrganization + '\'' +
@@ -71,6 +65,5 @@ public class OrganizationEntity {
                 ", email='" + email + '\'' +
                 ", welcomeText='" + welcomeText + '\'' +
                 ", aboutUsText='" + aboutUsText + '\'';
-
     }
 }

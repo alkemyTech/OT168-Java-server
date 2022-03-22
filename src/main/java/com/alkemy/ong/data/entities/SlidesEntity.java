@@ -48,7 +48,7 @@ public class SlidesEntity {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_organization", nullable = false)
+    @JoinColumn(name = "organization_id", nullable = false)
     private OrganizationEntity organization;
 
     @Override
