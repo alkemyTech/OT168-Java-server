@@ -67,6 +67,7 @@ public class CategoryController {
 				.image(category.getImage())
 				.createdAt(category.getCreatedAt())
 				.updatedAt(category.getUpdatedAt())
+				.deleted(category.getDeleted())
 				.build();
 		return newCategoryDTO;
 	}
@@ -79,6 +80,7 @@ public class CategoryController {
                 .image(categoryDTO.getImage())
 				.createdAt(categoryDTO.getCreatedAt())
 				.updatedAt(categoryDTO.getUpdatedAt())
+				.deleted(categoryDTO.getDeleted())
 				.build();
 		return newCategory;
 	}
@@ -108,4 +110,5 @@ class CategoryDTO {
 	private String image;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+	private Boolean deleted;
 }

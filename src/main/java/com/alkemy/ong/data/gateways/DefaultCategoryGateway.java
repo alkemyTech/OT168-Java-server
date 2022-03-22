@@ -62,6 +62,9 @@ public class DefaultCategoryGateway implements CategoryGateway {
 				.updatedAt(category.getUpdatedAt())
 				.deleted(category.getDeleted())
 				.build();
+				if (category.getDeleted() == null) {
+					newCategoryEntity.setDeleted(false);
+				}
 		return newCategoryEntity;
 	}
 
