@@ -28,10 +28,12 @@ public class DefaultMemberGateway implements MemberGateway {
                 .collect(toList());
     }
 
+
     @Override
     public Member save(Member member) {
         return toModel(memberRepository.save(toEntity(member)));
     }
+
 
     private Member toModel(MemberEntity memberEntity) {
         return Member.builder()
@@ -47,6 +49,8 @@ public class DefaultMemberGateway implements MemberGateway {
                 .deleted(memberEntity.getDeleted())
                 .build();
     }
+
+
 
     private MemberEntity toEntity(Member member) {
 
@@ -64,3 +68,4 @@ public class DefaultMemberGateway implements MemberGateway {
                 .build();
     }
 }
+

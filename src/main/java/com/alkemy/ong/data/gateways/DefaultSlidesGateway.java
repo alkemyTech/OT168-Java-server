@@ -23,7 +23,7 @@ public class DefaultSlidesGateway implements SlidesGateway {
     public List<Slides> findAll() {
         List<SlidesEntity> slidesEntity = slidesRepository.findAll();
         return slidesEntity.stream()
-                .map(slide -> toModel(slide))
+                .map(s -> toModel(s))
                 .collect(toList());
     }
 
@@ -36,7 +36,7 @@ public class DefaultSlidesGateway implements SlidesGateway {
                 .deleted(entity.getDeleted())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
-                //TODO: Agregar Organización
+                .organization(DefaultOrganizationGateway.toModel(entity.getOrganization()))
                 .build();
     }
 }
