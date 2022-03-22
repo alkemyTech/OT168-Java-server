@@ -55,7 +55,7 @@ public class TestimonialController {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    private class TestimonialDTO{
+    private static class TestimonialDTO{
         private Long id;
 
         @NotNull(message = "Field 'name' is required.")
