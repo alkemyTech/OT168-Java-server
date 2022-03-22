@@ -26,6 +26,7 @@ public class MemberService {
     }
 
     public Member update(Long id, Member member){
+        member.setName(member.getName().trim());
         return memberGateway.update(id,member);
     }
 
