@@ -60,11 +60,7 @@ public class DefaultCategoryGateway implements CategoryGateway {
 				.image(category.getImage())
 				.createdAt(category.getCreatedAt())
 				.updatedAt(category.getUpdatedAt())
-				.deleted(category.getDeleted())
 				.build();
-				if (category.getDeleted() == null) {
-					newCategoryEntity.setDeleted(false);
-				}
 		return newCategoryEntity;
 	}
 
