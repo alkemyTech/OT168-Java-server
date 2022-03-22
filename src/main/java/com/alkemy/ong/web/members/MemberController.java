@@ -47,6 +47,11 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PutMapping("members/{id}")
+    public ResponseEntity<MemberDTO> update (@PathVariable Long id, @Valid @RequestBody MemberDTO member){
+        return ResponseEntity.ok(toDTO(memberService.update(id,toModel(member))));
+    }
+
     private MemberDTO toDTO(Member member) {
         return MemberDTO.builder()
                 .id(member.getId())
