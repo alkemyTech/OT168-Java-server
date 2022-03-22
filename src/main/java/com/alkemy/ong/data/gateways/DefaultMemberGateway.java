@@ -23,7 +23,6 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public List<Member> findAll() {
-
         return memberRepository.findAll().stream()
                 .map(m -> toModel(m))
                 .collect(toList());
@@ -46,7 +45,6 @@ public class DefaultMemberGateway implements MemberGateway {
         memberRepository.deleteById(id);
     }
 
-
     private Member toModel(MemberEntity memberEntity) {
         return Member.builder()
                 .id(memberEntity.getId())
@@ -63,7 +61,6 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     private MemberEntity toEntity(Member member) {
-
         return MemberEntity.builder()
                 .id(member.getId())
                 .name(member.getName())
