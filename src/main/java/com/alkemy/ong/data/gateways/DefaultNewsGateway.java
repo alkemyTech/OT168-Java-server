@@ -36,7 +36,6 @@ public class DefaultNewsGateway implements NewsGateway {
         newsEntity.setContent(newsEntity.getContent());
         newsEntity.setImage(newsEntity.getImage());
         newsEntity.setType(newsEntity.getType());
-        //return toModel(newsRepository.save(newsEntity));
         return toModel(newsRepository.save(toEntity(news)));
     }
 
