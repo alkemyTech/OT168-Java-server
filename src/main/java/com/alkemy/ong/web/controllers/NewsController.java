@@ -61,24 +61,25 @@ public class NewsController {
                 .type(news.getType())
                 .build();
     }
-}
 
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-class NewsDTO {
 
-    private Long newsId;
-    @NotEmpty(message = "The name field cannot be empty.")
-    private String name;
-    @NotEmpty(message = "The content field cannot be empty.")
-    private String content;
-    @NotEmpty(message = "The image field cannot be empty.")
-    private String image;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Boolean deleted;
-    private String type = "news";
+    @Builder
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private class NewsDTO {
+
+        private Long newsId;
+        @NotEmpty(message = "The name field cannot be empty.")
+        private String name;
+        @NotEmpty(message = "The content field cannot be empty.")
+        private String content;
+        @NotEmpty(message = "The image field cannot be empty.")
+        private String image;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+        private Boolean deleted;
+        private String type = "news";
+    }
 }
