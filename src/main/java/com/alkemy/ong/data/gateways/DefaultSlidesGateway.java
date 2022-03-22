@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.data.entities.OrganizationEntity;
 import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.data.repositories.SlidesRepository;
 import com.alkemy.ong.domain.slides.Slides;
@@ -23,11 +24,11 @@ public class DefaultSlidesGateway implements SlidesGateway {
     public List<Slides> findAll() {
         List<SlidesEntity> slidesEntity = slidesRepository.findAll();
         return slidesEntity.stream()
-                .map(slide -> toModel(slide))
+                .map(DefaultSlidesGateway::toModel)
                 .collect(toList());
     }
 
-    private Slides toModel(SlidesEntity entity){
+    public static Slides toModel(SlidesEntity entity){
         return Slides.builder()
                 .idSlides(entity.getIdSlides())
                 .imageUrl(entity.getImageUrl())
@@ -36,7 +37,7 @@ public class DefaultSlidesGateway implements SlidesGateway {
                 .deleted(entity.getDeleted())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
-                //TODO: Agregar Organización
+                .organization(DefaultOrganizationGateway.toModel(entity.getOrganization()))
                 .build();
     }
 }

@@ -1,5 +1,7 @@
 package com.alkemy.ong.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -45,7 +47,16 @@ public class SlidesEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_organization", nullable = false)
     private OrganizationEntity organization;
+
+    @Override
+    public String toString() {
+        return "idSlides=" + idSlides + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", text='" + text + '\'' +
+                ", order=" + order;
+
+    }
 }

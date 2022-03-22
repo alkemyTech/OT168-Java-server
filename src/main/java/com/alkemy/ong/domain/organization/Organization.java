@@ -1,11 +1,13 @@
 package com.alkemy.ong.domain.organization;
 
 import com.alkemy.ong.data.entities.SlidesEntity;
+import com.alkemy.ong.domain.slides.Slides;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -21,7 +23,19 @@ public class Organization {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean deleted;
-    //private List<Slides> slides = new ArrayList<>();
-    //TODO: Esta lista tiene que traer el slide que es model no el entity y este aún no esta creado!!
 
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "idOrganization=" + idOrganization +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", address='" + address + '\'' +
+                ", phone=" + phone +
+                ", email='" + email + '\'' +
+                ", about_us_text='" + about_us_text + '\'' +
+                ", welcome_text='" + welcome_text + '\'' +
+                '}';
+    }
 }

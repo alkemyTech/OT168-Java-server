@@ -1,5 +1,8 @@
 package com.alkemy.ong.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -57,7 +60,17 @@ public class OrganizationEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
-    private List<SlidesEntity> slides = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "idOrganization=" + idOrganization + '\'' +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", address='" + address + '\'' +
+                ", phone=" + phone +
+                ", email='" + email + '\'' +
+                ", welcomeText='" + welcomeText + '\'' +
+                ", aboutUsText='" + aboutUsText + '\'';
+
+    }
 }
