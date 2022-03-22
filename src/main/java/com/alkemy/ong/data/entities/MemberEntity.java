@@ -1,10 +1,8 @@
 package com.alkemy.ong.data.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -15,6 +13,8 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@SQLDelete(sql = "UPDATE members SET deleted = true WHERE id = ?")
 @Table(name = "members", schema = "alkemy_ong")
 public class MemberEntity {
 
@@ -25,10 +25,13 @@ public class MemberEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "facebookurl")
     private String facebookUrl;
 
+    @Column(name = "instagramurl")
     private String instagramUrl;
 
+    @Column(name = "linkedinurl")
     private String linkedinUrl;
 
     @Column(nullable = false)
@@ -37,10 +40,12 @@ public class MemberEntity {
     private String description;
 
     @CreationTimestamp
+    @Column(name = "createdat")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updateAt;
+    @Column(name = "updatedat")
+    private LocalDateTime updatedAt;
 
     private Boolean deleted;
 }

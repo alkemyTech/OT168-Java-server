@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS `alkemy_ong`;
 CREATE DATABASE IF NOT EXISTS `alkemy_ong`;
 USE `alkemy_ong`;
 
@@ -9,8 +8,8 @@ CREATE TABLE `alkemy_ong`.`roles`
     `id`          BIGINT(255) NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(20) NOT NULL,
     `description` VARCHAR(50) DEFAULT NULL,
-    `createdAt`   TIMESTAMP   DEFAULT NOW(),
-    `updateAt`    TIMESTAMP   DEFAULT NOW(),
+    `createdat`   TIMESTAMP   DEFAULT NOW(),
+    `updatedat`    TIMESTAMP   DEFAULT NOW(),
     `deleted`     BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -26,8 +25,8 @@ CREATE TABLE `alkemy_ong`.`users`
     `email`     VARCHAR(30) UNIQUE NOT NULL,
     `password`  VARCHAR(50)        NOT NULL,
     `photo`     VARCHAR(255) DEFAULT NULL,
-    `createdAt` TIMESTAMP    DEFAULT NOW(),
-    `updateAt`  TIMESTAMP    DEFAULT NOW(),
+    `createdat` TIMESTAMP    DEFAULT NOW(),
+    `updatedat`  TIMESTAMP    DEFAULT NOW(),
     `deleted`   BIT          DEFAULT 0,
     `roleEntity`   BIGINT(255)        NOT NULL,
     PRIMARY KEY (`id`),
@@ -47,23 +46,48 @@ CREATE TABLE `alkemy_ong`.`members`
     `linkedinUrl`  VARCHAR(50) DEFAULT NULL,
     `image`        VARCHAR(255) NOT NULL,
     `description`  VARCHAR(50) DEFAULT NULL,
-    `createdAt`    TIMESTAMP   DEFAULT NOW(),
-    `updateAt`     TIMESTAMP   DEFAULT NOW(),
+    `createdat`    TIMESTAMP   DEFAULT NOW(),
+    `updatedat`     TIMESTAMP   DEFAULT NOW(),
     `deleted`      BIT         DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
-CREATE DATABASE IF NOT EXISTS alkemy_ong;
-USE alkemy_ong;
 
-news_id BIGINT(255) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR (20) NOT NULL,
-content VARCHAR (100) NOT NULL,
-image VARCHAR (25) NOT NULL,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP,
-deleted TINYINT
+CREATE TABLE alkemy_ong.news
+(
+    news_id    BIGINT(255)  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name       VARCHAR(50)  NOT NULL,
+    content    VARCHAR(100) NOT NULL,
+    image      VARCHAR(25)  NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    deleted    TINYINT,
+    type VARCHAR(20)
 );
+
+CREATE TABLE IF NOT EXISTS activities (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(250) NOT NULL,
+  `content` TEXT NOT NULL,
+  `image` VARCHAR(250) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT NULL,
+  `deleted` BOOLEAN DEFAULT 0,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS contacts (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(250) NOT NULL,
+  `phone` VARCHAR(250) NOT NULL,
+  `email` VARCHAR(250) NOT NULL,
+  `message`  TEXT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT NULL,
+  `deleted` BOOLEAN DEFAULT 0,
+  PRIMARY KEY (id)
+);
+
 
 CREATE TABLE IF NOT EXISTS organizations (
   id_organization BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -90,9 +114,6 @@ CREATE TABLE if NOT EXISTS slides (
     organization_id BIGINT unsigned NOT NULL
 );
 
-CREATE DATABASE IF NOT EXISTS alkemy_ong;
-USE alkemy_ong;
-
 CREATE TABLE IF NOT EXISTS testimonials (
 id BIGINT(255) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR (255) NOT NULL,
@@ -102,9 +123,6 @@ created_at TIMESTAMP DEFAULT NOW(),
 updated_at TIMESTAMP,
 deleted BIT(1) NOT NULL DEFAULT 0
 );
-
-CREATE DATABASE IF NOT EXISTS alkemy_ong;
-USE alkemy_ong;
 
 CREATE TABLE IF NOT EXISTS alkemy_ong.categories (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
