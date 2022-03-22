@@ -68,7 +68,7 @@ public class NewsController {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    static class NewsDTO {
+    private static class NewsDTO {
 
         private Long newsId;
         @NotEmpty(message = "The name field cannot be empty.")
