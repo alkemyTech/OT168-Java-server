@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class MemberController {
 @Setter
 @Builder
 @Valid
-class MemberDTO {
+class MemberDTO implements Serializable {
 
     private Long id;
 
