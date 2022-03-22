@@ -61,14 +61,9 @@ CREATE TABLE alkemy_ong.news
     image      VARCHAR(25)  NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
-<<<<<<< HEAD
     deleted    TINYINT,
     type VARCHAR(20)
 );
-=======
-    deleted    TINYINT
-    );
->>>>>>> 0aa12011badc1466ec2f832b11b30b8860e1a055
 
 CREATE TABLE IF NOT EXISTS activities (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
