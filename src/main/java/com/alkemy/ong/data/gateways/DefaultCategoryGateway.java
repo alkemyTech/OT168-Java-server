@@ -40,16 +40,28 @@ public class DefaultCategoryGateway implements CategoryGateway {
 	}
 
 	private Category toModel(CategoryEntity categoryEntity) {
-		Category newCategory = Category.builder().id(categoryEntity.getId()).name(categoryEntity.getName())
-				.description(categoryEntity.getDescription()).image(categoryEntity.getImage()).createdAt(categoryEntity.getCreatedAt())
-				.updatedAt(categoryEntity.getUpdatedAt()).deleted(categoryEntity.getDeleted()).build();
+		Category newCategory = Category.builder()
+				.id(categoryEntity.getId())
+				.name(categoryEntity.getName())
+				.description(categoryEntity.getDescription())
+				.image(categoryEntity.getImage())
+				.createdAt(categoryEntity.getCreatedAt())
+				.updatedAt(categoryEntity.getUpdatedAt())
+				.deleted(categoryEntity.getDeleted())
+				.build();
 		return newCategory;
 	}
 	
 	private CategoryEntity toEntity(Category category) {
-		CategoryEntity newCategoryEntity = CategoryEntity.builder().id(category.getId()).name(category.getName())
-				.description(category.getDescription()).image(category.getImage()).createdAt(category.getCreatedAt())
-				.updatedAt(category.getUpdatedAt()).deleted(category.getDeleted()).build();
+		CategoryEntity newCategoryEntity = CategoryEntity.builder()
+				.id(category.getId())
+				.name(category.getName())
+				.description(category.getDescription())
+				.image(category.getImage())
+				.createdAt(category.getCreatedAt())
+				.updatedAt(category.getUpdatedAt())
+				.deleted(category.getDeleted())
+				.build();
 		return newCategoryEntity;
 	}
 
