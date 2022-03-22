@@ -41,14 +41,14 @@ public class NewsController {
         return newsDTO;
     }
 
-}
+
 
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-class NewsDTO {
+private class NewsDTO {
 
     private Long newsId;
     private String name;
@@ -58,5 +58,5 @@ class NewsDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean deleted;
-
+}
 }
