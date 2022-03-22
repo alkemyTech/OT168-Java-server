@@ -1,7 +1,5 @@
 package com.alkemy.ong.domain.news;
 
-import com.alkemy.ong.data.entities.CategoryEntity;
-import com.alkemy.ong.domain.category.Category;
 import lombok.*;
 
 import java.time.LocalDateTime;
