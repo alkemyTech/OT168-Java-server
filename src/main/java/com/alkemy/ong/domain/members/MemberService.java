@@ -24,7 +24,5 @@ public class MemberService {
     public void delete(Long id){
         memberGateway.delete(id);
     }
-
-
 }
 
