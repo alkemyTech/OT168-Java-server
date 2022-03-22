@@ -133,5 +133,5 @@ CREATE TABLE IF NOT EXISTS alkemy_ong.categories (
   `image` VARCHAR(255),
   `created_at` TIMESTAMP DEFAULT NOW(),
   `updated_at` TIMESTAMP,
-  `deleted` BIT DEFAULT 0
+  `deleted` BOOLEAN DEFAULT 0
 );
