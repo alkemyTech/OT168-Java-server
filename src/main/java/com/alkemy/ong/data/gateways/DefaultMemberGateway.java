@@ -63,7 +63,6 @@ public class DefaultMemberGateway implements MemberGateway {
         }
     }
 
-
     private Member toModel(MemberEntity memberEntity) {
         return Member.builder()
                 .id(memberEntity.getId())
