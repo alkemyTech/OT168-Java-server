@@ -5,11 +5,8 @@ import com.alkemy.ong.data.repositories.OrganizationRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationGateway;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultOrganizationGateway implements OrganizationGateway {
