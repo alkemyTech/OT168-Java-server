@@ -110,5 +110,5 @@ class CategoryDTO {
 	private String image;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
-	private Boolean deleted;
+	private Boolean deleted = false;
 }
