@@ -44,9 +44,5 @@ public class NewsEntity {
 
     private Boolean deleted;
 
-   /* @OneToOne
-    @JoinColumn (name = "category_id")
-    private CategoryEntity categoryId;*/
-
     private String type;
 }

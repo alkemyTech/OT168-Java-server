@@ -27,17 +27,17 @@ public class NewsController {
     @GetMapping("/{newsId}")
     public ResponseEntity<NewsDTO> findById(@PathVariable("newsId") Long newsId) {
         News news = newsService.findById(newsId);
-        return ResponseEntity.ok(buildDTO(news));
+        return ResponseEntity.ok(toDTO(news));
     }
 
     @PostMapping
-    public ResponseEntity<NewsDTO> saveNews(@Valid @RequestBody NewsDTO newsDTO){
-        newsService.saveNews(buildModel(newsDTO));
+    public ResponseEntity<NewsDTO> saveNews(@Valid @RequestBody NewsDTO newsDTO) {
+        newsService.saveNews(toModel(newsDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(newsDTO);
     }
 
-    private News buildModel (NewsDTO newsDTO) {
-        News news = News.builder()
+    private News toModel(NewsDTO newsDTO) {
+        return News.builder()
                 .newsId(newsDTO.getNewsId())
                 .name(newsDTO.getName())
                 .content(newsDTO.getContent())
@@ -45,14 +45,12 @@ public class NewsController {
                 .createdAt(newsDTO.getCreatedAt())
                 .updatedAt(newsDTO.getUpdatedAt())
                 .deleted(newsDTO.getDeleted())
-                //.categoryId(newsEntity.getCategoryId())
                 .type(newsDTO.getType())
                 .build();
-        return news;
     }
 
-    private NewsDTO buildDTO(News news) {
-        NewsDTO newsDTO = NewsDTO.builder()
+    private NewsDTO toDTO(News news) {
+        return NewsDTO.builder()
                 .newsId(news.getNewsId())
                 .name(news.getName())
                 .content(news.getContent())
@@ -60,12 +58,9 @@ public class NewsController {
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
                 .deleted(news.getDeleted())
-                //.categoryId(news.getCategoryId())
                 .type(news.getType())
                 .build();
-        return newsDTO;
     }
-
 }
 
 @Builder
@@ -85,6 +80,5 @@ class NewsDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean deleted;
-    //private CategoryEntity categoryId;
     private String type = "news";
 }

@@ -21,6 +21,5 @@ public class News {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean deleted;
-    //private CategoryEntity categoryId;
     private String type;
 }

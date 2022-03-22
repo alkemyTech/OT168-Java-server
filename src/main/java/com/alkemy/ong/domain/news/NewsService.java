@@ -19,6 +19,4 @@ public class NewsService {
     public News saveNews(News news){
         return newsGateway.saveNews(news);
     }
-
-
 }
