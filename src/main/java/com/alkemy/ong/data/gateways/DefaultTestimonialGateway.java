@@ -2,10 +2,14 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.TestimonialEntity;
 import com.alkemy.ong.data.repositories.TestimonialRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialGateway;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Component
 public class DefaultTestimonialGateway implements TestimonialGateway {
@@ -19,6 +23,20 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
     @SneakyThrows
     public Testimonial save(Testimonial testimonial){
             return toModel(testimonialRepository.save(toEntity(testimonial)));
+    }
+
+    @SneakyThrows
+    public Testimonial update(Long id, Testimonial testimonial){
+        if(id == testimonial.getId()) {
+            Optional<TestimonialEntity> entity = testimonialRepository.findById(id);
+            entity.get().setName(testimonial.getName());
+            entity.get().setContent(testimonial.getContent());
+            entity.get().setImage(testimonial.getImage());
+            entity.get().setUpdatedAt(LocalDateTime.now());
+            return toModel(testimonialRepository.save(entity.get()));
+        } else {
+            throw new ResourceNotFoundException("The id doesn't match the id of the Testimonial provided.");
+        }
     }
 
     private Testimonial toModel(TestimonialEntity testimonialEntity) {

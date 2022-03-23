@@ -1,5 +1,6 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialService;
 import lombok.*;
@@ -24,11 +25,20 @@ public class TestimonialController {
     @PostMapping
     public ResponseEntity<TestimonialDTO> createTestimonial(@Valid @RequestBody TestimonialDTO testimonialDTO) {
         return new ResponseEntity<>(toDto(testimonialService.save(toModel(testimonialDTO))), HttpStatus.CREATED);
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<TestimonialDTO> updateTestimonial(@PathVariable("id") Long id, @Valid @RequestBody TestimonialDTO testimonialDTO) {
+/*        if(id == testimonialDTO.getId()) {*/
+            return new ResponseEntity<>(toDto(testimonialService.update(id, toModel(testimonialDTO))), HttpStatus.OK);
+/*        } else {
+            throw new ResourceNotFoundException("The id doesn't match the id of the Testimonial provided.");
+        }*/
     }
 
     private Testimonial toModel(TestimonialDTO testimonialDTO) {
         return Testimonial.builder()
+                .id(testimonialDTO.getId())
                 .name(testimonialDTO.getName())
                 .image(testimonialDTO.getImage())
                 .content(testimonialDTO.getContent())
