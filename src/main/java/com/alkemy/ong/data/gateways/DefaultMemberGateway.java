@@ -9,6 +9,7 @@ import com.alkemy.ong.data.repositories.MemberRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -46,11 +47,9 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
-    public Member update(Long id, Member member) {
-        Member m = findById(id);
-        member.setCreatedAt(m.getCreatedAt());
-        member.setId(m.getId());
-        return toModel(memberRepository.save(toEntity(member)));
+    public Member update(Member member) {
+        MemberEntity m = toEntity(findById(member.getId()));
+        return toModel(memberRepository.save(toUpdate(m, member)));
     }
 
     private Member toModel(MemberEntity memberEntity) {
@@ -71,15 +70,25 @@ public class DefaultMemberGateway implements MemberGateway {
     private MemberEntity toEntity(Member member) {
         return MemberEntity.builder()
                 .id(member.getId())
-                .name(member.getName())
+                .name(member.getName().trim())
                 .facebookUrl(member.getFacebookUrl())
                 .instagramUrl(member.getInstagramUrl())
                 .linkedinUrl(member.getLinkedinUrl())
                 .image(member.getImage())
                 .description(member.getDescription())
                 .createdAt(member.getCreatedAt())
-                .updatedAt(member.getUpdatedAt())
-                .deleted(member.getDeleted())
+                .deleted(member.getDeleted() == null ? false : member.getDeleted())
                 .build();
+    }
+
+    private MemberEntity toUpdate(MemberEntity m, Member member) {
+        m.setName(member.getName());
+        m.setFacebookUrl(member.getFacebookUrl());
+        m.setInstagramUrl(member.getInstagramUrl());
+        m.setLinkedinUrl(member.getLinkedinUrl());
+        m.setImage(member.getImage());
+        m.setDescription(member.getDescription());
+        return m;
+
     }
 }

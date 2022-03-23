@@ -25,8 +25,7 @@ public class MemberService {
         memberGateway.delete(id);
     }
 
-    public Member update(Long id, Member member){
-        member.setName(member.getName().trim());
-        return memberGateway.update(id,member);
+    public Member update(Member member){
+        return memberGateway.update(member);
     }
 }

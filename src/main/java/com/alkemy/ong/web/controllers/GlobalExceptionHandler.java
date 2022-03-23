@@ -17,8 +17,7 @@ import static java.util.stream.Collectors.toList;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value
-            = {ResourceNotFoundException.class, ResourceNotFoundException.class})
+    @ExceptionHandler(ResourceNotFoundException.class)
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(),
@@ -33,5 +32,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(m -> m.getDefaultMessage())
                 .collect(toList());
         return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    protected ResponseEntity<Object> handleComparatorConflict(
+            RuntimeException ex, WebRequest request) {
+        return handleExceptionInternal(ex, "PathId does not match RequestRody ID.",
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }
