@@ -51,20 +51,20 @@ public class ActivityController {
                 .updatedAt(activity.getUpdatedAt())
                 .build();
     }
-}
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-class ActivityDTO {
-    private Long id;
-    @NotEmpty(message = "Name can't be empty")
-    private String name;
-    @NotEmpty(message = "Content can't be empty")
-    private String content;
-    private String image;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class ActivityDTO {
+        private Long id;
+        @NotEmpty(message = "Name can't be empty")
+        private String name;
+        @NotEmpty(message = "Content can't be empty")
+        private String content;
+        private String image;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
 }
