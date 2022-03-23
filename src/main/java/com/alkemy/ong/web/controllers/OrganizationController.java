@@ -1,6 +1,6 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.exceptions.DifferentIdException;
+import com.alkemy.ong.domain.exceptions.WebRequestException;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationService;
 import lombok.Builder;
@@ -29,7 +29,7 @@ public class OrganizationController {
     @PutMapping("/public/{id}")
     public ResponseEntity<OrganizationFullDTO> update(@PathVariable Long id, @RequestBody OrganizationFullDTO fullDTO){
         if(id !=fullDTO.getIdOrganization()) {
-            throw new DifferentIdException("ID: " + id + " in Path Variable is different than ID: " + fullDTO.getIdOrganization() + " in Body Request.");
+            throw new WebRequestException("ID: " + id + " in Path Variable is different than ID: " + fullDTO.getIdOrganization() + " in Body Request.");
         }
         OrganizationFullDTO organization  = toFullDto(organizationService.updateOrganization(toModel(fullDTO)));
         return  ResponseEntity.ok(organization);

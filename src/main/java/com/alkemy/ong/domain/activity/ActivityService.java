@@ -12,7 +12,10 @@ public class ActivityService {
     }
 
     public Activity saveActivity(Activity activity) {
-            activityGateway.save(activity);
-            return activity;
+            return activityGateway.save(activity);
+    }
+
+    public Activity updateActivity(Long id, Activity activity) {
+        return activityGateway.update(id, activity);
     }
 }

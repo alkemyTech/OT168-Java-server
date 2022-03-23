@@ -1,7 +1,7 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.exceptions.DifferentIdException;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.exceptions.WebRequestException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,26 +18,26 @@ import static java.util.stream.Collectors.toList;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-        @ExceptionHandler(value
-                = { ResourceNotFoundException.class, ResourceNotFoundException.class })
-        protected ResponseEntity<Object> handleConflict(
-                RuntimeException ex, WebRequest request) {
-            return handleExceptionInternal(ex, ex.getMessage(),
-                    new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-        }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    protected ResponseEntity<Object> handleConflict(
+            RuntimeException ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(),
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> message = ex.getBindingResult()
                 .getAllErrors()
                 .stream()
-                .map(m->m.getDefaultMessage())
+                .map(m -> m.getDefaultMessage())
                 .collect(toList());
         return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = { DifferentIdException.class, DifferentIdException.class })
-    protected ResponseEntity<Object> handleDifferentId(RuntimeException ex, WebRequest request) {
+    @ExceptionHandler(WebRequestException.class)
+    protected ResponseEntity<Object> handleComparatorConflict(
+            RuntimeException ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
