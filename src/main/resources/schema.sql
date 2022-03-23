@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS activities (
   `content` TEXT NOT NULL,
   `image` VARCHAR(250) NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `deleted` BOOLEAN DEFAULT 0,
   PRIMARY KEY (id)
 );
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS contacts (
   `email` VARCHAR(250) NOT NULL,
   `message`  TEXT NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `deleted` BOOLEAN DEFAULT 0,
   PRIMARY KEY (id)
 );
@@ -131,5 +131,5 @@ CREATE TABLE IF NOT EXISTS alkemy_ong.categories (
   `image` VARCHAR(255),
   `created_at` TIMESTAMP DEFAULT NOW(),
   `updated_at` TIMESTAMP,
-  `deleted` TINYINT
+  `deleted` BOOLEAN DEFAULT 0
 );

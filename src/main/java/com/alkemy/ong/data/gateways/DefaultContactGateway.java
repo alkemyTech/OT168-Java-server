@@ -22,23 +22,18 @@ public class DefaultContactGateway implements ContactGateway {
 
     @Override
     public List<Contact> findAll() {
-        List<Contact> models;
-
-        models = contactRepository.findAll().stream()
+        return contactRepository.findAll().stream()
                 .map(c -> toModel(c))
                 .collect(toList());
-        return models;
     }
 
     @Override
     public Contact save(Contact contact) {
-        ContactEntity contactEntity = toEntity(contact);
-        contactRepository.save(contactEntity);
-        return contact;
+        return toModel(contactRepository.save(toEntity(contact)));
     }
 
     private Contact toModel(ContactEntity contactEntity){
-        Contact c = Contact.builder()
+        return Contact.builder()
                 .id(contactEntity.getId())
                 .name(contactEntity.getName())
                 .phone(contactEntity.getPhone())
@@ -48,20 +43,16 @@ public class DefaultContactGateway implements ContactGateway {
                 .updatedAt(contactEntity.getUpdatedAt())
                 .deleted(contactEntity.getDeleted())
                 .build();
-        return c;
     }
 
     private ContactEntity toEntity(Contact contact){
-        ContactEntity contactEntity = ContactEntity.builder()
+        return ContactEntity.builder()
                 .id(contact.getId())
                 .name(contact.getName())
                 .phone(contact.getPhone())
                 .email(contact.getEmail())
                 .message(contact.getMessage())
-                .createdAt(contact.getCreatedAt())
-                .updatedAt(contact.getUpdatedAt())
-                .deleted(contact.getDeleted())
+                .deleted(false)
                 .build();
-        return contactEntity;
     }
 }

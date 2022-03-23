@@ -21,36 +21,50 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-
     @PostMapping
     public ResponseEntity<ActivityDTO> saveActivity(@Valid @RequestBody ActivityDTO activityDTO){
-        activityService.saveActivity(toModel(activityDTO));
-        return ResponseEntity.status(HttpStatus.CREATED).body(activityDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(activityService.saveActivity(toModel(activityDTO))));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ActivityDTO> updateActivity(@PathVariable Long id, @Valid @RequestBody ActivityDTO activityDTO){
+        return ResponseEntity.ok(toDTO(activityService.updateActivity(id, toModel(activityDTO))));
     }
 
     private Activity toModel(ActivityDTO activityDTO){
-        Activity activity = Activity.builder()
+        return Activity.builder()
                 .name(activityDTO.getName())
                 .content(activityDTO.getContent())
                 .image(activityDTO.getImage())
+                .createdAt(activityDTO.getCreatedAt())
+                .updatedAt(activityDTO.getUpdatedAt())
                 .build();
-        return activity;
     }
-}
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-class ActivityDTO {
-    private Long id;
-    @NotEmpty(message = "Name can't be empty")
-    private String name;
-    @NotEmpty(message = "Content can't be empty")
-    private String content;
-    private String image;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Boolean deleted;
+    private ActivityDTO toDTO(Activity activity){
+        return ActivityDTO.builder()
+                .id(activity.getId())
+                .name(activity.getName())
+                .image(activity.getImage())
+                .content(activity.getContent())
+                .createdAt(activity.getCreatedAt())
+                .updatedAt(activity.getUpdatedAt())
+                .build();
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class ActivityDTO {
+        private Long id;
+        @NotEmpty(message = "Name can't be empty")
+        private String name;
+        @NotEmpty(message = "Content can't be empty")
+        private String content;
+        private String image;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
 }

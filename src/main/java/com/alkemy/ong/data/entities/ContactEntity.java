@@ -37,7 +37,7 @@ public class ContactEntity {
     private String message;
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(updatable = false, nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
