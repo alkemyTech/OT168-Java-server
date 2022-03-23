@@ -9,7 +9,6 @@ import com.alkemy.ong.data.repositories.MemberRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -89,6 +88,5 @@ public class DefaultMemberGateway implements MemberGateway {
         m.setImage(member.getImage());
         m.setDescription(member.getDescription());
         return m;
-
     }
 }
