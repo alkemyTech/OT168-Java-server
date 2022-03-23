@@ -47,6 +47,7 @@ public class MemberEntity {
     @Column(name = "updatedat")
     private LocalDateTime updatedAt;
 
-    private Boolean deleted;
+    @Builder.Default
+    private Boolean deleted = Boolean.FALSE;
 }
 

@@ -45,6 +45,12 @@ public class DefaultMemberGateway implements MemberGateway {
         memberRepository.deleteById(id);
     }
 
+    @Override
+    public Member update(Member member) {
+        MemberEntity memberEntity = toEntity(findById(member.getId()));
+        return toModel(memberRepository.save(toUpdate(memberEntity, member)));
+    }
+
     private Member toModel(MemberEntity memberEntity) {
         return Member.builder()
                 .id(memberEntity.getId())
@@ -63,15 +69,23 @@ public class DefaultMemberGateway implements MemberGateway {
     private MemberEntity toEntity(Member member) {
         return MemberEntity.builder()
                 .id(member.getId())
-                .name(member.getName())
+                .name(member.getName().trim())
                 .facebookUrl(member.getFacebookUrl())
                 .instagramUrl(member.getInstagramUrl())
                 .linkedinUrl(member.getLinkedinUrl())
                 .image(member.getImage())
                 .description(member.getDescription())
                 .createdAt(member.getCreatedAt())
-                .updatedAt(member.getUpdatedAt())
-                .deleted(member.getDeleted())
                 .build();
+    }
+
+    private MemberEntity toUpdate(MemberEntity memberEntity, Member member) {
+        memberEntity.setName(member.getName().trim());
+        memberEntity.setFacebookUrl(member.getFacebookUrl());
+        memberEntity.setInstagramUrl(member.getInstagramUrl());
+        memberEntity.setLinkedinUrl(member.getLinkedinUrl());
+        memberEntity.setImage(member.getImage());
+        memberEntity.setDescription(member.getDescription());
+        return memberEntity;
     }
 }

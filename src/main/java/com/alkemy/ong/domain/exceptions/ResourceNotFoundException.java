@@ -10,5 +10,7 @@ public class ResourceNotFoundException extends RuntimeException {
         super(String.format(messageFormat, args));
     }
 
+    public ResourceNotFoundException() {
 
+    }
 }
