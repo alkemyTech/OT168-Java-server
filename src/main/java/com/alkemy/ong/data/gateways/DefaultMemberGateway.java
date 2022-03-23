@@ -81,7 +81,7 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     private MemberEntity toUpdate(MemberEntity m, Member member) {
-        m.setName(member.getName());
+        m.setName(member.getName().trim());
         m.setFacebookUrl(member.getFacebookUrl());
         m.setInstagramUrl(member.getInstagramUrl());
         m.setLinkedinUrl(member.getLinkedinUrl());

@@ -37,7 +37,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity<Object> handleComparatorConflict(
             RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, "PathId does not match RequestRody ID.",
+        return handleExceptionInternal(ex, "PathId does not match with RequestRody ID.",
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }

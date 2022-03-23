@@ -7,12 +7,11 @@ public class Utils {
         if(id==idDTO){
             optionalValidation(id==idDTO);
         }else{
-            optionalValidation(null).orElseThrow();
+            optionalValidation(null);
         }
     }
 
-    private static Optional<Boolean> optionalValidation (Boolean comp){
+    private static void optionalValidation (Boolean comp){
         Boolean b = Optional.ofNullable(comp).orElseThrow(NullPointerException::new);
-        return Optional.ofNullable(b);
     }
 }

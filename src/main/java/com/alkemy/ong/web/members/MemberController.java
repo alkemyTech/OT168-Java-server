@@ -50,8 +50,8 @@ public class MemberController {
 
     @PutMapping("members/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody MemberDTO member) {
-            Utils.validation(id,member.getId());
-            return ResponseEntity.ok(toDTO(memberService.update(toModel(member))));
+        Utils.validation(id, member.getId());
+        return ResponseEntity.ok(toDTO(memberService.update(toModel(member))));
     }
 
     private MemberDTO toDTO(Member member) {
