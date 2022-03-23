@@ -36,6 +36,11 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newsDTO);
     }
 
+    @PutMapping("/{newsId}")
+    public ResponseEntity<NewsDTO> updateNews(@PathVariable Long newsId, @Valid @RequestBody NewsDTO newsDTO){
+        return ResponseEntity.ok(toDTO(newsService.updateNews(newsId, toModel(newsDTO))));
+    }
+
     private News toModel(NewsDTO newsDTO) {
         return News.builder()
                 .newsId(newsDTO.getNewsId())

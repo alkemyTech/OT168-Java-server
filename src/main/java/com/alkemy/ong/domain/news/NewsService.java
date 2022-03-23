@@ -1,6 +1,4 @@
 package com.alkemy.ong.domain.news;
-
-import com.alkemy.ong.data.entities.NewsEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,4 +17,9 @@ public class NewsService {
     public News saveNews(News news){
         return newsGateway.saveNews(news);
     }
+
+    public News updateNews(Long newsId, News news){
+        return newsGateway.updateNews(newsId, news);
+    }
+
 }
