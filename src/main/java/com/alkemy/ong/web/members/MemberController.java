@@ -104,6 +104,6 @@ public class MemberController {
         private String description;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        private Boolean deleted = false;
+        private Boolean deleted;
     }
 }
