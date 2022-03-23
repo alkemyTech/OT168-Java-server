@@ -38,7 +38,6 @@ public class ActivityController {
                 .image(activityDTO.getImage())
                 .createdAt(activityDTO.getCreatedAt())
                 .updatedAt(activityDTO.getUpdatedAt())
-                .deleted(activityDTO.getDeleted())
                 .build();
     }
 
@@ -50,7 +49,6 @@ public class ActivityController {
                 .content(activity.getContent())
                 .createdAt(activity.getCreatedAt())
                 .updatedAt(activity.getUpdatedAt())
-                .deleted(activity.getDeleted())
                 .build();
     }
 }
@@ -69,5 +67,4 @@ class ActivityDTO {
     private String image;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean deleted;
 }

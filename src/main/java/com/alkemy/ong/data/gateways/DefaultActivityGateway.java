@@ -28,11 +28,11 @@ public class DefaultActivityGateway implements ActivityGateway {
 
     @Override
     public Activity update(Long id, Activity activity) {
-        Activity updateActivity = findById(id);
+        ActivityEntity updateActivity = activityRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         updateActivity.setName(activity.getName());
         updateActivity.setContent(activity.getContent());
         updateActivity.setImage(activity.getImage());
-        return save(updateActivity);
+        return toModel(activityRepository.save(updateActivity));
     }
 
     private ActivityEntity toEntity (Activity activity){
@@ -41,8 +41,6 @@ public class DefaultActivityGateway implements ActivityGateway {
                 .name(activity.getName())
                 .content(activity.getContent())
                 .image(activity.getImage())
-                .createdAt(activity.getCreatedAt())
-                .updatedAt(activity.getUpdatedAt())
                 .deleted(false)
                 .build();
         }
@@ -55,7 +53,6 @@ public class DefaultActivityGateway implements ActivityGateway {
                 .image(activityEntity.getImage())
                 .createdAt(activityEntity.getCreatedAt())
                 .updatedAt(activityEntity.getUpdatedAt())
-                .deleted(activityEntity.getDeleted())
                 .build();
         }
   }
