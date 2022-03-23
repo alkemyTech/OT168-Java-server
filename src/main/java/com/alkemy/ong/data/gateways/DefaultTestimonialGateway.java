@@ -25,15 +25,14 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
             return toModel(testimonialRepository.save(toEntity(testimonial)));
     }
 
-    @SneakyThrows
     public Testimonial update(Long id, Testimonial testimonial){
         if(id == testimonial.getId()) {
-            Optional<TestimonialEntity> entity = testimonialRepository.findById(id);
-            entity.get().setName(testimonial.getName());
-            entity.get().setContent(testimonial.getContent());
-            entity.get().setImage(testimonial.getImage());
-            entity.get().setUpdatedAt(LocalDateTime.now());
-            return toModel(testimonialRepository.save(entity.get()));
+            TestimonialEntity entity = testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+            entity.setName(testimonial.getName());
+            entity.setContent(testimonial.getContent());
+            entity.setImage(testimonial.getImage());
+            entity.setUpdatedAt(LocalDateTime.now());
+            return toModel(testimonialRepository.save(entity));
         } else {
             throw new ResourceNotFoundException("The id doesn't match the id of the Testimonial provided.");
         }

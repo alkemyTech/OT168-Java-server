@@ -29,11 +29,8 @@ public class TestimonialController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TestimonialDTO> updateTestimonial(@PathVariable("id") Long id, @Valid @RequestBody TestimonialDTO testimonialDTO) {
-/*        if(id == testimonialDTO.getId()) {*/
-            return new ResponseEntity<>(toDto(testimonialService.update(id, toModel(testimonialDTO))), HttpStatus.OK);
-/*        } else {
-            throw new ResourceNotFoundException("The id doesn't match the id of the Testimonial provided.");
-        }*/
+        // TODO: usar Utils para validar id's
+        return new ResponseEntity<>(toDto(testimonialService.update(id, toModel(testimonialDTO))), HttpStatus.OK);
     }
 
     private Testimonial toModel(TestimonialDTO testimonialDTO) {
