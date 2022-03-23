@@ -73,7 +73,7 @@ public class CategoryController {
 	}
 
 	private CategoryDTO toDTO(Category category) {
-		CategoryDTO newCategoryDTO = CategoryDTO.builder()
+		return CategoryDTO.builder()
 				.id(category.getId())
 				.name(category.getName())
 				.description(category.getDescription())
@@ -82,11 +82,10 @@ public class CategoryController {
 				.updatedAt(category.getUpdatedAt())
 				.deleted(category.getDeleted())
 				.build();
-		return newCategoryDTO;
 	}
 
 	private Category toModel(CategoryDTO categoryDTO) {
-		Category newCategory = Category.builder()
+		return Category.builder()
 				.id(categoryDTO.getId())
 				.name(categoryDTO.getName())
 				.description(categoryDTO.getDescription())
@@ -95,7 +94,6 @@ public class CategoryController {
 				.updatedAt(categoryDTO.getUpdatedAt())
 				.deleted(categoryDTO.getDeleted())
 				.build();
-		return newCategory;
 	}
 
 }
