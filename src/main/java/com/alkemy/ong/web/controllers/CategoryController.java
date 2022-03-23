@@ -2,9 +2,16 @@ package com.alkemy.ong.web.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,6 +48,11 @@ public class CategoryController {
 		CategoryDTO categoryDTO = toDTO(category);
 		return ResponseEntity.ok(categoryDTO);
 	}
+	
+	@PostMapping
+	public ResponseEntity<CategoryDTO> saveCategory(@Valid @RequestBody CategoryDTO categoryDTO){
+		return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(categoryService.save(toModel(categoryDTO))));
+	}
 
 	private CategorySlimDTO toSlimDTO(Category category) {
 		CategorySlimDTO newCategorySlimDTO = CategorySlimDTO.builder().name(category.getName()).build();
@@ -58,6 +70,19 @@ public class CategoryController {
 				.deleted(category.getDeleted())
 				.build();
 		return newCategoryDTO;
+	}
+	
+	private Category toModel(CategoryDTO categoryDTO) {
+		Category newCategory = Category.builder()
+				.id(categoryDTO.getId())
+				.name(categoryDTO.getName())
+                .description(categoryDTO.getDescription())
+                .image(categoryDTO.getImage())
+				.createdAt(categoryDTO.getCreatedAt())
+				.updatedAt(categoryDTO.getUpdatedAt())
+				.deleted(categoryDTO.getDeleted())
+				.build();
+		return newCategory;
 	}
 
 }
@@ -78,6 +103,8 @@ class CategorySlimDTO {
 @NoArgsConstructor
 class CategoryDTO {
 	private Long id;
+	@NotEmpty(message = "The name field is required.")
+	@Pattern(regexp = "[a-zA-Z]{0,255}", message = "The name field must not have numbers.")
 	private String name;
 	private String description;
 	private String image;
