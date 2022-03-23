@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS `alkemy_ong`;
 CREATE DATABASE IF NOT EXISTS `alkemy_ong`;
 USE `alkemy_ong`;
 
@@ -53,19 +52,18 @@ CREATE TABLE `alkemy_ong`.`members`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
-CREATE DATABASE IF NOT EXISTS alkemy_ong;
-USE alkemy_ong;
 
 CREATE TABLE alkemy_ong.news
 (
     news_id    BIGINT(255)  NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name       VARCHAR(20)  NOT NULL,
+    name       VARCHAR(50)  NOT NULL,
     content    VARCHAR(100) NOT NULL,
     image      VARCHAR(25)  NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
-    deleted    TINYINT
-    );
+    deleted    TINYINT,
+    type VARCHAR(20)
+);
 
 CREATE TABLE IF NOT EXISTS activities (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -123,7 +121,7 @@ image VARCHAR (255),
 content VARCHAR (255),
 created_at TIMESTAMP DEFAULT NOW(),
 updated_at TIMESTAMP,
-deleted TINYINT(1)
+deleted BIT(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS alkemy_ong.categories (

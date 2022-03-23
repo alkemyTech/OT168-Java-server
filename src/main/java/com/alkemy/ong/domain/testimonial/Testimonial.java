@@ -1,23 +1,26 @@
-package com.alkemy.ong.domain.news;
+package com.alkemy.ong.domain.testimonial;
 
 import lombok.*;
-
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+public class Testimonial {
 
-public class News {
+    private Long id;
 
-    private Long newsId;
     private String name;
-    private String content;
+
     private String image;
+
+    private String content;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
+
     private Boolean deleted;
-    private String type;
 }

@@ -6,7 +6,6 @@ import com.alkemy.ong.domain.news.NewsGateway;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import lombok.SneakyThrows;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,18 +24,34 @@ public class DefaultNewsGateway implements NewsGateway {
         return toModel(newsEntity);
     }
 
-    private News toModel (NewsEntity newsEntity) {
-        News news = News.builder()
+    @Override
+    public News saveNews(News news) {
+        return toModel(newsRepository.save(toEntity(news)));
+    }
+
+    private NewsEntity toEntity(News news) {
+        return NewsEntity.builder()
+                .newsId(news.getNewsId())
+                .name(news.getName())
+                .content(news.getContent())
+                .image(news.getImage())
+                .createdAt(news.getCreatedAt())
+                .updatedAt(news.getUpdatedAt())
+                .deleted(news.getDeleted())
+                .type(news.getType())
+                .build();
+    }
+
+    private News toModel(NewsEntity newsEntity) {
+        return News.builder()
                 .newsId(newsEntity.getNewsId())
                 .name(newsEntity.getName())
                 .content(newsEntity.getContent())
                 .image(newsEntity.getImage())
-                //.category(newsEntity.getCategory())
                 .createdAt(newsEntity.getCreatedAt())
                 .updatedAt(newsEntity.getUpdatedAt())
                 .deleted(newsEntity.getDeleted())
+                .type(newsEntity.getType())
                 .build();
-        return news;
     }
-
 }
