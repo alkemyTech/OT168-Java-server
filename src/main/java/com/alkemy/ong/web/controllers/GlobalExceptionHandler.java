@@ -1,5 +1,6 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.domain.exceptions.DifferentIdException;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(m->m.getDefaultMessage())
                 .collect(toList());
         return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = { DifferentIdException.class, DifferentIdException.class })
+    protected ResponseEntity<Object> handleDifferentId(RuntimeException ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(),
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }
