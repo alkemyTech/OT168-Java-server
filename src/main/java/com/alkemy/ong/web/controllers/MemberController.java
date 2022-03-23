@@ -1,4 +1,4 @@
-package com.alkemy.ong.web.members;
+package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
