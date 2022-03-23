@@ -39,30 +39,30 @@ public class CategoryController {
 	@GetMapping
 	public ResponseEntity<List<CategorySlimDTO>> getAllCategories() {
 		List<CategorySlimDTO> categorySlimDTO;
-		categorySlimDTO = categoryService.findAll().stream().map(cat -> toSlimDTO(cat))
-				.collect(toList());
+		categorySlimDTO = categoryService.findAll().stream().map(cat -> toSlimDTO(cat)).collect(toList());
 		return ResponseEntity.ok(categorySlimDTO);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<CategoryDTO> getCategoryByID(@PathVariable("id") Long id){
+	public ResponseEntity<CategoryDTO> getCategoryByID(@PathVariable("id") Long id) {
 		Category category = categoryService.findById(id);
 		CategoryDTO categoryDTO = toDTO(category);
 		return ResponseEntity.ok(categoryDTO);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<CategoryDTO> saveCategory(@Valid @RequestBody CategoryDTO categoryDTO){
+	public ResponseEntity<CategoryDTO> saveCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(categoryService.save(toModel(categoryDTO))));
 	}
-	
+
 	@PutMapping("/{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(toDTO(categoryService.update(id, toModel(categoryDTO))));
-    }
-    
+	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id,
+			@Valid @RequestBody CategoryDTO categoryDTO) {
+		return ResponseEntity.status(HttpStatus.OK).body(toDTO(categoryService.update(id, toModel(categoryDTO))));
+	}
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long id){
+	public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long id) {
 		categoryService.delete(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
@@ -71,7 +71,7 @@ public class CategoryController {
 		CategorySlimDTO newCategorySlimDTO = CategorySlimDTO.builder().name(category.getName()).build();
 		return newCategorySlimDTO;
 	}
-	
+
 	private CategoryDTO toDTO(Category category) {
 		CategoryDTO newCategoryDTO = CategoryDTO.builder()
 				.id(category.getId())
@@ -84,13 +84,13 @@ public class CategoryController {
 				.build();
 		return newCategoryDTO;
 	}
-	
+
 	private Category toModel(CategoryDTO categoryDTO) {
 		Category newCategory = Category.builder()
 				.id(categoryDTO.getId())
 				.name(categoryDTO.getName())
-                .description(categoryDTO.getDescription())
-                .image(categoryDTO.getImage())
+				.description(categoryDTO.getDescription())
+				.image(categoryDTO.getImage())
 				.createdAt(categoryDTO.getCreatedAt())
 				.updatedAt(categoryDTO.getUpdatedAt())
 				.deleted(categoryDTO.getDeleted())

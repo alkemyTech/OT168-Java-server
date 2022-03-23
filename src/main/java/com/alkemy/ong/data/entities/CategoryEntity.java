@@ -29,7 +29,6 @@ import lombok.ToString;
 @ToString(of = { "name", "description", "image" })
 @EqualsAndHashCode(of = { "name", "description", "image" })
 @Entity(name = "categories")
-@SQLDelete(sql = "UPDATE categories SET deleted = false WHERE id = ?")
 @Table(name = "categories")
 public class CategoryEntity {
 
