@@ -40,19 +40,19 @@ public class ContactController {
                 .updatedAt(contact.getUpdatedAt())
                 .build();
     }
-}
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-class ContactDTO{
-    private Long id;
-    private String name;
-    private String phone;
-    private String email;
-    private String message;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class ContactDTO{
+        private Long id;
+        private String name;
+        private String phone;
+        private String email;
+        private String message;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
 }

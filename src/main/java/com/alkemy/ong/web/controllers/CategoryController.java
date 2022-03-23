@@ -95,31 +95,31 @@ public class CategoryController {
 				.deleted(categoryDTO.getDeleted())
 				.build();
 	}
+	@Getter
+	@Setter
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	private static class CategorySlimDTO {
+		private String name;
+	}
 
+	@Getter
+	@Setter
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	private static class CategoryDTO {
+		private Long id;
+		@NotEmpty(message = "The name field is required.")
+		@Pattern(regexp = "[a-zA-Z]{0,255}", message = "The name field must not have numbers.")
+		private String name;
+		private String description;
+		private String image;
+		private LocalDateTime createdAt;
+		private LocalDateTime updatedAt;
+		private Boolean deleted;
+	}
 }
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-class CategorySlimDTO {
-	private String name;
-}
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-class CategoryDTO {
-	private Long id;
-	@NotEmpty(message = "The name field is required.")
-	@Pattern(regexp = "[a-zA-Z]{0,255}", message = "The name field must not have numbers.")
-	private String name;
-	private String description;
-	private String image;
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
-	private Boolean deleted;
-}
