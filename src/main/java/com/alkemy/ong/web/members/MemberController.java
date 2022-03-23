@@ -2,7 +2,7 @@ package com.alkemy.ong.web.members;
 
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
-import com.alkemy.ong.utils.Utils;
+import com.alkemy.ong.web.utils.WebUtils;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +50,7 @@ public class MemberController {
 
     @PutMapping("members/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody MemberDTO member) {
-        Utils.validation(id, member.getId());
+        WebUtils.validateDtoIdWithBodyId(id, member.getId());
         return ResponseEntity.ok(toDTO(memberService.update(toModel(member))));
     }
 

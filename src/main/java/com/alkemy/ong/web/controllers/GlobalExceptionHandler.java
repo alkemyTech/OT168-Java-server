@@ -1,6 +1,7 @@
 package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.exceptions.WebRequestException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +35,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NullPointerException.class)
+    @ExceptionHandler(WebRequestException.class)
     protected ResponseEntity<Object> handleComparatorConflict(
             RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, "PathId does not match with RequestRody ID.",
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        return handleExceptionInternal(ex, ex.getMessage(),
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }
