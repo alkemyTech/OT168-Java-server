@@ -25,7 +25,7 @@ public class ContactController {
     @GetMapping()
     public ResponseEntity<List<ContactDTO>> getAllContacts() throws Exception {
         return ResponseEntity.ok(contactService.getContacts().stream()
-                .map(c -> toDto(c))
+                .map(this::toDto)
                 .collect(toList()));
     }
 

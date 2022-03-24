@@ -23,7 +23,7 @@ public class DefaultContactGateway implements ContactGateway {
     @Override
     public List<Contact> findAll() {
         return contactRepository.findAll().stream()
-                .map(c -> toModel(c))
+                .map(this::toModel)
                 .collect(toList());
     }
 

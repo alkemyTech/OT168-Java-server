@@ -15,7 +15,4 @@ public class CommentService {
         return commentGateway.save(comment);
     }
 
-    public Comment findById(Long id) {
-        return commentGateway.findById(id);
-    }
 }

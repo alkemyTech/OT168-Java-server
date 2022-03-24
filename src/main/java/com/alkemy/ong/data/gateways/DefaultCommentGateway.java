@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.data.entities.ActivityEntity;
 import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.data.entities.UserEntity;
@@ -9,6 +10,7 @@ import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.domain.comment.Comment;
 import com.alkemy.ong.domain.comment.CommentGateway;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.web.utils.WebUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,16 +31,12 @@ public class DefaultCommentGateway implements CommentGateway {
         return toModel(commentRepository.save(toEntity(comment)));
     }
 
-    public Comment findById(Long id){
-        return toModel(commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist.")));
-    }
-
     private UserEntity getUserEntity(Long id){
-      return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The User ID doesn't exist."));
+      return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, "user"));
     }
 
     private NewsEntity getNewsEntity(Long newsId){
-        return newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("The news ID doesn't exist."));
+        return newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException(newsId, "news"));
     }
 
     private CommentEntity toEntity (Comment comment){
