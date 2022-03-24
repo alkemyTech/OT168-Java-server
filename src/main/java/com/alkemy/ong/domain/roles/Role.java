@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class Role implements Serializable{
+public class Role{
 
     private Long id;
     private String name;
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean deletedAt;
+    private Boolean deleted;
 
 }

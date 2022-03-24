@@ -2,7 +2,6 @@ package com.alkemy.ong.domain.members;
 
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
