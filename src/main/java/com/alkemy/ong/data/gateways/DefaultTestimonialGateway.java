@@ -2,10 +2,12 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.TestimonialEntity;
 import com.alkemy.ong.data.repositories.TestimonialRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialGateway;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
 
 @Component
 public class DefaultTestimonialGateway implements TestimonialGateway {
@@ -17,8 +19,17 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
     }
 
     @SneakyThrows
-    public Testimonial save(Testimonial testimonial){
-            return toModel(testimonialRepository.save(toEntity(testimonial)));
+    public Testimonial save(Testimonial testimonial) {
+        return toModel(testimonialRepository.save(toEntity(testimonial)));
+    }
+
+    public Testimonial update(Long id, Testimonial testimonial) {
+        TestimonialEntity entity = testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        entity.setName(testimonial.getName());
+        entity.setContent(testimonial.getContent());
+        entity.setImage(testimonial.getImage());
+        entity.setUpdatedAt(LocalDateTime.now());
+        return toModel(testimonialRepository.save(entity));
     }
 
     private Testimonial toModel(TestimonialEntity testimonialEntity) {
@@ -43,9 +54,9 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
                 .updatedAt(testimonialModel.getUpdatedAt())
                 .deleted(testimonialModel.getDeleted())
                 .build();
-            if (testimonialModel.getDeleted() == null) {
-                testimonial.setDeleted(false);
-            }
-            return testimonial;
+        if (testimonialModel.getDeleted() == null) {
+            testimonial.setDeleted(false);
+        }
+        return testimonial;
     }
 }
