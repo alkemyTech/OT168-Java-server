@@ -1,15 +1,12 @@
 package com.alkemy.ong.data.repositories;
 
 import com.alkemy.ong.data.entities.MemberEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<MemberEntity,Long> {
-
-    Page<MemberEntity> findAll(Pageable pageable);
+@Repository
+public interface MemberRepository extends BaseRepository<MemberEntity,Long> {
     MemberEntity save(MemberEntity member);
     Optional<MemberEntity> findById(Long aLong);
     void deleteById(Long id);
