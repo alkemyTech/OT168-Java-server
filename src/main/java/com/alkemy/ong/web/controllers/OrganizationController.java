@@ -35,6 +35,15 @@ public class OrganizationController {
         return  ResponseEntity.ok(organization);
     }
 
+    @PatchMapping("/public/{id}")
+    public ResponseEntity<SocialDto> updateSocial(@PathVariable Long id, @RequestBody SocialDto social){
+        if(id !=social.getIdOrganization()) {
+            throw new WebRequestException("ID: " + id + " in Path Variable is different than ID: " + social.getIdOrganization() + " in Body Request.");
+        }
+        SocialDto organization  = toModelSocial(organizationService.updateSocialcontact(toSocialModel(social)));
+        return  ResponseEntity.ok(organization);
+    }
+
     private  OrganizationDTO toDto(Organization organization){
 
         return OrganizationDTO.builder()
@@ -42,6 +51,9 @@ public class OrganizationController {
                                             .image(organization.getImage())
                                             .address(organization.getAddress())
                                             .phone(organization.getPhone())
+                                            .facebookUrl(organization.getFacebookUrl())
+                                            .linkedinUrl(organization.getLinkedinUrl())
+                                            .instagramUrl(organization.getInstagramUrl())
                                             .build();
     }
 
@@ -58,6 +70,9 @@ public class OrganizationController {
                 .createdAt(organization.getCreatedAt())
                 .updatedAt(organization.getUpdatedAt())
                 .deleted(organization.getDeleted())
+                .facebookUrl(organization.getFacebookUrl())
+                .linkedinUrl(organization.getLinkedinUrl())
+                .instagramUrl(organization.getInstagramUrl())
                 .build();
     }
 
@@ -75,8 +90,29 @@ public class OrganizationController {
                 .createdAt(fullDto.getCreatedAt())
                 .updatedAt(fullDto.getUpdatedAt())
                 .deleted(fullDto.getDeleted())
+                .facebookUrl(fullDto.getFacebookUrl())
+                .linkedinUrl(fullDto.getLinkedinUrl())
+                .instagramUrl(fullDto.getInstagramUrl())
                 .build();
 
+    }
+
+    private Organization toSocialModel(SocialDto social){
+        return Organization.builder()
+                .idOrganization(social.getIdOrganization())
+                .facebookUrl(social.getFacebookUrl())
+                .linkedinUrl(social.getLinkedinUrl())
+                .instagramUrl(social.getInstagramUrl())
+                .build();
+    }
+
+    private SocialDto toModelSocial(Organization organization){
+        return SocialDto.builder()
+                .idOrganization(organization.getIdOrganization())
+                .facebookUrl(organization.getFacebookUrl())
+                .linkedinUrl(organization.getLinkedinUrl())
+                .instagramUrl(organization.getInstagramUrl())
+                .build();
     }
 
     @Data
@@ -86,6 +122,9 @@ public class OrganizationController {
         private String image;
         private Long phone;
         private String address;
+        private String facebookUrl;
+        private String linkedinUrl;
+        private String instagramUrl;
     }
 
     @Data
@@ -101,6 +140,17 @@ public class OrganizationController {
         private String welcomeText;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+        private String facebookUrl;
+        private String linkedinUrl;
+        private String instagramUrl;
         private Boolean deleted;
+    }
+    @Data
+    @Builder
+    public static class SocialDto{
+        private Long idOrganization;
+        private String facebookUrl;
+        private String linkedinUrl;
+        private String instagramUrl;
     }
 }

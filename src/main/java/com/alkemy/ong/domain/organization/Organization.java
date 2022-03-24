@@ -17,6 +17,9 @@ public class Organization {
     private String welcomeText;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String facebookUrl;
+    private String linkedinUrl;
+    private String instagramUrl;
     private Boolean deleted;
 
     @Override

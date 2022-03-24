@@ -100,6 +100,9 @@ CREATE TABLE IF NOT EXISTS organizations (
   welcome_text VARCHAR(256) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP,
+  facebook_url VARCHAR(100) DEFAULT NULL,
+  linkedin_url  VARCHAR(100) DEFAULT NULL,
+  instagram_url VARCHAR(100) DEFAULT NULL,
   deleted BIT(1) DEFAULT 0
 );
 
