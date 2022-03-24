@@ -6,3 +6,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
     continue-on-error: true
+amazonProperties:
+      endpointUrl: https://s3.us-east-2.amazonaws.com
+      accessKey: AKIA4D3OFHO5KPZ2DJ5X
+      secretKey: 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
+      bucketName: alkemy-ong168
