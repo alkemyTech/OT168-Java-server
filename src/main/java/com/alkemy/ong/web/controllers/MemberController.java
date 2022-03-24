@@ -3,6 +3,7 @@ package com.alkemy.ong.web.controllers;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
 import com.alkemy.ong.web.utils.WebUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,9 @@ public class MemberController {
 
     @GetMapping("/members")
     public ResponseEntity<List<MemberDTO>> findAll() {
-
         return ResponseEntity.ok().body(memberService.findAll()
                 .stream()
-                .map(m -> toDTO(m))
+                .map(this::toDTO)
                 .collect(toList()));
     }
 
@@ -65,7 +65,6 @@ public class MemberController {
                 .description(member.getDescription())
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
-                .deleted(member.getDeleted())
                 .build();
     }
 
@@ -80,7 +79,6 @@ public class MemberController {
                 .description(memberDTO.getDescription())
                 .createdAt(memberDTO.getCreatedAt())
                 .updatedAt(memberDTO.getUpdatedAt())
-                .deleted(memberDTO.getDeleted())
                 .build();
     }
 
@@ -102,8 +100,9 @@ public class MemberController {
         private String linkedinUrl;
         private String image;
         private String description;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
-        private Boolean deleted;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private LocalDateTime updatedAt;;
     }
 }
