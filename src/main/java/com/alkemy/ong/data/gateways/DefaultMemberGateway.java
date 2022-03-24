@@ -24,7 +24,7 @@ public class DefaultMemberGateway implements MemberGateway {
     @Override
     public List<Member> findAll() {
         return memberRepository.findAll().stream()
-                .map(m -> toModel(m))
+                .map(this::toModel)
                 .collect(toList());
     }
 
@@ -62,7 +62,6 @@ public class DefaultMemberGateway implements MemberGateway {
                 .description(memberEntity.getDescription())
                 .createdAt(memberEntity.getCreatedAt())
                 .updatedAt(memberEntity.getUpdatedAt())
-                .deleted(memberEntity.getDeleted())
                 .build();
     }
 
