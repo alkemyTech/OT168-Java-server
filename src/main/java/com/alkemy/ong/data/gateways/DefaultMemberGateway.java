@@ -6,6 +6,7 @@ import com.alkemy.ong.domain.members.MemberGateway;
 
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.repositories.MemberRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,9 +23,11 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
-    public List<Member> findAll() {
-        return memberRepository.findAll().stream()
-                .map(m -> toModel(m))
+    public List<Member> findAll(Pageable pageable) {
+        return memberRepository.findAll(pageable)
+                .getContent()
+                .stream()
+                .map(this::toModel)
                 .collect(toList());
     }
 
