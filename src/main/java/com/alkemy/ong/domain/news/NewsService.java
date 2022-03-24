@@ -22,4 +22,8 @@ public class NewsService {
         return newsGateway.updateNews(newsId, news);
     }
 
+    public void deleteNews(Long newsId){
+        newsGateway.deleteNews(newsId);
+    }
+
 }

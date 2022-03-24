@@ -39,6 +39,13 @@ public class DefaultNewsGateway implements NewsGateway {
         return toModel(newsRepository.save(toEntity(news)));
     }
 
+    @Override
+    public void deleteNews(Long newsId) {
+        newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        newsRepository.deleteById(newsId);
+    }
+
+
     private NewsEntity toEntity(News news) {
         return NewsEntity.builder()
                 .newsId(news.getNewsId())

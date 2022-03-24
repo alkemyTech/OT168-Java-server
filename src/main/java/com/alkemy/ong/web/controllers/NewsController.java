@@ -32,13 +32,19 @@ public class NewsController {
 
     @PostMapping
     public ResponseEntity<NewsDTO> saveNews(@Valid @RequestBody NewsDTO newsDTO) {
-        newsService.saveNews(toModel(newsDTO));
-        return ResponseEntity.status(HttpStatus.CREATED).body(newsDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newsService.saveNews(toModel(newsDTO))));
     }
+
 
     @PutMapping("/{newsId}")
     public ResponseEntity<NewsDTO> updateNews(@PathVariable Long newsId, @Valid @RequestBody NewsDTO newsDTO){
         return ResponseEntity.ok(toDTO(newsService.updateNews(newsId, toModel(newsDTO))));
+    }
+
+    @DeleteMapping("/{newsId}")
+    public ResponseEntity<Void> deleteNews(@PathVariable Long newsId){
+        newsService.deleteNews(newsId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     private News toModel(NewsDTO newsDTO) {
