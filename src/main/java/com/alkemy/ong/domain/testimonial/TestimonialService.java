@@ -16,4 +16,6 @@ public class TestimonialService {
     public Testimonial update(Long id, Testimonial testimonial){ return testimonialGateway.update(id, testimonial);}
 
     public void delete(Long id){testimonialGateway.delete(id);}
+
+    public TestimonialPage findAll(Integer page){return testimonialGateway.findAll(page);}
 }

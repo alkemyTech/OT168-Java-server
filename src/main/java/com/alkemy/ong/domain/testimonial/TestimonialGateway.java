@@ -7,4 +7,6 @@ public interface TestimonialGateway {
     Testimonial update(Long id, Testimonial testimonial);
 
     void delete(Long id);
+
+    TestimonialPage findAll(Integer page);
 }

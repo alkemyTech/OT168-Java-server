@@ -1,8 +1,10 @@
 package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.testimonial.Testimonial;
+import com.alkemy.ong.domain.testimonial.TestimonialPage;
 import com.alkemy.ong.domain.testimonial.TestimonialService;
 import com.alkemy.ong.web.utils.WebUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/testimonials")
@@ -39,6 +43,11 @@ public class TestimonialController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @GetMapping
+    public ResponseEntity findAll(@RequestParam("page") Integer page) {
+        return new ResponseEntity<>(toPageDto(testimonialService.findAll(page)), HttpStatus.OK);
+    }
+
     private Testimonial toModel(TestimonialDTO testimonialDTO) {
         return Testimonial.builder()
                 .id(testimonialDTO.getId())
@@ -63,12 +72,24 @@ public class TestimonialController {
                 .build();
     }
 
+    private List<TestimonialDTO> toDTOList(List<Testimonial> testimonialList) {
+        return testimonialList.stream().map(testimonial -> toDto(testimonial)).collect(Collectors.toList());
+    }
+
+    private TestimonialPageDTO toPageDto(TestimonialPage testimonialPage) {
+        TestimonialPageDTO testimonialPageDTO = new TestimonialPageDTO();
+        testimonialPageDTO.setPreviousPage(testimonialPage.getPreviousPage());
+        testimonialPageDTO.setNextPage(testimonialPage.getNextPage());
+        testimonialPageDTO.setTestimonialDtoList(toDTOList(testimonialPage.getTestimonialList()));
+        return testimonialPageDTO;
+    }
+
     @Getter
     @Setter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class TestimonialDTO{
+    private static class TestimonialDTO {
         private Long id;
 
         @NotNull(message = "Field 'name' is required.")
@@ -84,5 +105,35 @@ public class TestimonialController {
         private LocalDateTime updatedAt;
 
         private Boolean deleted;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class TestimonialPageDTO {
+
+        @JsonProperty("testimonialList")
+        private List<TestimonialDTO> testimonialDtoList;
+
+        private String previousPage;
+
+        private String nextPage;
+
+        public void setPreviousPage(String previousPage) {
+            if (previousPage != null) {
+                this.previousPage = "/testimonials?page=" + previousPage;
+            } else {
+                this.previousPage = "";
+            }
+        }
+
+        public void setNextPage(String nextPage) {
+            if (nextPage != null) {
+                this.nextPage = "/testimonials?page=" + nextPage;
+            } else {
+                this.nextPage = "";
+            }
+        }
     }
 }
