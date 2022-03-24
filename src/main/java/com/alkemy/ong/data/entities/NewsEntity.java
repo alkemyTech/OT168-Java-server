@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE news SET status = false WHERE newsId = ?")
+@SQLDelete(sql = "UPDATE news SET deleted = true WHERE news_id = ?")
 @Where(clause = "deleted = false")
 @Table(name = "news", schema = "alkemy_ong")
 public class NewsEntity {
