@@ -33,6 +33,12 @@ public class TestimonialController {
         return new ResponseEntity<>(toDto(testimonialService.update(id, toModel(testimonialDTO))), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        testimonialService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     private Testimonial toModel(TestimonialDTO testimonialDTO) {
         return Testimonial.builder()
                 .id(testimonialDTO.getId())

@@ -32,6 +32,11 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
         return toModel(testimonialRepository.save(entity));
     }
 
+    public void delete(Long id) {
+        testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        testimonialRepository.deleteById(id);
+    }
+
     private Testimonial toModel(TestimonialEntity testimonialEntity) {
         return Testimonial.builder()
                 .id(testimonialEntity.getId())
