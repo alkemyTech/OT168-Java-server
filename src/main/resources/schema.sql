@@ -28,10 +28,10 @@ CREATE TABLE `alkemy_ong`.`users`
     `createdat` TIMESTAMP    DEFAULT NOW(),
     `updatedat`  TIMESTAMP    DEFAULT NOW(),
     `deleted`   BIT          DEFAULT 0,
-    `roleEntity`   BIGINT(255)        NOT NULL,
+    `role_id`   BIGINT(255)        NOT NULL,
     PRIMARY KEY (`id`),
-    KEY `FK_role` (`roleEntity`),
-    CONSTRAINT `FK_role` FOREIGN KEY (`roleEntity`) REFERENCES `alkemy_ong`.`roles` (`id`)
+    KEY `FK_role` (`role_id`),
+    CONSTRAINT `FK_role` FOREIGN KEY (`role_id`) REFERENCES `alkemy_ong`.`roles` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
@@ -132,4 +132,17 @@ CREATE TABLE IF NOT EXISTS alkemy_ong.categories (
   `created_at` TIMESTAMP DEFAULT NOW(),
   `updated_at` TIMESTAMP,
   `deleted` BOOLEAN DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `body` VARCHAR(250) NOT NULL,
+  `user_id` BIGINT NOT NULL,
+  `news_id` BIGINT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `deleted` BOOLEAN DEFAULT 0,
+  PRIMARY KEY (id),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`news_id`) REFERENCES `news` (`news_id`)
 );
