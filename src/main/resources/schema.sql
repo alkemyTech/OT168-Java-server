@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS activities (
   `content` TEXT NOT NULL,
   `image` VARCHAR(250) NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `deleted` BOOLEAN DEFAULT 0,
   PRIMARY KEY (id)
 );
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS contacts (
   `email` VARCHAR(250) NOT NULL,
   `message`  TEXT NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `deleted` BOOLEAN DEFAULT 0,
   PRIMARY KEY (id)
 );
@@ -98,9 +98,9 @@ CREATE TABLE IF NOT EXISTS organizations (
   email VARCHAR(60) NOT NULL,
   about_us_text VARCHAR(256) NULL,
   welcome_text VARCHAR(256) NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL,
-  deleted BIT(1) NOT NULL DEFAULT 0
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP,
+  deleted BIT(1) DEFAULT 0
 );
 
 CREATE TABLE if NOT EXISTS slides (
@@ -108,9 +108,9 @@ CREATE TABLE if NOT EXISTS slides (
     image_url VARCHAR(256) NOT NULL,
     text VARCHAR(256),
     slide_order INT NOT NULL, -- 'order' is a keyword in mySQL
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL,
-    deleted BIT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP,
+    deleted BIT(1) DEFAULT 0,
     organization_id BIGINT unsigned NOT NULL
 );
 
@@ -121,7 +121,7 @@ image VARCHAR (255),
 content VARCHAR (255),
 created_at TIMESTAMP DEFAULT NOW(),
 updated_at TIMESTAMP,
-deleted TINYINT(1)
+deleted BIT(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS alkemy_ong.categories (
@@ -131,5 +131,5 @@ CREATE TABLE IF NOT EXISTS alkemy_ong.categories (
   `image` VARCHAR(255),
   `created_at` TIMESTAMP DEFAULT NOW(),
   `updated_at` TIMESTAMP,
-  `deleted` TINYINT
+  `deleted` BOOLEAN DEFAULT 0
 );

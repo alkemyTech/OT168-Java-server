@@ -24,15 +24,13 @@ public class ContactController {
 
     @GetMapping()
     public ResponseEntity<List<ContactDTO>> getAllContacts() throws Exception {
-        List<ContactDTO> dto;
-           dto = contactService.getContacts().stream()
-                    .map(c -> toDto(c))
-                    .collect(toList());
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(contactService.getContacts().stream()
+                .map(c -> toDto(c))
+                .collect(toList()));
     }
 
     private ContactDTO toDto (Contact contact){
-        ContactDTO c = ContactDTO.builder()
+        return ContactDTO.builder()
                 .id(contact.getId())
                 .name(contact.getName())
                 .phone(contact.getPhone())
@@ -40,24 +38,21 @@ public class ContactController {
                 .message(contact.getMessage())
                 .createdAt(contact.getCreatedAt())
                 .updatedAt(contact.getUpdatedAt())
-                .deleted(contact.getDeleted())
                 .build();
-        return c;
     }
-}
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-class ContactDTO{
-    private Long id;
-    private String name;
-    private String phone;
-    private String email;
-    private String message;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Boolean deleted;
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class ContactDTO{
+        private Long id;
+        private String name;
+        private String phone;
+        private String email;
+        private String message;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
 }
