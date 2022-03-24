@@ -14,4 +14,8 @@ public class OrganizationService {
     public Organization findById(Long id){
         return organizationGateway.findById(id);
     }
+
+    public Organization updateOrganization(Organization organization){
+        return organizationGateway.updateOrganization(organization);
+    }
 }
