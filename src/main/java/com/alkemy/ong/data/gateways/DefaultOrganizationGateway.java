@@ -24,6 +24,13 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
         return toModel(organizationEntity);
     }
 
+    @Override
+    public Organization updateOrganization(Organization organization) {
+        OrganizationEntity entity = organizationRepository.findById(organization.getIdOrganization())
+                .orElseThrow(()-> new ResourceNotFoundException("No organization with id: " + organization.getIdOrganization() + " exists."));
+        return toModel(organizationRepository.save(updateEntity(entity, organization)));
+    }
+
     public static Organization toModel(OrganizationEntity entity){
         return Organization.builder()
                                                 .idOrganization(entity.getIdOrganization())
@@ -38,5 +45,20 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
                                                 .updatedAt(entity.getUpdatedAt())
                                                 .deleted(entity.getDeleted())
                                                 .build();
+    }
+
+    private OrganizationEntity updateEntity (OrganizationEntity entity, Organization organization){
+        entity.setIdOrganization(organization.getIdOrganization());
+        entity.setName(organization.getName());
+        entity.setImage(organization.getImage());
+        entity.setAddress(organization.getAddress());
+        entity.setPhone(organization.getPhone());
+        entity.setEmail(organization.getEmail());
+        entity.setAboutUsText(organization.getAboutUsText());
+        entity.setWelcomeText(organization.getWelcomeText());
+        entity.setCreatedAt(entity.getCreatedAt());
+        entity.setUpdatedAt(organization.getUpdatedAt());
+        entity.setDeleted(Boolean.FALSE);
+        return entity;
     }
 }
