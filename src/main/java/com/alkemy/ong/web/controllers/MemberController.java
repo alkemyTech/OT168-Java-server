@@ -28,15 +28,12 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<PageMemberDTO> findAll(@RequestParam("page") Integer numberPage) {
+    public ResponseEntity<MemberPageDTO> findAll(@RequestParam("page") Integer numberPage) {
         return ResponseEntity.ok().body(toMemberPageDTO(memberService.findAll(numberPage)));
     }
 
     @PostMapping("/members")
     public ResponseEntity<MemberDTO> save(@Valid @RequestBody MemberDTO memberDTO) {
-        for(int i = 0; i<11; i++){
-            memberService.save(toModel(memberDTO));
-        }
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(toDTO(memberService.save(toModel(memberDTO))));
@@ -84,8 +81,8 @@ public class MemberController {
                 .build();
     }
 
-    private PageMemberDTO toMemberPageDTO(MemberPage memberPage) {
-        return PageMemberDTO.builder()
+    private MemberPageDTO toMemberPageDTO(MemberPage memberPage) {
+        return MemberPageDTO.builder()
                 .members(memberPage.getMemberList().stream().map(this::toDTO).collect(toList()))
                 .nextPage(memberPage.getNextPage())
                 .previuosPage(memberPage.getPreviuosPage())
@@ -120,7 +117,7 @@ public class MemberController {
     @Getter
     @Setter
     @Builder
-    private static class PageMemberDTO {
+    private static class MemberPageDTO {
         private List<MemberDTO> members;
         private String previuosPage;
         private String nextPage;

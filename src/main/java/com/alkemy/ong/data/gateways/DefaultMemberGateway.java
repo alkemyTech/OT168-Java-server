@@ -7,10 +7,9 @@ import com.alkemy.ong.domain.members.MemberGateway;
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.repositories.MemberRepository;
 import com.alkemy.ong.domain.members.MemberPage;
-import com.alkemy.ong.domain.pagination.GenericModelPage;
-import com.alkemy.ong.domain.pagination.Pagination;
+import com.alkemy.ong.data.GenericModelPage;
+import com.alkemy.ong.data.utils.DataUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
@@ -27,17 +26,9 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public MemberPage findAll(Integer pageNumber) {
-        GenericModelPage<MemberEntity,Member> genericModelPage = generatePagination(memberRepository.findAll(PageRequest.of(pageNumber, 10)));
-        Page<MemberEntity> entities = memberRepository.findAll(PageRequest.of(pageNumber, 10));
-        Page<Member> models;
-
-        MemberPage memberPage =  MemberPage.builder()
-                .memberList(genericModelPage.getListModel())
-                .nextPage(genericModelPage.getNextPage())
-                .previuosPage(genericModelPage.getPreviousPage())
-                .build();
-
-        return memberPage;
+        GenericModelPage<MemberEntity,Member> genericModelPage = generatePagination(memberRepository
+                .findAll(PageRequest.of(pageNumber, 10)));
+        return toMemberPage(genericModelPage);
     }
 
     @Override
@@ -101,15 +92,23 @@ public class DefaultMemberGateway implements MemberGateway {
         return memberEntity;
     }
 
+    private MemberPage toMemberPage(GenericModelPage genericModelPage){
+        return MemberPage.builder()
+                .memberList(genericModelPage.getListModel())
+                .nextPage(genericModelPage.getNextPage())
+                .previuosPage(genericModelPage.getPreviousPage())
+                .build();
+    }
+
     private GenericModelPage<MemberEntity, Member> generatePagination(Page<MemberEntity> pageEntity){
         GenericModelPage<MemberEntity,Member> genericModelPage = new GenericModelPage<>();
-        genericModelPage.setModelPage(pageEntity);
+        genericModelPage.setEntityPage(pageEntity);
         genericModelPage.setListModel(pageEntity
                 .getContent()
                 .stream()
                 .map(this::toModel)
                 .collect(toList()));
-        Pagination.findAll(pageEntity.getNumber(), genericModelPage,"/members?page=");
+        DataUtils.setPagesNumbers(pageEntity.getNumber(), genericModelPage,"/members?page=");
         return genericModelPage;
     }
 }
