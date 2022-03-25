@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("/comments")
 public class CommentController {
+
     private final CommentService commentService;
 
     public CommentController(CommentService commentService) {
@@ -26,6 +27,7 @@ public class CommentController {
     public ResponseEntity<CommentDTO> saveComment(@Valid @RequestBody CommentDTO commentDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(commentService.saveComment(toModel(commentDTO))));
     }
+
     private Comment toModel(CommentDTO commentDTO){
         return Comment.builder()
                 .body(commentDTO.getBody())
