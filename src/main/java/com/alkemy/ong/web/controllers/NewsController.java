@@ -2,6 +2,7 @@ package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,15 +76,22 @@ public class NewsController {
     @NoArgsConstructor
     private static class NewsDTO {
 
+        @ApiModelProperty(value = "ID", required = true)
         private Long newsId;
+        @ApiModelProperty(value = "Name", required = true)
         @NotEmpty(message = "The name field cannot be empty.")
         private String name;
+        @ApiModelProperty(value = "Content", required = true)
         @NotEmpty(message = "The content field cannot be empty.")
         private String content;
+        @ApiModelProperty(value = "Image", required = true)
         @NotEmpty(message = "The image field cannot be empty.")
         private String image;
+        @ApiModelProperty(value = "Creation Date", required = true)
         private LocalDateTime createdAt;
+        @ApiModelProperty(value = "Modification Date", required = true)
         private LocalDateTime updatedAt;
+        @ApiModelProperty(value = "Type", required = true)
         private String type = "news";
     }
 }
