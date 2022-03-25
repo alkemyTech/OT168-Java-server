@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -26,8 +28,8 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public MemberPage findAll(Integer pageNumber) {
-        GenericModelPage<MemberEntity,Member> genericModelPage = generatePagination(memberRepository
-                .findAll(PageRequest.of(pageNumber, 10)));
+        GenericModelPage<MemberEntity> genericModelPage = DataUtils.generatePagination(memberRepository
+                .findAll(PageRequest.of(pageNumber, 10)),"/members?page=");
         return toMemberPage(genericModelPage);
     }
 
@@ -52,6 +54,16 @@ public class DefaultMemberGateway implements MemberGateway {
     public Member update(Member member) {
         MemberEntity memberEntity = toEntity(findById(member.getId()));
         return toModel(memberRepository.save(toUpdate(memberEntity, member)));
+    }
+
+    private MemberPage toMemberPage(GenericModelPage<MemberEntity> genericModelPage){
+        return MemberPage.builder()
+                .memberList(genericModelPage.getEntityPage()
+                        .getContent().stream().map(this::toModel).collect(toList()))
+                .nextPage(genericModelPage.getNextPage())
+                .previuosPage(genericModelPage.getPreviousPage())
+                .build();
+
     }
 
     private Member toModel(MemberEntity memberEntity) {
@@ -92,23 +104,6 @@ public class DefaultMemberGateway implements MemberGateway {
         return memberEntity;
     }
 
-    private MemberPage toMemberPage(GenericModelPage genericModelPage){
-        return MemberPage.builder()
-                .memberList(genericModelPage.getListModel())
-                .nextPage(genericModelPage.getNextPage())
-                .previuosPage(genericModelPage.getPreviousPage())
-                .build();
-    }
 
-    private GenericModelPage<MemberEntity, Member> generatePagination(Page<MemberEntity> pageEntity){
-        GenericModelPage<MemberEntity,Member> genericModelPage = new GenericModelPage<>();
-        genericModelPage.setEntityPage(pageEntity);
-        genericModelPage.setListModel(pageEntity
-                .getContent()
-                .stream()
-                .map(this::toModel)
-                .collect(toList()));
-        DataUtils.setPagesNumbers(pageEntity.getNumber(), genericModelPage,"/members?page=");
-        return genericModelPage;
-    }
+
 }

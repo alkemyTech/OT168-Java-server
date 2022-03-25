@@ -10,9 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class GenericModelPage<T,S> {
+public class GenericModelPage<T> {
     private Page<T> entityPage;
-    private List<S> listModel;
+    //private List<S> listModel;
     private String nextPage;
     private String previousPage;
 }
