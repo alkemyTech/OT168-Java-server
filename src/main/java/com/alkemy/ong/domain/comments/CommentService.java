@@ -23,4 +23,11 @@ public class CommentService {
 		return commentGateway.findAll().stream().sorted(Comparator.comparing(Comment::getCreatedAt)).collect(toList());
 	}
 
+    public Comment findById(Long id) {
+        return commentGateway.findById(id);
+    }
+
+    public Comment updateComment(Long id, Comment comment){
+        return commentGateway.update(id, comment);
+    }
 }

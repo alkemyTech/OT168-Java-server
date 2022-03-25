@@ -2,6 +2,7 @@ package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentService;
+import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
+
+import static com.alkemy.ong.web.utils.WebUtils.*;
 
 @Controller
 @RequestMapping("/comments")
@@ -41,6 +44,12 @@ public class CommentController {
     private CommentSlimDTO toSlimDTO(Comment comment) {
     	CommentSlimDTO newCommentSlimDTO = CommentSlimDTO.builder().body(comment.getBody()).build();
     	return newCommentSlimDTO;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CommentDTO> updateComment(@PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO){
+        validateDtoIdWithBodyId(id, commentDTO.getId());
+        return ResponseEntity.ok(toDTO(commentService.updateComment(id, toModel(commentDTO))));
     }
 
     private Comment toModel(CommentDTO commentDTO){

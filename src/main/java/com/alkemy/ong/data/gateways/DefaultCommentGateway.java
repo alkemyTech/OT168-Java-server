@@ -48,6 +48,19 @@ public class DefaultCommentGateway implements CommentGateway {
         return newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException(newsId, "news"));
     }
 
+    @Override
+    public Comment update(Long id, Comment comment) {
+        CommentEntity updateComment = commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, "comment"));
+        updateComment.setBody(comment.getBody());
+        updateComment.setUserEntity(getUserEntity(comment.getUserId()));
+        updateComment.setNewsEntity(getNewsEntity(comment.getNewsId()));
+        return toModel(commentRepository.save(updateComment));
+    }
+
+    public Comment findById(Long id){
+        return toModel(commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, "comment")));
+    }
+
     private CommentEntity toEntity (Comment comment){
         return CommentEntity.builder()
                 .id(comment.getId())
