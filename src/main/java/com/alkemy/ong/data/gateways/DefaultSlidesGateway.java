@@ -41,9 +41,6 @@ public class DefaultSlidesGateway implements SlidesGateway {
                 .imageUrl(entity.getImageUrl())
                 .text(entity.getText())
                 .order(entity.getOrder())
-                //.deleted(entity.getDeleted())
-                //.createdAt(entity.getCreatedAt())
-                //.updatedAt(entity.getUpdatedAt())
                 .organization(DefaultOrganizationGateway.toModel(entity.getOrganization()))
                 .build();
     }
