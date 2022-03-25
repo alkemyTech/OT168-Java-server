@@ -1,8 +1,8 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.exceptions.WebRequestException;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationService;
+import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
@@ -28,25 +28,22 @@ public class OrganizationController {
 
     @PutMapping("/public/{id}")
     public ResponseEntity<OrganizationFullDTO> update(@PathVariable Long id, @RequestBody OrganizationFullDTO fullDTO){
-        if(id !=fullDTO.getIdOrganization()) {
-            throw new WebRequestException("ID: " + id + " in Path Variable is different than ID: " + fullDTO.getIdOrganization() + " in Body Request.");
-        }
-        OrganizationFullDTO organization  = toFullDto(organizationService.updateOrganization(toModel(fullDTO)));
+        WebUtils.validateDtoIdWithBodyId(id, fullDTO.getIdOrganization());
+        OrganizationFullDTO organization  = toFullDto(organizationService.updateOrganization(toFullModel(fullDTO)));
         return  ResponseEntity.ok(organization);
     }
 
     @PatchMapping("/public/{id}")
-    public ResponseEntity<SocialDto> updateSocial(@PathVariable Long id, @RequestBody SocialDto social){
-        if(id !=social.getIdOrganization()) {
-            throw new WebRequestException("ID: " + id + " in Path Variable is different than ID: " + social.getIdOrganization() + " in Body Request.");
-        }
-        SocialDto organization  = toModelSocial(organizationService.updateSocialcontact(toSocialModel(social)));
-        return  ResponseEntity.ok(organization);
+    public ResponseEntity<OrganizationDTO> updateSocial(@PathVariable Long id, @RequestBody OrganizationDTO organization){
+        WebUtils.validateDtoIdWithBodyId(id, organization.getIdOrganization());
+        OrganizationDTO organizationDto  = toDto(organizationService.updateSocialcontact(toModel(organization)));
+        return  ResponseEntity.ok(organizationDto);
     }
 
-    private  OrganizationDTO toDto(Organization organization){
+    private OrganizationDTO toDto(Organization organization){
 
         return OrganizationDTO.builder()
+                                            .idOrganization(organization.getIdOrganization())
                                             .name(organization.getName())
                                             .image(organization.getImage())
                                             .address(organization.getAddress())
@@ -55,6 +52,18 @@ public class OrganizationController {
                                             .linkedinUrl(organization.getLinkedinUrl())
                                             .instagramUrl(organization.getInstagramUrl())
                                             .build();
+    }
+    private Organization toModel(OrganizationDTO organization){
+        return Organization.builder()
+                .idOrganization(organization.getIdOrganization())
+                .name(organization.getName())
+                .image(organization.getImage())
+                .phone(organization.getPhone())
+                .address(organization.getAddress())
+                .facebookUrl(organization.getFacebookUrl())
+                .linkedinUrl(organization.getLinkedinUrl())
+                .instagramUrl(organization.getInstagramUrl())
+                .build();
     }
 
     public static OrganizationFullDTO toFullDto(Organization organization){
@@ -76,7 +85,7 @@ public class OrganizationController {
                 .build();
     }
 
-    private Organization toModel(OrganizationFullDTO fullDto){
+    private Organization toFullModel(OrganizationFullDTO fullDto){
 
         return Organization.builder()
                 .idOrganization(fullDto.getIdOrganization())
@@ -94,30 +103,12 @@ public class OrganizationController {
                 .linkedinUrl(fullDto.getLinkedinUrl())
                 .instagramUrl(fullDto.getInstagramUrl())
                 .build();
-
-    }
-
-    private Organization toSocialModel(SocialDto social){
-        return Organization.builder()
-                .idOrganization(social.getIdOrganization())
-                .facebookUrl(social.getFacebookUrl())
-                .linkedinUrl(social.getLinkedinUrl())
-                .instagramUrl(social.getInstagramUrl())
-                .build();
-    }
-
-    private SocialDto toModelSocial(Organization organization){
-        return SocialDto.builder()
-                .idOrganization(organization.getIdOrganization())
-                .facebookUrl(organization.getFacebookUrl())
-                .linkedinUrl(organization.getLinkedinUrl())
-                .instagramUrl(organization.getInstagramUrl())
-                .build();
     }
 
     @Data
     @Builder
     public static class OrganizationDTO{
+        private Long idOrganization;
         private String name;
         private String image;
         private Long phone;
@@ -144,13 +135,5 @@ public class OrganizationController {
         private String linkedinUrl;
         private String instagramUrl;
         private Boolean deleted;
-    }
-    @Data
-    @Builder
-    public static class SocialDto{
-        private Long idOrganization;
-        private String facebookUrl;
-        private String linkedinUrl;
-        private String instagramUrl;
     }
 }
