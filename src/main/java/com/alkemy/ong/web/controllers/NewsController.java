@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("api/news")
+@RequestMapping("/news")
 public class NewsController {
 
     private final NewsService newsService;
