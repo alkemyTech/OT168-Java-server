@@ -1,7 +1,8 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.activity.Activity;
-import com.alkemy.ong.domain.activity.ActivityService;
+import com.alkemy.ong.domain.activities.Activity;
+import com.alkemy.ong.domain.activities.ActivityService;
+import com.alkemy.ong.web.utils.WebUtils;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ public class ActivityController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ActivityDTO> updateActivity(@PathVariable Long id, @Valid @RequestBody ActivityDTO activityDTO){
+        WebUtils.validateDtoIdWithBodyId(id, activityDTO.getId());
         return ResponseEntity.ok(toDTO(activityService.updateActivity(id, toModel(activityDTO))));
     }
 

@@ -1,7 +1,7 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.contact.Contact;
-import com.alkemy.ong.domain.contact.ContactService;
+import com.alkemy.ong.domain.contacts.Contact;
+import com.alkemy.ong.domain.contacts.ContactService;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ public class ContactController {
     @GetMapping()
     public ResponseEntity<List<ContactDTO>> getAllContacts() throws Exception {
         return ResponseEntity.ok(contactService.getContacts().stream()
-                .map(c -> toDto(c))
+                .map(this::toDto)
                 .collect(toList()));
     }
 

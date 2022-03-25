@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.contact;
+package com.alkemy.ong.domain.contacts;
 
 import java.util.List;
 
