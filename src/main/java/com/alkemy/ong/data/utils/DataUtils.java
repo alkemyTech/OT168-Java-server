@@ -10,7 +10,7 @@ public class DataUtils {
             if (pageModel.getEntityPage().hasNext()) {
                 pageModel.setNextPage(path.concat(String.valueOf(pageNumber + 1)));
             } else {
-                pageModel.setNextPage("This is the las page");
+                pageModel.setNextPage("This is the last page");
             }
             if (pageModel.getEntityPage().hasPrevious()) {
                 pageModel.setPreviousPage(path.concat(String.valueOf(pageNumber - 1)));
