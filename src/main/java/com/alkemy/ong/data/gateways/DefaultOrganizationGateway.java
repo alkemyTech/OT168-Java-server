@@ -48,9 +48,6 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
                                                 .email(entity.getEmail())
                                                 .aboutUsText(entity.getAboutUsText())
                                                 .welcomeText(entity.getWelcomeText())
-                                                .createdAt(entity.getCreatedAt())
-                                                .updatedAt(entity.getUpdatedAt())
-                                                .deleted(entity.getDeleted())
                                                 .facebookUrl(entity.getFacebookUrl())
                                                 .linkedinUrl(entity.getLinkedinUrl())
                                                 .instagramUrl(entity.getInstagramUrl())
@@ -66,9 +63,6 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
         entity.setEmail(organization.getEmail());
         entity.setAboutUsText(organization.getAboutUsText());
         entity.setWelcomeText(organization.getWelcomeText());
-        entity.setCreatedAt(entity.getCreatedAt());
-        entity.setUpdatedAt(organization.getUpdatedAt());
-        entity.setDeleted(Boolean.FALSE);
         entity.setFacebookUrl(organization.getFacebookUrl());
         entity.setLinkedinUrl(organization.getLinkedinUrl());
         entity.setInstagramUrl(organization.getInstagramUrl());
@@ -77,7 +71,6 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
 
     private OrganizationEntity updateSocial (OrganizationEntity entity, Organization organization){
         entity.setIdOrganization(organization.getIdOrganization());
-        entity.setUpdatedAt(organization.getUpdatedAt());
         entity.setFacebookUrl(organization.getFacebookUrl());
         entity.setLinkedinUrl(organization.getLinkedinUrl());
         entity.setInstagramUrl(organization.getInstagramUrl());

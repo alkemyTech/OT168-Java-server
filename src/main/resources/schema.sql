@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS organizations (
   about_us_text VARCHAR(256) NULL,
   welcome_text VARCHAR(256) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP,
+  updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   facebook_url VARCHAR(100) DEFAULT NULL,
   linkedin_url  VARCHAR(100) DEFAULT NULL,
   instagram_url VARCHAR(100) DEFAULT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE if NOT EXISTS slides (
     text VARCHAR(256),
     slide_order INT NOT NULL, -- 'order' is a keyword in mySQL
     created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP,
+    updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted BIT(1) DEFAULT 0,
     organization_id BIGINT unsigned NOT NULL
 );

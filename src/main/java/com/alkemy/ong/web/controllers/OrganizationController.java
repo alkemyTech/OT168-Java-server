@@ -8,8 +8,6 @@ import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @RestController
 @RequestMapping("/organizations")
 public class OrganizationController {
@@ -21,15 +19,15 @@ public class OrganizationController {
     }
 
     @GetMapping("/public/{id}")
-    public ResponseEntity<OrganizationDTO> getOrganization(@PathVariable Long id){
+    public ResponseEntity<OrganizationSimpleDTO> getOrganization(@PathVariable Long id){
         Organization organization =  organizationService.findById(id);
-        return ResponseEntity.ok(toDto(organization));
+        return ResponseEntity.ok(toSimpleDto(organization));
     }
 
     @PutMapping("/public/{id}")
-    public ResponseEntity<OrganizationFullDTO> update(@PathVariable Long id, @RequestBody OrganizationFullDTO fullDTO){
+    public ResponseEntity<OrganizationDTO> update(@PathVariable Long id, @RequestBody OrganizationDTO fullDTO){
         WebUtils.validateDtoIdWithBodyId(id, fullDTO.getIdOrganization());
-        OrganizationFullDTO organization  = toFullDto(organizationService.updateOrganization(toFullModel(fullDTO)));
+        OrganizationDTO organization  = toDto(organizationService.updateOrganization(toModel(fullDTO)));
         return  ResponseEntity.ok(organization);
     }
 
@@ -48,6 +46,9 @@ public class OrganizationController {
                                             .image(organization.getImage())
                                             .address(organization.getAddress())
                                             .phone(organization.getPhone())
+                                            .email(organization.getEmail())
+                                            .aboutUsText(organization.getAboutUsText())
+                                            .welcomeText(organization.getWelcomeText())
                                             .facebookUrl(organization.getFacebookUrl())
                                             .linkedinUrl(organization.getLinkedinUrl())
                                             .instagramUrl(organization.getInstagramUrl())
@@ -60,48 +61,25 @@ public class OrganizationController {
                 .image(organization.getImage())
                 .phone(organization.getPhone())
                 .address(organization.getAddress())
+                .email(organization.getEmail())
+                .aboutUsText(organization.getAboutUsText())
+                .welcomeText(organization.getWelcomeText())
                 .facebookUrl(organization.getFacebookUrl())
                 .linkedinUrl(organization.getLinkedinUrl())
                 .instagramUrl(organization.getInstagramUrl())
                 .build();
     }
 
-    public static OrganizationFullDTO toFullDto(Organization organization){
-        return OrganizationFullDTO.builder()
+    public static OrganizationSimpleDTO toSimpleDto(Organization organization){
+        return OrganizationSimpleDTO.builder()
                 .idOrganization(organization.getIdOrganization())
                 .name(organization.getName())
                 .image(organization.getImage())
                 .phone(organization.getPhone())
                 .address(organization.getAddress())
-                .email(organization.getEmail())
-                .aboutUsText(organization.getAboutUsText())
-                .welcomeText(organization.getWelcomeText())
-                .createdAt(organization.getCreatedAt())
-                .updatedAt(organization.getUpdatedAt())
-                .deleted(organization.getDeleted())
                 .facebookUrl(organization.getFacebookUrl())
                 .linkedinUrl(organization.getLinkedinUrl())
                 .instagramUrl(organization.getInstagramUrl())
-                .build();
-    }
-
-    private Organization toFullModel(OrganizationFullDTO fullDto){
-
-        return Organization.builder()
-                .idOrganization(fullDto.getIdOrganization())
-                .name(fullDto.getName())
-                .image(fullDto.getImage())
-                .phone(fullDto.getPhone())
-                .address(fullDto.getAddress())
-                .email(fullDto.getEmail())
-                .aboutUsText(fullDto.getAboutUsText())
-                .welcomeText(fullDto.getWelcomeText())
-                .createdAt(fullDto.getCreatedAt())
-                .updatedAt(fullDto.getUpdatedAt())
-                .deleted(fullDto.getDeleted())
-                .facebookUrl(fullDto.getFacebookUrl())
-                .linkedinUrl(fullDto.getLinkedinUrl())
-                .instagramUrl(fullDto.getInstagramUrl())
                 .build();
     }
 
@@ -113,6 +91,9 @@ public class OrganizationController {
         private String image;
         private Long phone;
         private String address;
+        private String email;
+        private String aboutUsText;
+        private String welcomeText;
         private String facebookUrl;
         private String linkedinUrl;
         private String instagramUrl;
@@ -120,20 +101,14 @@ public class OrganizationController {
 
     @Data
     @Builder
-    public static class OrganizationFullDTO{
+    public static class OrganizationSimpleDTO{
         private Long idOrganization;
         private String name;
         private String image;
         private Long phone;
         private String address;
-        private String email;
-        private String aboutUsText;
-        private String welcomeText;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
         private String facebookUrl;
         private String linkedinUrl;
         private String instagramUrl;
-        private Boolean deleted;
     }
 }
