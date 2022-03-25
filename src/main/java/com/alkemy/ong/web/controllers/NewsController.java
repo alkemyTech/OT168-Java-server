@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/news")
+@RequestMapping("api/news")
 public class NewsController {
 
     private final NewsService newsService;
@@ -52,7 +52,6 @@ public class NewsController {
                 .image(newsDTO.getImage())
                 .createdAt(newsDTO.getCreatedAt())
                 .updatedAt(newsDTO.getUpdatedAt())
-                //.deleted(newsDTO.getDeleted())
                 .type(newsDTO.getType())
                 .build();
     }
@@ -65,7 +64,6 @@ public class NewsController {
                 .image(news.getImage())
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
-                //.deleted(news.getDeleted())
                 .type(news.getType())
                 .build();
     }
@@ -86,7 +84,6 @@ public class NewsController {
         private String image;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        //private Boolean deleted;
         private String type = "news";
     }
 }
