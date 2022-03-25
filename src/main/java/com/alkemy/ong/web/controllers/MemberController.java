@@ -61,7 +61,6 @@ public class MemberController {
                 .description(member.getDescription())
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
-                .deleted(member.getDeleted())
                 .build();
     }
 
@@ -76,7 +75,6 @@ public class MemberController {
                 .description(memberDTO.getDescription())
                 .createdAt(memberDTO.getCreatedAt())
                 .updatedAt(memberDTO.getUpdatedAt())
-                .deleted(memberDTO.getDeleted())
                 .build();
     }
 
@@ -108,6 +106,5 @@ public class MemberController {
         private String description;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        private Boolean deleted;
     }
 }

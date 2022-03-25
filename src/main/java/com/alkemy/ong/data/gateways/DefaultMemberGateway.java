@@ -70,7 +70,6 @@ public class DefaultMemberGateway implements MemberGateway {
                 .description(memberEntity.getDescription())
                 .createdAt(memberEntity.getCreatedAt())
                 .updatedAt(memberEntity.getUpdatedAt())
-                .deleted(memberEntity.getDeleted())
                 .build();
     }
 
