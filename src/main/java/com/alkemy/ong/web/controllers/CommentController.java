@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 @Controller
 @RequestMapping("/comments")
@@ -23,10 +25,22 @@ public class CommentController {
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
+    
+    @GetMapping
+    public ResponseEntity<List<CommentSlimDTO>> getAllComments(){
+    	List<CommentSlimDTO> commentsSlimDTO;
+    	commentsSlimDTO = commentService.findAll().stream().map(this::toSlimDTO).collect(toList());
+    	return ResponseEntity.ok(commentsSlimDTO);
+    }
 
     @PostMapping
     public ResponseEntity<CommentDTO> saveComment(@Valid @RequestBody CommentDTO commentDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(commentService.saveComment(toModel(commentDTO))));
+    }
+    
+    private CommentSlimDTO toSlimDTO(Comment comment) {
+    	CommentSlimDTO newCommentSlimDTO = CommentSlimDTO.builder().body(comment.getBody()).build();
+    	return newCommentSlimDTO;
     }
 
     private Comment toModel(CommentDTO commentDTO){
@@ -68,4 +82,13 @@ public class CommentController {
         @JsonFormat(pattern="dd-MM-yyyy hh:mm")
         private LocalDateTime updatedAt;
     }
+    
+    @Getter
+	@Setter
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	private static class CommentSlimDTO {
+		private String body;
+	}
 }

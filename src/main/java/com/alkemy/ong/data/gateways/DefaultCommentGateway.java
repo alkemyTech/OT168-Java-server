@@ -9,6 +9,10 @@ import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentGateway;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+
+import java.util.List;
+import static java.util.stream.Collectors.toList;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,6 +32,13 @@ public class DefaultCommentGateway implements CommentGateway {
     public Comment save(Comment comment) {
         return toModel(commentRepository.save(toEntity(comment)));
     }
+    
+    @Override
+	public List<Comment> findAll() {
+		List<Comment> comments;
+		comments = commentRepository.findAll().stream().map(this::toModel).collect(toList());
+		return comments;
+	}
 
     private UserEntity getUserEntity(Long id){
       return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, "user"));
