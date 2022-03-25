@@ -15,6 +15,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+import static com.alkemy.ong.web.utils.WebUtils.*;
+
 @Controller
 @RequestMapping("/comments")
 public class CommentController {
@@ -32,7 +34,7 @@ public class CommentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO){
-        WebUtils.validateDtoIdWithBodyId(id, commentDTO.getId());
+        validateDtoIdWithBodyId(id, commentDTO.getId());
         return ResponseEntity.ok(toDTO(commentService.updateComment(id, toModel(commentDTO))));
     }
 
