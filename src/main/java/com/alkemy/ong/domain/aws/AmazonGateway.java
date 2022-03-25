@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Date;
 
 @Component
-public class AmazonClient {
+public class AmazonGateway {
 
         private AmazonS3 s3client;
 

@@ -8,6 +8,6 @@ spring:
     continue-on-error: true
 amazonProperties:
       endpointUrl: https://s3.us-west-2.amazonaws.com
-      accessKey: AKIA4D3OFHO5KPZ2DJ5X
-      secretKey: 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
-      bucketName: alkemy-168
+      accessKey: ${ACCESS_KEY}
+      secretKey: ${SECRET_KEY}
+      bucketName: ${BUCKET_NAME}
