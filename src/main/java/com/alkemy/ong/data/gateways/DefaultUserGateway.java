@@ -38,7 +38,7 @@ public class DefaultUserGateway implements UserGateway {
                 .createdAt(userEntity.getCreatedAt())
                 .updatedAt(userEntity.getUpdatedAt())
                 .deleted(userEntity.getDeleted())
-                .role(DefaultRoleGateway.toModel(userEntity.getRoleEntity()))
+                .roleId(userEntity.getRoleEntity().getId())
                 .build();
     }
 }

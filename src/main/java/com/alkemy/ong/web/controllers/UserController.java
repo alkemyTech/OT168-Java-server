@@ -44,19 +44,10 @@ public class UserController {
                 .photo(user.getPhoto())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
-                .role(toRoleDTO(user.getRole()))
+                .roleId(user.getRoleId())
                 .build();
     }
 
-    private RoleDTO toRoleDTO(Role role){
-        return RoleDTO.builder()
-                .id(role.getId())
-                .name(role.getName())
-                .description(role.getDescription())
-                .createdAt(role.getCreatedAt())
-                .updatedAt(role.getUpdatedAt())
-                .build();
-    }
 
 
     @NoArgsConstructor
@@ -75,21 +66,6 @@ public class UserController {
         private LocalDateTime createdAt;
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime updatedAt;
-        private RoleDTO role;
-    }
-
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    @Setter
-    @Builder
-    private static class RoleDTO{
-        private Long id;
-        private String name;
-        private String description;
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime createdAt;
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime updatedAt;
+        private Long roleId;
     }
 }

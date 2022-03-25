@@ -50,6 +50,6 @@ public class UserEntity {
     private Boolean deleted = false;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "roleentity", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity roleEntity;
 }

@@ -1,6 +1,5 @@
 package com.alkemy.ong.domain.users;
 
-import com.alkemy.ong.domain.roles.Role;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,5 +19,5 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean deleted;
-    private Role role;
+    private Long roleId;
 }
