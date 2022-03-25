@@ -1,6 +1,6 @@
 package com.alkemy.ong.data.utils;
 
-import com.alkemy.ong.data.GenericModelPage;
+import com.alkemy.ong.data.pagination.GenericModelPage;
 import com.alkemy.ong.domain.exceptions.WebRequestException;
 import org.springframework.data.domain.Page;
 

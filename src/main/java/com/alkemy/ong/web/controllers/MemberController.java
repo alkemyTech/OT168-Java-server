@@ -1,7 +1,7 @@
 package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.members.Member;
-import com.alkemy.ong.domain.members.MemberPage;
+import com.alkemy.ong.data.pagination.ModelPage;
 import com.alkemy.ong.domain.members.MemberService;
 import com.alkemy.ong.web.utils.WebUtils;
 import lombok.*;
@@ -14,8 +14,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping
@@ -81,9 +79,9 @@ public class MemberController {
                 .build();
     }
 
-    private MemberPageDTO toMemberPageDTO(MemberPage memberPage) {
+    private MemberPageDTO toMemberPageDTO(ModelPage memberPage) {
         return MemberPageDTO.builder()
-                .members(memberPage.getMemberList().stream().map(this::toDTO).collect(toList()))
+                .members(memberPage.getModelList())
                 .nextPage(memberPage.getNextPage())
                 .previuosPage(memberPage.getPreviuosPage())
                 .build();

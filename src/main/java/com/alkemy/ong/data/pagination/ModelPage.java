@@ -1,7 +1,6 @@
-package com.alkemy.ong.domain.members;
+package com.alkemy.ong.data.pagination;
 
 import lombok.*;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -10,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class MemberPage {
-    private List<Member> memberList;
+public class ModelPage<S> {
+    private List<S> modelList;
     private String nextPage;
     private String previuosPage;
 }

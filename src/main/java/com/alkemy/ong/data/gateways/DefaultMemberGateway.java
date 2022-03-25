@@ -6,14 +6,11 @@ import com.alkemy.ong.domain.members.MemberGateway;
 
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.repositories.MemberRepository;
-import com.alkemy.ong.domain.members.MemberPage;
-import com.alkemy.ong.data.GenericModelPage;
+import com.alkemy.ong.data.pagination.ModelPage;
+import com.alkemy.ong.data.pagination.GenericModelPage;
 import com.alkemy.ong.data.utils.DataUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,7 +24,7 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
-    public MemberPage findAll(Integer pageNumber) {
+    public ModelPage<Member> findAll(Integer pageNumber) {
         GenericModelPage<MemberEntity> genericModelPage = DataUtils.generatePagination(memberRepository
                 .findAll(PageRequest.of(pageNumber, 10)),"/members?page=");
         return toMemberPage(genericModelPage);
@@ -56,14 +53,13 @@ public class DefaultMemberGateway implements MemberGateway {
         return toModel(memberRepository.save(toUpdate(memberEntity, member)));
     }
 
-    private MemberPage toMemberPage(GenericModelPage<MemberEntity> genericModelPage){
-        return MemberPage.builder()
-                .memberList(genericModelPage.getEntityPage()
+    private ModelPage toMemberPage(GenericModelPage<MemberEntity> genericModelPage){
+        return ModelPage.builder()
+                .modelList(genericModelPage.getEntityPage()
                         .getContent().stream().map(this::toModel).collect(toList()))
                 .nextPage(genericModelPage.getNextPage())
                 .previuosPage(genericModelPage.getPreviousPage())
                 .build();
-
     }
 
     private Member toModel(MemberEntity memberEntity) {
@@ -103,7 +99,4 @@ public class DefaultMemberGateway implements MemberGateway {
         memberEntity.setDescription(member.getDescription());
         return memberEntity;
     }
-
-
-
 }

@@ -1,4 +1,4 @@
-package com.alkemy.ong.data;
+package com.alkemy.ong.data.pagination;
 
 import lombok.*;
 import org.springframework.data.domain.Page;
