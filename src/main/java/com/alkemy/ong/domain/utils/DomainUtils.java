@@ -7,20 +7,16 @@ import org.springframework.data.domain.Page;
 
 public class DomainUtils {
 
-    public static ModelPage generatePagination(Page pageEntity, String path){
-        ModelPage page = new ModelPage();
-        return setPagesNumbers(pageEntity.getNumber(), pageEntity,page,path);
-    }
-
-    public static ModelPage setPagesNumbers(Integer pageNumber, Page pageEntity,ModelPage modelPage, String path) {
-        if ((pageNumber+1) <= pageEntity.getTotalPages()) {
+    public static ModelPage setPagesNumbers(Page pageEntity, String path) {
+        ModelPage modelPage = new ModelPage();
+        if ((pageEntity.getNumber()+1) <= pageEntity.getTotalPages()) {
             if (pageEntity.hasNext()) {
-                modelPage.setNextPage(path.concat(String.valueOf(pageNumber + 1)));
+                modelPage.setNextPage(path.concat(String.valueOf(pageEntity.getNumber() + 1)));
             } else {
                 modelPage.setNextPage("This is the last page");
             }
             if (pageEntity.hasPrevious()) {
-                modelPage.setPreviuosPage(path.concat(String.valueOf(pageNumber - 1)));
+                modelPage.setPreviuosPage(path.concat(String.valueOf(pageEntity.getNumber() - 1)));
             } else {
                 modelPage.setPreviuosPage("This is the first page");
             }

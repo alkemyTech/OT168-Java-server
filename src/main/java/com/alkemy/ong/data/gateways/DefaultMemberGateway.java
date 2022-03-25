@@ -24,7 +24,7 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public ModelPage<Member> findAll(Integer pageNumber) {
-        return toMemberPage(DomainUtils.generatePagination(memberRepository
+        return toMemberPage(DomainUtils.setPagesNumbers(memberRepository
                 .findAll(PageRequest.of(pageNumber, 10)),"/members?page="));
     }
 
