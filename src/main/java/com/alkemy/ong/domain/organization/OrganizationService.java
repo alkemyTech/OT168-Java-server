@@ -18,4 +18,8 @@ public class OrganizationService {
     public Organization updateOrganization(Organization organization){
         return organizationGateway.updateOrganization(organization);
     }
+
+    public Organization updateSocialcontact(Organization organization){
+        return organizationGateway.updateSocialContact(organization);
+    }
 }

@@ -43,6 +43,15 @@ public class OrganizationEntity {
     @Column(nullable = false, name = "about_us_text")
     private String aboutUsText;
 
+    @Column(nullable = false, name = "facebook_url")
+    private String facebookUrl;
+
+    @Column(nullable = false, name = "linkedin_url")
+    private String linkedinUrl;
+
+    @Column(nullable = false, name = "instagram_url")
+    private String instagramUrl;
+
     private Boolean deleted = Boolean.FALSE;
 
     @CreationTimestamp

@@ -1,14 +1,12 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.exceptions.WebRequestException;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationService;
+import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/organizations")
@@ -21,32 +19,43 @@ public class OrganizationController {
     }
 
     @GetMapping("/public/{id}")
-    public ResponseEntity<OrganizationDTO> getOrganization(@PathVariable Long id){
+    public ResponseEntity<OrganizationSimpleDTO> getOrganization(@PathVariable Long id){
         Organization organization =  organizationService.findById(id);
-        return ResponseEntity.ok(toDto(organization));
+        return ResponseEntity.ok(toSimpleDto(organization));
     }
 
     @PutMapping("/public/{id}")
-    public ResponseEntity<OrganizationFullDTO> update(@PathVariable Long id, @RequestBody OrganizationFullDTO fullDTO){
-        if(id !=fullDTO.getIdOrganization()) {
-            throw new WebRequestException("ID: " + id + " in Path Variable is different than ID: " + fullDTO.getIdOrganization() + " in Body Request.");
-        }
-        OrganizationFullDTO organization  = toFullDto(organizationService.updateOrganization(toModel(fullDTO)));
+    public ResponseEntity<OrganizationDTO> update(@PathVariable Long id, @RequestBody OrganizationDTO fullDTO){
+        WebUtils.validateDtoIdWithBodyId(id, fullDTO.getIdOrganization());
+        OrganizationDTO organization  = toDto(organizationService.updateOrganization(toModel(fullDTO)));
         return  ResponseEntity.ok(organization);
     }
 
-    private  OrganizationDTO toDto(Organization organization){
+    @PatchMapping("/public/{id}")
+    public ResponseEntity<OrganizationDTO> updateSocial(@PathVariable Long id, @RequestBody OrganizationDTO organization){
+        WebUtils.validateDtoIdWithBodyId(id, organization.getIdOrganization());
+        OrganizationDTO organizationDto  = toDto(organizationService.updateSocialcontact(toModel(organization)));
+        return  ResponseEntity.ok(organizationDto);
+    }
+
+    private OrganizationDTO toDto(Organization organization){
 
         return OrganizationDTO.builder()
+                                            .idOrganization(organization.getIdOrganization())
                                             .name(organization.getName())
                                             .image(organization.getImage())
                                             .address(organization.getAddress())
                                             .phone(organization.getPhone())
+                                            .email(organization.getEmail())
+                                            .aboutUsText(organization.getAboutUsText())
+                                            .welcomeText(organization.getWelcomeText())
+                                            .facebookUrl(organization.getFacebookUrl())
+                                            .linkedinUrl(organization.getLinkedinUrl())
+                                            .instagramUrl(organization.getInstagramUrl())
                                             .build();
     }
-
-    public static OrganizationFullDTO toFullDto(Organization organization){
-        return OrganizationFullDTO.builder()
+    private Organization toModel(OrganizationDTO organization){
+        return Organization.builder()
                 .idOrganization(organization.getIdOrganization())
                 .name(organization.getName())
                 .image(organization.getImage())
@@ -55,42 +64,28 @@ public class OrganizationController {
                 .email(organization.getEmail())
                 .aboutUsText(organization.getAboutUsText())
                 .welcomeText(organization.getWelcomeText())
-                .createdAt(organization.getCreatedAt())
-                .updatedAt(organization.getUpdatedAt())
-                .deleted(organization.getDeleted())
+                .facebookUrl(organization.getFacebookUrl())
+                .linkedinUrl(organization.getLinkedinUrl())
+                .instagramUrl(organization.getInstagramUrl())
                 .build();
     }
 
-    private Organization toModel(OrganizationFullDTO fullDto){
-
-        return Organization.builder()
-                .idOrganization(fullDto.getIdOrganization())
-                .name(fullDto.getName())
-                .image(fullDto.getImage())
-                .phone(fullDto.getPhone())
-                .address(fullDto.getAddress())
-                .email(fullDto.getEmail())
-                .aboutUsText(fullDto.getAboutUsText())
-                .welcomeText(fullDto.getWelcomeText())
-                .createdAt(fullDto.getCreatedAt())
-                .updatedAt(fullDto.getUpdatedAt())
-                .deleted(fullDto.getDeleted())
+    public static OrganizationSimpleDTO toSimpleDto(Organization organization){
+        return OrganizationSimpleDTO.builder()
+                .idOrganization(organization.getIdOrganization())
+                .name(organization.getName())
+                .image(organization.getImage())
+                .phone(organization.getPhone())
+                .address(organization.getAddress())
+                .facebookUrl(organization.getFacebookUrl())
+                .linkedinUrl(organization.getLinkedinUrl())
+                .instagramUrl(organization.getInstagramUrl())
                 .build();
-
     }
 
     @Data
     @Builder
     public static class OrganizationDTO{
-        private String name;
-        private String image;
-        private Long phone;
-        private String address;
-    }
-
-    @Data
-    @Builder
-    public static class OrganizationFullDTO{
         private Long idOrganization;
         private String name;
         private String image;
@@ -99,8 +94,21 @@ public class OrganizationController {
         private String email;
         private String aboutUsText;
         private String welcomeText;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
-        private Boolean deleted;
+        private String facebookUrl;
+        private String linkedinUrl;
+        private String instagramUrl;
+    }
+
+    @Data
+    @Builder
+    public static class OrganizationSimpleDTO{
+        private Long idOrganization;
+        private String name;
+        private String image;
+        private Long phone;
+        private String address;
+        private String facebookUrl;
+        private String linkedinUrl;
+        private String instagramUrl;
     }
 }
