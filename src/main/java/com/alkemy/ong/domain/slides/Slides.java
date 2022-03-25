@@ -14,9 +14,6 @@ public class Slides {
     private String imageUrl;
     private String text;
     private Integer order;
-    private Boolean deleted = Boolean.FALSE;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private Organization organization;
 
     @Override
