@@ -2,12 +2,11 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.ContactEntity;
 import com.alkemy.ong.data.repositories.ContactRepository;
-import com.alkemy.ong.domain.contact.ContactGateway;
-import com.alkemy.ong.domain.contact.Contact;
+import com.alkemy.ong.domain.contacts.ContactGateway;
+import com.alkemy.ong.domain.contacts.Contact;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -22,23 +21,18 @@ public class DefaultContactGateway implements ContactGateway {
 
     @Override
     public List<Contact> findAll() {
-        List<Contact> models;
-
-        models = contactRepository.findAll().stream()
-                .map(c -> toModel(c))
+        return contactRepository.findAll().stream()
+                .map(this::toModel)
                 .collect(toList());
-        return models;
     }
 
     @Override
     public Contact save(Contact contact) {
-        ContactEntity contactEntity = toEntity(contact);
-        contactRepository.save(contactEntity);
-        return contact;
+        return toModel(contactRepository.save(toEntity(contact)));
     }
 
     private Contact toModel(ContactEntity contactEntity){
-        Contact c = Contact.builder()
+        return Contact.builder()
                 .id(contactEntity.getId())
                 .name(contactEntity.getName())
                 .phone(contactEntity.getPhone())
@@ -46,22 +40,16 @@ public class DefaultContactGateway implements ContactGateway {
                 .message(contactEntity.getMessage())
                 .createdAt(contactEntity.getCreatedAt())
                 .updatedAt(contactEntity.getUpdatedAt())
-                .deleted(contactEntity.getDeleted())
                 .build();
-        return c;
     }
 
     private ContactEntity toEntity(Contact contact){
-        ContactEntity contactEntity = ContactEntity.builder()
+        return ContactEntity.builder()
                 .id(contact.getId())
                 .name(contact.getName())
                 .phone(contact.getPhone())
                 .email(contact.getEmail())
                 .message(contact.getMessage())
-                .createdAt(contact.getCreatedAt())
-                .updatedAt(contact.getUpdatedAt())
-                .deleted(contact.getDeleted())
                 .build();
-        return contactEntity;
     }
 }

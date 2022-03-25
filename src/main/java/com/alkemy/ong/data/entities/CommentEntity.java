@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,43 +12,38 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE members SET deleted = true WHERE id = ?")
-@Table(name = "members", schema = "alkemy_ong")
-public class MemberEntity {
+@SQLDelete(sql = "Update deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
+@Table(name = "comments")
+public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String body;
 
-    @Column(name = "facebookurl")
-    private String facebookUrl;
+    @JoinColumn(nullable = false, name = "user_id")
+    @ManyToOne
+    private UserEntity userEntity;
 
-    @Column(name = "instagramurl")
-    private String instagramUrl;
-
-    @Column(name = "linkedinurl")
-    private String linkedinUrl;
-
-    @Column(nullable = false)
-    private String image;
-
-    private String description;
+    @JoinColumn(nullable = false, name = "news_id")
+    @ManyToOne
+    private NewsEntity newsEntity;
 
     @CreationTimestamp
-    @Column(name = "createdat")
+    @Column(updatable = false, nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updatedat")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Builder.Default
     private Boolean deleted = Boolean.FALSE;
-}
 
+}

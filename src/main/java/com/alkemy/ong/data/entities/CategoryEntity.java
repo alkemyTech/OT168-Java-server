@@ -29,7 +29,6 @@ import lombok.ToString;
 @ToString(of = { "name", "description", "image" })
 @EqualsAndHashCode(of = { "name", "description", "image" })
 @Entity(name = "categories")
-@SQLDelete(sql = "UPDATE news SET deleted = false WHERE id = ?")
 @Table(name = "categories")
 public class CategoryEntity {
 
@@ -52,6 +51,7 @@ public class CategoryEntity {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
-	private Boolean deleted;
+	@Builder.Default
+	private Boolean deleted = Boolean.FALSE;
 
 }

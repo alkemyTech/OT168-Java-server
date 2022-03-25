@@ -28,10 +28,10 @@ CREATE TABLE `alkemy_ong`.`users`
     `createdat` TIMESTAMP    DEFAULT NOW(),
     `updatedat`  TIMESTAMP    DEFAULT NOW(),
     `deleted`   BIT          DEFAULT 0,
-    `roleEntity`   BIGINT(255)        NOT NULL,
+    `role_id`   BIGINT(255)        NOT NULL,
     PRIMARY KEY (`id`),
-    KEY `FK_role` (`roleEntity`),
-    CONSTRAINT `FK_role` FOREIGN KEY (`roleEntity`) REFERENCES `alkemy_ong`.`roles` (`id`)
+    KEY `FK_role` (`role_id`),
+    CONSTRAINT `FK_role` FOREIGN KEY (`role_id`) REFERENCES `alkemy_ong`.`roles` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS activities (
   `content` TEXT NOT NULL,
   `image` VARCHAR(250) NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `deleted` BOOLEAN DEFAULT 0,
   PRIMARY KEY (id)
 );
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS contacts (
   `email` VARCHAR(250) NOT NULL,
   `message`  TEXT NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `deleted` BOOLEAN DEFAULT 0,
   PRIMARY KEY (id)
 );
@@ -98,9 +98,12 @@ CREATE TABLE IF NOT EXISTS organizations (
   email VARCHAR(60) NOT NULL,
   about_us_text VARCHAR(256) NULL,
   welcome_text VARCHAR(256) NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL,
-  deleted BIT(1) NOT NULL DEFAULT 0
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  facebook_url VARCHAR(100) DEFAULT NULL,
+  linkedin_url  VARCHAR(100) DEFAULT NULL,
+  instagram_url VARCHAR(100) DEFAULT NULL,
+  deleted BIT(1) DEFAULT 0
 );
 
 CREATE TABLE if NOT EXISTS slides (
@@ -108,9 +111,9 @@ CREATE TABLE if NOT EXISTS slides (
     image_url VARCHAR(256) NOT NULL,
     text VARCHAR(256),
     slide_order INT NOT NULL, -- 'order' is a keyword in mySQL
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL,
-    deleted BIT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted BIT(1) DEFAULT 0,
     organization_id BIGINT unsigned NOT NULL
 );
 
@@ -121,7 +124,7 @@ image VARCHAR (255),
 content VARCHAR (255),
 created_at TIMESTAMP DEFAULT NOW(),
 updated_at TIMESTAMP,
-deleted TINYINT(1)
+deleted BIT(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS alkemy_ong.categories (
@@ -131,5 +134,18 @@ CREATE TABLE IF NOT EXISTS alkemy_ong.categories (
   `image` VARCHAR(255),
   `created_at` TIMESTAMP DEFAULT NOW(),
   `updated_at` TIMESTAMP,
-  `deleted` TINYINT
+  `deleted` BOOLEAN DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `body` VARCHAR(250) NOT NULL,
+  `user_id` BIGINT NOT NULL,
+  `news_id` BIGINT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `deleted` BOOLEAN DEFAULT 0,
+  PRIMARY KEY (id),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`news_id`) REFERENCES `news` (`news_id`)
 );

@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.activity;
+package com.alkemy.ong.domain.activities;
 
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,10 @@ public class ActivityService {
     }
 
     public Activity saveActivity(Activity activity) {
-            activityGateway.save(activity);
-            return activity;
+            return activityGateway.save(activity);
+    }
+
+    public Activity updateActivity(Long id, Activity activity) {
+        return activityGateway.update(id, activity);
     }
 }

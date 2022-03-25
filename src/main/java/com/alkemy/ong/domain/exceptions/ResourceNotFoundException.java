@@ -10,5 +10,11 @@ public class ResourceNotFoundException extends RuntimeException {
         super(String.format(messageFormat, args));
     }
 
+    public ResourceNotFoundException(Long id, String entity) {
+        super("No " + entity + " found with ID " + id);
+    }
 
+    public ResourceNotFoundException() {
+
+    }
 }

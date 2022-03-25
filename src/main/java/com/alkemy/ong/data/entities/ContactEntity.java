@@ -37,13 +37,14 @@ public class ContactEntity {
     private String message;
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(updatable = false, nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    private Boolean deleted;
+    @Builder.Default
+    private Boolean deleted = Boolean.FALSE;
 
 }
