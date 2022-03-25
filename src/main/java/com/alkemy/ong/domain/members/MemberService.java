@@ -13,8 +13,8 @@ public class MemberService {
         this.memberGateway=memberGateway;
     }
 
-    public List<Member> findAll(Pageable pageable){
-        return memberGateway.findAll(pageable);
+    public MemberPage findAll(Integer pageNumber){
+        return memberGateway.findAll(pageNumber);
     }
 
     public Member save(Member member){

@@ -1,11 +1,10 @@
 package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.members.Member;
+import com.alkemy.ong.domain.members.MemberPage;
 import com.alkemy.ong.domain.members.MemberService;
 import com.alkemy.ong.web.utils.WebUtils;
 import lombok.*;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,16 +28,15 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<List<MemberDTO>> findAll(@PageableDefault(size=10,page=0) Pageable pageable) {
-        return ResponseEntity.ok().body(memberService
-                .findAll(pageable)
-                .stream()
-                .map(this::toDTO)
-                .collect(toList()));
+    public ResponseEntity<PageMemberDTO> findAll(@RequestParam("page") Integer numberPage) {
+        return ResponseEntity.ok().body(toMemberPageDTO(memberService.findAll(numberPage)));
     }
 
     @PostMapping("/members")
     public ResponseEntity<MemberDTO> save(@Valid @RequestBody MemberDTO memberDTO) {
+        for(int i = 0; i<11; i++){
+            memberService.save(toModel(memberDTO));
+        }
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(toDTO(memberService.save(toModel(memberDTO))));
@@ -86,6 +84,14 @@ public class MemberController {
                 .build();
     }
 
+    private PageMemberDTO toMemberPageDTO(MemberPage memberPage) {
+        return PageMemberDTO.builder()
+                .members(memberPage.getMemberList().stream().map(this::toDTO).collect(toList()))
+                .nextPage(memberPage.getNextPage())
+                .previuosPage(memberPage.getPreviuosPage())
+                .build();
+    }
+
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
@@ -107,5 +113,16 @@ public class MemberController {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private Boolean deleted;
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    @Builder
+    private static class PageMemberDTO {
+        private List<MemberDTO> members;
+        private String previuosPage;
+        private String nextPage;
     }
 }
