@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class ModelPage<S> {
+public class PageModel<S> {
     private List<S> body;
     private String nextPage;
-    private String previuosPage;
+    private String previousPage;
 }

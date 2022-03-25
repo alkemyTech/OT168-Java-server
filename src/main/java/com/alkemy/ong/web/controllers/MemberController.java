@@ -1,7 +1,7 @@
 package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.members.Member;
-import com.alkemy.ong.data.pagination.ModelPage;
+import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.domain.members.MemberService;
 import com.alkemy.ong.web.utils.PageDTO;
 import com.alkemy.ong.web.utils.WebUtils;
@@ -78,11 +78,11 @@ public class MemberController {
                 .build();
     }
 
-    private PageDTO toMemberPageDTO(ModelPage modelPage) {
+    private PageDTO toMemberPageDTO(PageModel modelPage) {
         return PageDTO.builder()
                 .DTOs(modelPage.getBody())
                 .nextPage(modelPage.getNextPage())
-                .previuosPage(modelPage.getPreviuosPage())
+                .previuosPage(modelPage.getPreviousPage())
                 .build();
     }
 

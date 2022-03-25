@@ -1,10 +1,10 @@
 package com.alkemy.ong.domain.members;
 
-import com.alkemy.ong.data.pagination.ModelPage;
+import com.alkemy.ong.data.pagination.PageModel;
 
 public interface MemberGateway {
 
-    ModelPage<Member> findAll(Integer pageNumber);
+    PageModel<Member> findAll(Integer pageNumber);
     Member save(Member member);
     Member findById(Long id);
     void delete(Long id);
