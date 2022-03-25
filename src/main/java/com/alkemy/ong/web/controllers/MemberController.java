@@ -3,6 +3,7 @@ package com.alkemy.ong.web.controllers;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.data.pagination.ModelPage;
 import com.alkemy.ong.domain.members.MemberService;
+import com.alkemy.ong.web.utils.PageDTO;
 import com.alkemy.ong.web.utils.WebUtils;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping
@@ -26,7 +26,8 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<MemberPageDTO> findAll(@RequestParam("page") Integer numberPage) {
+    public ResponseEntity<PageDTO<MemberDTO>> findAll(@RequestParam("page") Integer numberPage) {
+        WebUtils.validateNumberPage(numberPage);
         return ResponseEntity.ok().body(toMemberPageDTO(memberService.findAll(numberPage)));
     }
 
@@ -79,11 +80,11 @@ public class MemberController {
                 .build();
     }
 
-    private MemberPageDTO toMemberPageDTO(ModelPage memberPage) {
-        return MemberPageDTO.builder()
-                .members(memberPage.getModelList())
-                .nextPage(memberPage.getNextPage())
-                .previuosPage(memberPage.getPreviuosPage())
+    private PageDTO toMemberPageDTO(ModelPage modelPage) {
+        return PageDTO.builder()
+                .members(modelPage.getModelList())
+                .nextPage(modelPage.getNextPage())
+                .previuosPage(modelPage.getPreviuosPage())
                 .build();
     }
 
@@ -108,16 +109,5 @@ public class MemberController {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private Boolean deleted;
-    }
-
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    @Setter
-    @Builder
-    private static class MemberPageDTO {
-        private List<MemberDTO> members;
-        private String previuosPage;
-        private String nextPage;
     }
 }

@@ -7,8 +7,7 @@ import com.alkemy.ong.domain.members.MemberGateway;
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.repositories.MemberRepository;
 import com.alkemy.ong.data.pagination.ModelPage;
-import com.alkemy.ong.data.pagination.GenericModelPage;
-import com.alkemy.ong.data.utils.DataUtils;
+import com.alkemy.ong.domain.utils.DomainUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +24,8 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public ModelPage<Member> findAll(Integer pageNumber) {
-        GenericModelPage<MemberEntity> genericModelPage = DataUtils.generatePagination(memberRepository
-                .findAll(PageRequest.of(pageNumber, 10)),"/members?page=");
-        return toMemberPage(genericModelPage);
+        return toMemberPage(DomainUtils.generatePagination(memberRepository
+                .findAll(PageRequest.of(pageNumber, 10)),"/members?page="));
     }
 
     @Override
@@ -53,12 +51,11 @@ public class DefaultMemberGateway implements MemberGateway {
         return toModel(memberRepository.save(toUpdate(memberEntity, member)));
     }
 
-    private ModelPage toMemberPage(GenericModelPage<MemberEntity> genericModelPage){
+    private ModelPage toMemberPage(ModelPage<MemberEntity> entityPage){
         return ModelPage.builder()
-                .modelList(genericModelPage.getEntityPage()
-                        .getContent().stream().map(this::toModel).collect(toList()))
-                .nextPage(genericModelPage.getNextPage())
-                .previuosPage(genericModelPage.getPreviousPage())
+                .modelList(entityPage.getModelList().stream().map(this::toModel).collect(toList()))
+                .previuosPage(entityPage.getPreviuosPage())
+                .nextPage(entityPage.getNextPage())
                 .build();
     }
 
