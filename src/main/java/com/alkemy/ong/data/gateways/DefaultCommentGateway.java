@@ -1,16 +1,14 @@
 package com.alkemy.ong.data.gateways;
 
-import com.alkemy.ong.data.entities.ActivityEntity;
 import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.CommentRepository;
 import com.alkemy.ong.data.repositories.NewsRepository;
 import com.alkemy.ong.data.repositories.UserRepository;
-import com.alkemy.ong.domain.comment.Comment;
-import com.alkemy.ong.domain.comment.CommentGateway;
+import com.alkemy.ong.domain.comments.Comment;
+import com.alkemy.ong.domain.comments.CommentGateway;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
-import com.alkemy.ong.web.utils.WebUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -45,7 +43,6 @@ public class DefaultCommentGateway implements CommentGateway {
                 .body(comment.getBody())
                 .userEntity(getUserEntity(comment.getUserId()))
                 .newsEntity(getNewsEntity(comment.getNewsId()))
-                .deleted(false)
                 .build();
     }
 

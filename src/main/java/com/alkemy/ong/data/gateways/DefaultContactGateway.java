@@ -2,12 +2,11 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.ContactEntity;
 import com.alkemy.ong.data.repositories.ContactRepository;
-import com.alkemy.ong.domain.contact.ContactGateway;
-import com.alkemy.ong.domain.contact.Contact;
+import com.alkemy.ong.domain.contacts.ContactGateway;
+import com.alkemy.ong.domain.contacts.Contact;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -41,7 +40,6 @@ public class DefaultContactGateway implements ContactGateway {
                 .message(contactEntity.getMessage())
                 .createdAt(contactEntity.getCreatedAt())
                 .updatedAt(contactEntity.getUpdatedAt())
-                .deleted(contactEntity.getDeleted())
                 .build();
     }
 
@@ -52,7 +50,6 @@ public class DefaultContactGateway implements ContactGateway {
                 .phone(contact.getPhone())
                 .email(contact.getEmail())
                 .message(contact.getMessage())
-                .deleted(false)
                 .build();
     }
 }

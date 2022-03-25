@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.comment;
+package com.alkemy.ong.domain.comments;
 
 import lombok.*;
 import java.time.LocalDateTime;
@@ -15,5 +15,4 @@ public class Comment {
     private Long newsId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean deleted;
 }

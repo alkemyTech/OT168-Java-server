@@ -2,10 +2,9 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.ActivityEntity;
 import com.alkemy.ong.data.repositories.ActivityRepository;
-import com.alkemy.ong.domain.activity.ActivityGateway;
-import com.alkemy.ong.domain.activity.Activity;
+import com.alkemy.ong.domain.activities.ActivityGateway;
+import com.alkemy.ong.domain.activities.Activity;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
-import com.alkemy.ong.web.utils.WebUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -42,7 +41,6 @@ public class DefaultActivityGateway implements ActivityGateway {
                 .name(activity.getName())
                 .content(activity.getContent())
                 .image(activity.getImage())
-                .deleted(false)
                 .build();
         }
 

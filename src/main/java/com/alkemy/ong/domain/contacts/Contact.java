@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.activity;
+package com.alkemy.ong.domain.contacts;
 
 import lombok.*;
 
@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Activity {
+public class Contact {
     private Long id;
     private String name;
-    private String content;
-    private String image;
+    private String phone;
+    private String email;
+    private String message;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean deleted;
 }

@@ -1,4 +1,4 @@
-package com.alkemy.ong.domain.comment;
+package com.alkemy.ong.domain.comments;
 
 public interface CommentGateway {
 
