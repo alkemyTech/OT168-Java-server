@@ -2,6 +2,7 @@ package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.contacts.Contact;
 import com.alkemy.ong.domain.contacts.ContactService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +53,9 @@ public class ContactController {
         private String phone;
         private String email;
         private String message;
+        @JsonFormat(pattern="dd-MM-yyyy hh:mm")
         private LocalDateTime createdAt;
+        @JsonFormat(pattern="dd-MM-yyyy hh:mm")
         private LocalDateTime updatedAt;
     }
 }
