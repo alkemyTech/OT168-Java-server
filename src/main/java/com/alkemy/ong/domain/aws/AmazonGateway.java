@@ -73,6 +73,5 @@ public class AmazonGateway {
             s3client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
             return "Successfully deleted";
         }
-
     }
 

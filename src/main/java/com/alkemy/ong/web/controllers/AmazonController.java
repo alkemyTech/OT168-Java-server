@@ -21,6 +21,6 @@ public class AmazonController {
 
     @DeleteMapping("/deleteFile")
     public String deleteFile(@RequestPart(value = "url") String fileUrl) {
-        return this.amazonService.deleteFileFromS3Bucket(fileUrl);
+        return this.amazonService.deleteFile(fileUrl);
     }
 }

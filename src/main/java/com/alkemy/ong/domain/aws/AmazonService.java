@@ -16,7 +16,7 @@ public class AmazonService {
         return amazonGateway.uploadFile(multipartFile);
     }
 
-    public String deleteFileFromS3Bucket(String fileUrl) {
+    public String deleteFile(String fileUrl) {
         return amazonGateway.deleteFileFromS3Bucket(fileUrl);
     }
 }
