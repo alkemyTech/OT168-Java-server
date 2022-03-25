@@ -5,7 +5,9 @@ import com.alkemy.ong.domain.exceptions.WebRequestException;
 import org.springframework.data.domain.Page;
 
 
-public class DomainUtils {
+public class PaginationUtils {
+
+    public static final Integer SIZE_REQUEST_PAGE = 10;
 
     public static ModelPage setPagesNumbers(Page pageEntity, String path) {
         ModelPage modelPage = new ModelPage();
@@ -23,7 +25,7 @@ public class DomainUtils {
         } else {
             throw new WebRequestException("The page does not exist");
         }
-        modelPage.setModelList(pageEntity.getContent());
+        modelPage.setBody(pageEntity.getContent());
         return modelPage;
     }
 }

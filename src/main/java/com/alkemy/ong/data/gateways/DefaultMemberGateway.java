@@ -7,7 +7,7 @@ import com.alkemy.ong.domain.members.MemberGateway;
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.repositories.MemberRepository;
 import com.alkemy.ong.data.pagination.ModelPage;
-import com.alkemy.ong.domain.utils.DomainUtils;
+import com.alkemy.ong.domain.utils.PaginationUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +24,8 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public ModelPage<Member> findAll(Integer pageNumber) {
-        return toMemberPage(DomainUtils.setPagesNumbers(memberRepository
-                .findAll(PageRequest.of(pageNumber, 10)),"/members?page="));
+        return toMemberPage(PaginationUtils.setPagesNumbers(memberRepository
+                .findAll(PageRequest.of(pageNumber, PaginationUtils.SIZE_REQUEST_PAGE)),"/members?page="));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class DefaultMemberGateway implements MemberGateway {
 
     private ModelPage toMemberPage(ModelPage<MemberEntity> entityPage){
         return ModelPage.builder()
-                .modelList(entityPage.getModelList().stream().map(this::toModel).collect(toList()))
+                .body(entityPage.getBody().stream().map(this::toModel).collect(toList()))
                 .previuosPage(entityPage.getPreviuosPage())
                 .nextPage(entityPage.getNextPage())
                 .build();

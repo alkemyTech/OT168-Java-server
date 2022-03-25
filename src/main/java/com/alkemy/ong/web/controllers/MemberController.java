@@ -80,7 +80,7 @@ public class MemberController {
 
     private PageDTO toMemberPageDTO(ModelPage modelPage) {
         return PageDTO.builder()
-                .DTOs(modelPage.getModelList())
+                .DTOs(modelPage.getBody())
                 .nextPage(modelPage.getNextPage())
                 .previuosPage(modelPage.getPreviuosPage())
                 .build();

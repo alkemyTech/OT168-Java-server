@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Builder
 public class ModelPage<S> {
-    private List<S> modelList;
+    private List<S> body;
     private String nextPage;
     private String previuosPage;
 }
