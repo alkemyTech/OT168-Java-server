@@ -2,6 +2,7 @@ package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +63,9 @@ public class CommentController {
         private Long userId;
         @NotNull(message = "News can't be null")
         private Long newsId;
+        @JsonFormat(pattern="dd-MM-yyyy hh:mm")
         private LocalDateTime createdAt;
+        @JsonFormat(pattern="dd-MM-yyyy hh:mm")
         private LocalDateTime updatedAt;
     }
 }
