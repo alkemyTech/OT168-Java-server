@@ -1,26 +1,26 @@
 package com.alkemy.ong.web.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alkemy.ong.domain.aws.AwsService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/storage/")
 public class BucketController {
-/*
-    private AmazonClient amazonClient;
 
-    @Autowired
-    BucketController(AmazonClient amazonClient) {
-        this.amazonClient = amazonClient;
+    private final AwsService awsService;
+
+    public BucketController(AwsService awsService) {
+        this.awsService = awsService;
     }
 
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
-        return this.amazonClient.uploadFile(file);
+        return this.awsService.uploadFile(file);
     }
 
     @DeleteMapping("/deleteFile")
     public String deleteFile(@RequestPart(value = "url") String fileUrl) {
-        return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
-    }*/
+        return this.awsService.deleteFileFromS3Bucket(fileUrl);
+    }
 }
