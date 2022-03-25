@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
+import static com.alkemy.ong.web.utils.WebUtils.*;
+
 @RestController
 @RequestMapping("/activities")
 public class ActivityController {
@@ -30,7 +32,7 @@ public class ActivityController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ActivityDTO> updateActivity(@PathVariable Long id, @Valid @RequestBody ActivityDTO activityDTO){
-        WebUtils.validateDtoIdWithBodyId(id, activityDTO.getId());
+        validateDtoIdWithBodyId(id, activityDTO.getId());
         return ResponseEntity.ok(toDTO(activityService.updateActivity(id, toModel(activityDTO))));
     }
 
