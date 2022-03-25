@@ -1,8 +1,6 @@
 package com.alkemy.ong.domain.comments;
 
-import java.util.Comparator;
 import java.util.List;
-import static java.util.stream.Collectors.toList;
 
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,7 @@ public class CommentService {
 	}
 
 	public List<Comment> findAll() {
-		return commentGateway.findAll().stream().sorted(Comparator.comparing(Comment::getCreatedAt)).collect(toList());
+		return commentGateway.findAll();
 	}
 
     public Comment findById(Long id) {
