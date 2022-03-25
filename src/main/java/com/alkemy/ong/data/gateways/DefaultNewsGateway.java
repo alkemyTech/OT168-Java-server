@@ -45,7 +45,6 @@ public class DefaultNewsGateway implements NewsGateway {
         newsRepository.deleteById(newsId);
     }
 
-
     private NewsEntity toEntity(News news) {
         return NewsEntity.builder()
                 .newsId(news.getNewsId())

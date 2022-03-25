@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -36,9 +37,11 @@ public class NewsEntity {
 
     @CreationTimestamp
     @Column(name = "created_at")
+    @JsonFormat (pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 

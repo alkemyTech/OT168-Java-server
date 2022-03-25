@@ -59,8 +59,8 @@ CREATE TABLE alkemy_ong.news
     name       VARCHAR(50)  NOT NULL,
     content    VARCHAR(100) NOT NULL,
     image      VARCHAR(25)  NOT NULL,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
     deleted    TINYINT,
     type VARCHAR(20)
 );

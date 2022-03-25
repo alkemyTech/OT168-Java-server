@@ -1,17 +1,15 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.entities.CategoryEntity;
-import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+
 import java.time.LocalDateTime;
 
 @RestController
@@ -35,14 +33,13 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newsService.saveNews(toModel(newsDTO))));
     }
 
-
     @PutMapping("/{newsId}")
-    public ResponseEntity<NewsDTO> updateNews(@PathVariable Long newsId, @Valid @RequestBody NewsDTO newsDTO){
+    public ResponseEntity<NewsDTO> updateNews(@PathVariable Long newsId, @Valid @RequestBody NewsDTO newsDTO) {
         return ResponseEntity.ok(toDTO(newsService.updateNews(newsId, toModel(newsDTO))));
     }
 
     @DeleteMapping("/{newsId}")
-    public ResponseEntity<Void> deleteNews(@PathVariable Long newsId){
+    public ResponseEntity<Void> deleteNews(@PathVariable Long newsId) {
         newsService.deleteNews(newsId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -55,7 +52,7 @@ public class NewsController {
                 .image(newsDTO.getImage())
                 .createdAt(newsDTO.getCreatedAt())
                 .updatedAt(newsDTO.getUpdatedAt())
-                .deleted(newsDTO.getDeleted())
+                //.deleted(newsDTO.getDeleted())
                 .type(newsDTO.getType())
                 .build();
     }
@@ -68,11 +65,10 @@ public class NewsController {
                 .image(news.getImage())
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
-                .deleted(news.getDeleted())
+                //.deleted(news.getDeleted())
                 .type(news.getType())
                 .build();
     }
-
 
     @Builder
     @Getter
@@ -90,7 +86,7 @@ public class NewsController {
         private String image;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        private Boolean deleted;
+        //private Boolean deleted;
         private String type = "news";
     }
 }
