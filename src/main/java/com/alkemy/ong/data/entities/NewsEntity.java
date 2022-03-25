@@ -37,11 +37,11 @@ public class NewsEntity {
 
     @CreationTimestamp
     @Column(name = "created_at")
-    @JsonFormat (pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="dd-MM-yyyy hh:mm")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="dd-MM-yyyy hh:mm")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
