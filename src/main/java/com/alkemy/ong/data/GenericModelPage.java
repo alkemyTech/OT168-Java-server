@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 public class GenericModelPage<T> {
     private Page<T> entityPage;
-    //private List<S> listModel;
     private String nextPage;
     private String previousPage;
 }
