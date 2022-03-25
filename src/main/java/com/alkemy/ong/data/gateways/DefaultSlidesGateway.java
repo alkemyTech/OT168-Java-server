@@ -2,6 +2,7 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.data.repositories.SlidesRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.slides.Slides;
 import com.alkemy.ong.domain.slides.SlidesGateway;
 import org.springframework.stereotype.Component;
@@ -27,15 +28,22 @@ public class DefaultSlidesGateway implements SlidesGateway {
                 .collect(toList());
     }
 
+    @Override
+    public Slides findById(Long idSlides) {
+        SlidesEntity entity = slidesRepository.findById(idSlides)
+                .orElseThrow(()-> new ResourceNotFoundException("No slide with id: " + idSlides + " exists."));
+        return toModel(entity);
+    }
+
     private Slides toModel(SlidesEntity entity){
         return Slides.builder()
                 .idSlides(entity.getIdSlides())
                 .imageUrl(entity.getImageUrl())
                 .text(entity.getText())
                 .order(entity.getOrder())
-                .deleted(entity.getDeleted())
-                .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
+                //.deleted(entity.getDeleted())
+                //.createdAt(entity.getCreatedAt())
+                //.updatedAt(entity.getUpdatedAt())
                 .organization(DefaultOrganizationGateway.toModel(entity.getOrganization()))
                 .build();
     }
