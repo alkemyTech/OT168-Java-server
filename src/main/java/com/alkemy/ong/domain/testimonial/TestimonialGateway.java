@@ -8,5 +8,5 @@ public interface TestimonialGateway {
 
     void delete(Long id);
 
-    TestimonialPage findAll(Integer page);
+    //PageModel findAll(Integer page);
 }

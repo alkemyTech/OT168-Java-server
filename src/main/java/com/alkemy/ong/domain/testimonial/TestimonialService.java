@@ -17,5 +17,5 @@ public class TestimonialService {
 
     public void delete(Long id){testimonialGateway.delete(id);}
 
-    public TestimonialPage findAll(Integer page){return testimonialGateway.findAll(page);}
+    //public PageModel findAll(Integer page){return testimonialGateway.findAll(page);}
 }

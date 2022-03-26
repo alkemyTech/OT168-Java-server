@@ -5,7 +5,6 @@ import com.alkemy.ong.data.repositories.TestimonialRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialGateway;
-import com.alkemy.ong.domain.testimonial.TestimonialPage;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultTestimonialGateway implements TestimonialGateway {
@@ -42,8 +41,8 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
         testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         testimonialRepository.deleteById(id);
     }
-
-    public TestimonialPage findAll(Integer page) {
+/*
+    public PageModel findAll(Integer page) {
         Page<TestimonialEntity> entityPage = testimonialRepository.findAll(PageRequest.of(page, 10));
         if (entityPage.isEmpty()) {
             throw new ResourceNotFoundException("The page requested doesn't exists.");
@@ -56,13 +55,13 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
         if (entityPage.hasNext()) {
             nextPage = String.valueOf(page + 1);
         }
-        return TestimonialPage.builder().
-                testimonialList(toModelList(entityPage.stream().toList())).
-                nextPage(nextPage).
-                previousPage(previousPage).build();
+        return PageModel.<Testimonial>builder().
+                modelList(toModelList(entityPage.stream().toList())).
+                nextPage(nextPage).previousPage(previousPage)
+                .build();
     }
-
-    private Testimonial toModel(TestimonialEntity testimonialEntity) {
+*/
+    private static Testimonial toModel(TestimonialEntity testimonialEntity) {
         return Testimonial.builder()
                 .id(testimonialEntity.getId())
                 .name(testimonialEntity.getName())
@@ -91,6 +90,6 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
     }
 
     private List<Testimonial> toModelList(List<TestimonialEntity> testimonialEntityList) {
-        return testimonialEntityList.stream().map(testimonialEntity -> toModel(testimonialEntity)).collect(Collectors.toList());
+        return testimonialEntityList.stream().map(DefaultTestimonialGateway::toModel).collect(toList());
     }
 }
