@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -15,34 +16,35 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE news SET deleted = true WHERE news_id = ?")
+@SQLDelete(sql = "Update deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-@Table(name = "news", schema = "alkemy_ong")
-public class NewsEntity {
+@Table(name = "comments")
+public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "news_id")
-    private Long newsId;
+    private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String body;
 
-    @Column(nullable = false)
-    private String content;
+    @JoinColumn(nullable = false, name = "user_id")
+    @ManyToOne
+    private UserEntity userEntity;
 
-    @Column(nullable = false)
-    private String image;
+    @JoinColumn(nullable = false, name = "news_id")
+    @ManyToOne
+    private NewsEntity newsEntity;
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(updatable = false, nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    private Boolean deleted;
+    @Builder.Default
+    private Boolean deleted = Boolean.FALSE;
 
-    private String type;
 }
