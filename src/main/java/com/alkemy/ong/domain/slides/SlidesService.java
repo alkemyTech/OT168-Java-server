@@ -20,4 +20,8 @@ public class SlidesService {
     public Slides findById(Long idSlides){
         return slidesGateway.findById(idSlides);
     }
+
+    public Slides updateSlides(Slides slides) { return slidesGateway.update(slides);}
+
+    public void deleteSlideById(Long id){slidesGateway.delete(id);}
 }

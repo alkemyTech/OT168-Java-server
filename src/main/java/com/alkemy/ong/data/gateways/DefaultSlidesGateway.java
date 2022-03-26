@@ -35,6 +35,21 @@ public class DefaultSlidesGateway implements SlidesGateway {
         return toModel(entity);
     }
 
+    @Override
+    public Slides update(Slides slides) {
+        SlidesEntity entity = slidesRepository.findById(slides.getIdSlides())
+                .orElseThrow(()-> new ResourceNotFoundException("No slide with id: " + slides.getIdSlides() + " exists."));
+        return toModel(slidesRepository.save(updateEntity(entity,slides)));
+    }
+
+    @Override
+    public void delete(Long id) {
+        SlidesEntity entity = slidesRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("No slide with id: " + id + " exists."));
+        entity.setDeleted(Boolean.TRUE);
+        slidesRepository.save(entity);
+    }
+
     private Slides toModel(SlidesEntity entity){
         return Slides.builder()
                 .idSlides(entity.getIdSlides())
@@ -43,5 +58,12 @@ public class DefaultSlidesGateway implements SlidesGateway {
                 .order(entity.getOrder())
                 .organization(DefaultOrganizationGateway.toModel(entity.getOrganization()))
                 .build();
+    }
+    private SlidesEntity updateEntity(SlidesEntity entity, Slides slides){
+        entity.setIdSlides(slides.getIdSlides());
+        entity.setImageUrl(slides.getImageUrl());
+        entity.setText(slides.getText());
+        entity.setOrder(slides.getOrder());
+        return entity;
     }
 }
