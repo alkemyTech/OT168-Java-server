@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/storage/")
 public class AmazonController {
@@ -17,8 +19,9 @@ public class AmazonController {
     }
 
     @PostMapping("/uploadFile")
-    public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
-        return this.amazonService.uploadFile(file);
+    public ResponseEntity<String> uploadFile(@RequestPart(value = "file") MultipartFile file) {
+        String url = amazonService.uploadFile(file);
+        return ResponseEntity.ok().body(url);
     }
 
     @DeleteMapping("/deleteFile")
