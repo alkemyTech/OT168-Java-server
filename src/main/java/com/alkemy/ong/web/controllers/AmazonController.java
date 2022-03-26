@@ -1,6 +1,8 @@
 package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.aws.AmazonService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +22,8 @@ public class AmazonController {
     }
 
     @DeleteMapping("/deleteFile")
-    public String deleteFile(@RequestPart(value = "url") String fileUrl) {
-        return this.amazonService.deleteFile(fileUrl);
+    public ResponseEntity<Void> deleteFile(@RequestPart(value = "url") String fileUrl) {
+        amazonService.deleteFile(fileUrl);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
