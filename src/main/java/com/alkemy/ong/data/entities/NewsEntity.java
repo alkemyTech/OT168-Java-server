@@ -45,7 +45,8 @@ public class NewsEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    private Boolean deleted;
+    @Builder.Default
+    private Boolean deleted = Boolean.FALSE;
 
     private String type;
 }

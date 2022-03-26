@@ -53,7 +53,6 @@ public class DefaultNewsGateway implements NewsGateway {
                 .image(news.getImage())
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
-                .deleted(news.getDeleted())
                 .type(news.getType())
                 .build();
     }
@@ -66,7 +65,6 @@ public class DefaultNewsGateway implements NewsGateway {
                 .image(newsEntity.getImage())
                 .createdAt(newsEntity.getCreatedAt())
                 .updatedAt(newsEntity.getUpdatedAt())
-                .deleted(newsEntity.getDeleted())
                 .type(newsEntity.getType())
                 .build();
     }

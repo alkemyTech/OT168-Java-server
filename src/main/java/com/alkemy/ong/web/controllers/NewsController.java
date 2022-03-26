@@ -13,6 +13,8 @@ import javax.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
 
+import static com.alkemy.ong.web.utils.WebUtils.validateDtoIdWithBodyId;
+
 @RestController
 @RequestMapping("/news")
 public class NewsController {
@@ -36,6 +38,7 @@ public class NewsController {
 
     @PutMapping("/{newsId}")
     public ResponseEntity<NewsDTO> updateNews(@PathVariable Long newsId, @Valid @RequestBody NewsDTO newsDTO) {
+        validateDtoIdWithBodyId(newsId, newsDTO.getNewsId());
         return ResponseEntity.ok(toDTO(newsService.updateNews(newsId, toModel(newsDTO))));
     }
 
