@@ -20,18 +20,18 @@ import java.time.LocalDateTime;
 public class MemberController {
 
     private final MemberService memberService;
-    private final PageMapper<MemberDTO,Member> bodyMapper;
+    private final PageMapper<MemberDTO,Member> pageMapper;
 
     public MemberController(MemberService memberService, PageMapper bodyMapper) {
         this.memberService = memberService;
-        this.bodyMapper=bodyMapper;
+        this.pageMapper =bodyMapper;
     }
 
     @GetMapping("/members")
     public ResponseEntity<PageDTO<MemberDTO>> findAll(@RequestParam("page") int numberPage) {
         WebUtils.validatePageNumber(numberPage);
         return ResponseEntity.ok()
-                .body(bodyMapper
+                .body(pageMapper
                         .toPageDTO(memberService.findAll(numberPage),MemberDTO.class));
     }
 
