@@ -4,7 +4,7 @@ import com.alkemy.ong.data.pagination.PageModel;
 
 public interface MemberGateway {
 
-    PageModel<Member> findAll(Integer pageNumber);
+    PageModel<Member> findAll(int pageNumber);
     Member save(Member member);
     Member findById(Long id);
     void delete(Long id);

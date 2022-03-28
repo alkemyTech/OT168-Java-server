@@ -11,7 +11,7 @@ public class MemberService {
         this.memberGateway=memberGateway;
     }
 
-    public PageModel<Member> findAll(Integer pageNumber){
+    public PageModel<Member> findAll(int pageNumber){
         return memberGateway.findAll(pageNumber);
     }
 

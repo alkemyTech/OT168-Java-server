@@ -28,7 +28,7 @@ public class DefaultMemberGateway implements MemberGateway {
 
 
     @Override
-    public PageModel<Member> findAll(Integer pageNumber) {
+    public PageModel<Member> findAll(int pageNumber) {
         return bodyMapper.toPageModel(PaginationUtils.setPagesNumbers(memberRepository
                 .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/members?page="),Member.class);
     }
