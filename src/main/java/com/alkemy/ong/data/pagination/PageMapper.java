@@ -29,7 +29,6 @@ public class PageMapper<T, S> {
         }
 
         pageModel.setBody(bodyModel);
-        pageModel.getBody().get(0);
         return pageModel;
     }
 
