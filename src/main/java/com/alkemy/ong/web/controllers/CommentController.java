@@ -52,6 +52,12 @@ public class CommentController {
         return ResponseEntity.ok(toDTO(commentService.updateComment(id, toModel(commentDTO))));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+        commentService.deleteComment(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     private Comment toModel(CommentDTO commentDTO){
         return Comment.builder()
                 .body(commentDTO.getBody())
