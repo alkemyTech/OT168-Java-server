@@ -6,13 +6,8 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialGateway;
 import lombok.SneakyThrows;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
-import java.util.List;
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultTestimonialGateway implements TestimonialGateway {
@@ -50,21 +45,17 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
                 .content(testimonialEntity.getContent())
                 .createdAt(testimonialEntity.getCreatedAt())
                 .updatedAt(testimonialEntity.getUpdatedAt())
-                .deleted(testimonialEntity.getDeleted())
                 .build();
     }
 
     private TestimonialEntity toEntity(Testimonial testimonialModel) {
-        TestimonialEntity testimonial = TestimonialEntity.builder()
+        return TestimonialEntity.builder()
                 .id(testimonialModel.getId())
                 .name(testimonialModel.getName())
                 .image(testimonialModel.getImage())
                 .content(testimonialModel.getContent())
                 .createdAt(testimonialModel.getCreatedAt())
                 .updatedAt(testimonialModel.getUpdatedAt())
-                .deleted(testimonialModel.getDeleted())
                 .build();
-        return testimonial;
     }
-
 }

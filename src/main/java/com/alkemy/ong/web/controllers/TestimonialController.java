@@ -50,7 +50,6 @@ public class TestimonialController {
                 .content(testimonialDTO.getContent())
                 .createdAt(testimonialDTO.getCreatedAt())
                 .updatedAt(testimonialDTO.getUpdatedAt())
-                .deleted(testimonialDTO.getDeleted())
                 .build();
     }
 
@@ -62,7 +61,6 @@ public class TestimonialController {
                 .content(testimonial.getContent())
                 .createdAt(testimonial.getCreatedAt())
                 .updatedAt(testimonial.getUpdatedAt())
-                .deleted(testimonial.getDeleted())
                 .build();
     }
 
@@ -76,30 +74,21 @@ public class TestimonialController {
     @AllArgsConstructor
     @NoArgsConstructor
     private static class TestimonialDTO {
-        @ApiModelProperty(value = "ID", required = true)
         private Long id;
 
-        @ApiModelProperty(value = "Name", required = true)
         @NotNull(message = "Field 'name' is required.")
         private String name;
 
         @ApiModelProperty(value = "Image")
         private String image;
 
-        @ApiModelProperty(value = "Content", required = true)
         @NotNull(message = "Field 'content' is required.")
         private String content;
 
-        @ApiModelProperty(value = "Creation Date", required = true)
         private LocalDateTime createdAt;
 
-        @ApiModelProperty(value = "Modification Date", required = true)
         private LocalDateTime updatedAt;
 
-        @ApiModelProperty(value = "Deleted", required = true)
-        private Boolean deleted;
-
-        @ApiModelProperty(value = "Type", required = true)
         private String type = "testimonial";
     }
 }
