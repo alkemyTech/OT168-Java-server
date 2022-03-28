@@ -41,26 +41,7 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
         testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         testimonialRepository.deleteById(id);
     }
-/*
-    public PageModel findAll(Integer page) {
-        Page<TestimonialEntity> entityPage = testimonialRepository.findAll(PageRequest.of(page, 10));
-        if (entityPage.isEmpty()) {
-            throw new ResourceNotFoundException("The page requested doesn't exists.");
-        }
-        String previousPage = "";
-        String nextPage = "";
-        if (entityPage.hasPrevious()) {
-            previousPage = String.valueOf(page - 1);
-        }
-        if (entityPage.hasNext()) {
-            nextPage = String.valueOf(page + 1);
-        }
-        return PageModel.<Testimonial>builder().
-                modelList(toModelList(entityPage.stream().toList())).
-                nextPage(nextPage).previousPage(previousPage)
-                .build();
-    }
-*/
+
     private static Testimonial toModel(TestimonialEntity testimonialEntity) {
         return Testimonial.builder()
                 .id(testimonialEntity.getId())
@@ -83,13 +64,7 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
                 .updatedAt(testimonialModel.getUpdatedAt())
                 .deleted(testimonialModel.getDeleted())
                 .build();
-        if (testimonialModel.getDeleted() == null) {
-            testimonial.setDeleted(false);
-        }
         return testimonial;
     }
 
-    private List<Testimonial> toModelList(List<TestimonialEntity> testimonialEntityList) {
-        return testimonialEntityList.stream().map(DefaultTestimonialGateway::toModel).collect(toList());
-    }
 }
