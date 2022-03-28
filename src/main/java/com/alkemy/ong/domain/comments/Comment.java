@@ -1,22 +1,18 @@
-package com.alkemy.ong.domain.news;
+package com.alkemy.ong.domain.comments;
 
 import lombok.*;
-
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class News {
-
+public class Comment {
+    private Long id;
+    private String body;
+    private Long userId;
     private Long newsId;
-    private String name;
-    private String content;
-    private String image;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String type;
 }

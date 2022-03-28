@@ -1,4 +1,5 @@
 package com.alkemy.ong.domain.news;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,10 @@ public class NewsService {
 
     public News updateNews(Long newsId, News news){
         return newsGateway.updateNews(newsId, news);
+    }
+
+    public void deleteNews(Long newsId){
+        newsGateway.deleteNews(newsId);
     }
 
 }

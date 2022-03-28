@@ -1,7 +1,9 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
+import com.alkemy.ong.web.utils.PageDTO;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -13,26 +15,25 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping
 public class MemberController {
 
     private final MemberService memberService;
+    private final PageMapper<MemberDTO,Member> pageMapper;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, PageMapper bodyMapper) {
         this.memberService = memberService;
+        this.pageMapper =bodyMapper;
     }
 
     @GetMapping("/members")
-    public ResponseEntity<List<MemberDTO>> findAll() {
-        return ResponseEntity.ok().body(memberService.findAll()
-                .stream()
-                .map(this::toDTO)
-                .collect(toList()));
+    public ResponseEntity<PageDTO<MemberDTO>> findAll(@RequestParam("page") int numberPage) {
+        WebUtils.validatePageNumber(numberPage);
+        return ResponseEntity.ok()
+                .body(pageMapper
+                        .toPageDTO(memberService.findAll(numberPage),MemberDTO.class));
     }
 
     @PostMapping("/members")
@@ -105,4 +106,5 @@ public class MemberController {
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime updatedAt;;
     }
+
 }

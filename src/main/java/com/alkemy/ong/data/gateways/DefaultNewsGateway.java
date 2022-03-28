@@ -39,6 +39,12 @@ public class DefaultNewsGateway implements NewsGateway {
         return toModel(newsRepository.save(toEntity(news)));
     }
 
+    @Override
+    public void deleteNews(Long newsId) {
+        newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        newsRepository.deleteById(newsId);
+    }
+
     private NewsEntity toEntity(News news) {
         return NewsEntity.builder()
                 .newsId(news.getNewsId())
@@ -47,7 +53,6 @@ public class DefaultNewsGateway implements NewsGateway {
                 .image(news.getImage())
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
-                .deleted(news.getDeleted())
                 .type(news.getType())
                 .build();
     }
@@ -60,7 +65,6 @@ public class DefaultNewsGateway implements NewsGateway {
                 .image(newsEntity.getImage())
                 .createdAt(newsEntity.getCreatedAt())
                 .updatedAt(newsEntity.getUpdatedAt())
-                .deleted(newsEntity.getDeleted())
                 .type(newsEntity.getType())
                 .build();
     }

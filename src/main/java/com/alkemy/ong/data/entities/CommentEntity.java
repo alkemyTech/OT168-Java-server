@@ -11,35 +11,37 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "testimonials")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE testimonials SET deleted = true WHERE id=?")
+@SQLDelete(sql = "Update deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class TestimonialEntity {
+@Table(name = "comments")
+public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String body;
 
-    private String image;
+    @JoinColumn(nullable = false, name = "user_id")
+    @ManyToOne
+    private UserEntity userEntity;
 
-    private String content;
+    @JoinColumn(nullable = false, name = "news_id")
+    @ManyToOne
+    private NewsEntity newsEntity;
 
     @CreationTimestamp
-    @Column(name = "created_at")
-    @JsonFormat(pattern="dd-MM-yyyy hh:mm")
+    @Column(updatable = false, nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    @JsonFormat(pattern="dd-MM-yyyy hh:mm")
     private LocalDateTime updatedAt;
 
     @Builder.Default

@@ -1,7 +1,8 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.contact.Contact;
-import com.alkemy.ong.domain.contact.ContactService;
+import com.alkemy.ong.domain.contacts.Contact;
+import com.alkemy.ong.domain.contacts.ContactService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class ContactController {
     @GetMapping()
     public ResponseEntity<List<ContactDTO>> getAllContacts() throws Exception {
         return ResponseEntity.ok(contactService.getContacts().stream()
-                .map(c -> toDto(c))
+                .map(this::toDto)
                 .collect(toList()));
     }
 
@@ -52,7 +53,9 @@ public class ContactController {
         private String phone;
         private String email;
         private String message;
+        @JsonFormat(pattern="dd-MM-yyyy hh:mm")
         private LocalDateTime createdAt;
+        @JsonFormat(pattern="dd-MM-yyyy hh:mm")
         private LocalDateTime updatedAt;
     }
 }

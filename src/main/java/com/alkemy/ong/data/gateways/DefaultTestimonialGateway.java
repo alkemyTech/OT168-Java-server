@@ -2,10 +2,17 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.TestimonialEntity;
 import com.alkemy.ong.data.repositories.TestimonialRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialGateway;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultTestimonialGateway implements TestimonialGateway {
@@ -17,11 +24,25 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
     }
 
     @SneakyThrows
-    public Testimonial save(Testimonial testimonial){
-            return toModel(testimonialRepository.save(toEntity(testimonial)));
+    public Testimonial save(Testimonial testimonial) {
+        return toModel(testimonialRepository.save(toEntity(testimonial)));
     }
 
-    private Testimonial toModel(TestimonialEntity testimonialEntity) {
+    public Testimonial update(Long id, Testimonial testimonial) {
+        TestimonialEntity entity = testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        entity.setName(testimonial.getName());
+        entity.setContent(testimonial.getContent());
+        entity.setImage(testimonial.getImage());
+        entity.setUpdatedAt(LocalDateTime.now());
+        return toModel(testimonialRepository.save(entity));
+    }
+
+    public void delete(Long id) {
+        testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        testimonialRepository.deleteById(id);
+    }
+
+    private static Testimonial toModel(TestimonialEntity testimonialEntity) {
         return Testimonial.builder()
                 .id(testimonialEntity.getId())
                 .name(testimonialEntity.getName())
@@ -43,9 +64,7 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
                 .updatedAt(testimonialModel.getUpdatedAt())
                 .deleted(testimonialModel.getDeleted())
                 .build();
-            if (testimonialModel.getDeleted() == null) {
-                testimonial.setDeleted(false);
-            }
-            return testimonial;
+        return testimonial;
     }
+
 }

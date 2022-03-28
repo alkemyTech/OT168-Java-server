@@ -1,32 +1,38 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberGateway;
 
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.repositories.MemberRepository;
+import com.alkemy.ong.data.pagination.PageModel;
+import com.alkemy.ong.data.utils.PaginationUtils;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 
 @Component
 public class DefaultMemberGateway implements MemberGateway {
 
     private final MemberRepository memberRepository;
+    private final PageMapper<Member, MemberEntity> pageMapper;
 
-    public DefaultMemberGateway(MemberRepository memberRepository) {
+    public DefaultMemberGateway(MemberRepository memberRepository, PageMapper<Member, MemberEntity> bodyMapper) {
         this.memberRepository = memberRepository;
+        this.pageMapper = bodyMapper;
     }
+
+
 
     @Override
-    public List<Member> findAll() {
-        return memberRepository.findAll().stream()
-                .map(this::toModel)
-                .collect(toList());
+    public PageModel<Member> findAll(int pageNumber) {
+        return pageMapper.toPageModel(PaginationUtils.setPagesNumbers(memberRepository
+                .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/members?page="),Member.class);
     }
+
 
     @Override
     public Member save(Member member) {
