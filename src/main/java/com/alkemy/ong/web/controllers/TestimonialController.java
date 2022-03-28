@@ -2,7 +2,7 @@ package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialService;
-import com.alkemy.ong.web.utils.WebUtils;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
+import static java.util.stream.Collectors.toList;
+import static com.alkemy.ong.web.utils.WebUtils.*;
 
 @RestController
 @RequestMapping("/testimonials")
@@ -29,8 +32,14 @@ public class TestimonialController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TestimonialDTO> updateTestimonial(@PathVariable("id") Long id, @Valid @RequestBody TestimonialDTO testimonialDTO) {
-        WebUtils.validateDtoIdWithBodyId(id, testimonialDTO.getId());
+        validateDtoIdWithBodyId(id, testimonialDTO.getId());
         return new ResponseEntity<>(toDto(testimonialService.update(id, toModel(testimonialDTO))), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        testimonialService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     private Testimonial toModel(TestimonialDTO testimonialDTO) {
@@ -57,17 +66,22 @@ public class TestimonialController {
                 .build();
     }
 
+    private List<TestimonialDTO> toDTOList(List<Testimonial> testimonialList) {
+        return testimonialList.stream().map(this::toDto).collect(toList());
+    }
+
     @Getter
     @Setter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class TestimonialDTO{
+    private static class TestimonialDTO {
         private Long id;
 
         @NotNull(message = "Field 'name' is required.")
         private String name;
 
+        @ApiModelProperty(value = "Image")
         private String image;
 
         @NotNull(message = "Field 'content' is required.")
@@ -78,5 +92,7 @@ public class TestimonialController {
         private LocalDateTime updatedAt;
 
         private Boolean deleted;
+
+        private String type = "testimonial";
     }
 }

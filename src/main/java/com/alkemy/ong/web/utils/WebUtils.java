@@ -7,4 +7,10 @@ public class WebUtils {
     public static void validateDtoIdWithBodyId(Long id, Long idDTO) {
         if(id!=idDTO){throw new WebRequestException("PathId does not match with RequestBody ID.");}
     }
+
+    public static void validatePageNumber(int numberPage){
+        if(numberPage<0){
+            throw new WebRequestException("The page number can not be lower a zero.");
+        }
     }
+}

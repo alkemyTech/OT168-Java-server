@@ -1,4 +1,5 @@
 package com.alkemy.ong.domain.news;
+
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -33,12 +34,15 @@ public class TestimonialEntity {
 
     @CreationTimestamp
     @Column(name = "created_at")
+    @JsonFormat(pattern="dd-MM-yyyy hh:mm")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
+    @JsonFormat(pattern="dd-MM-yyyy hh:mm")
     private LocalDateTime updatedAt;
 
-    private Boolean deleted;
+    @Builder.Default
+    private Boolean deleted = Boolean.FALSE;
 
 }
