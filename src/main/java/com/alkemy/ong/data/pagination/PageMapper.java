@@ -51,12 +51,10 @@ public class PageMapper<T, S> {
     }
 
     public T toModel (S entity,Class<T> modelClass){
-        T model = modelMapper.map(entity,modelClass);
-        return model;
+        return modelMapper.map(entity,modelClass);
     }
 
     public T toDTO (S model, Class<T> DTOClass){
-        T DTO = modelMapper.map(model, DTOClass);
-        return DTO;
+        return modelMapper.map(model, DTOClass);
     }
 }
