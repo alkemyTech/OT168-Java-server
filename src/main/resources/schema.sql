@@ -23,7 +23,7 @@ CREATE TABLE `alkemy_ong`.`users`
     `firstName` VARCHAR(50)        NOT NULL,
     `lastName`  VARCHAR(50)        NOT NULL,
     `email`     VARCHAR(30) UNIQUE NOT NULL,
-    `password`  VARCHAR(50)        NOT NULL,
+    `password`  VARCHAR(255)        NOT NULL,
     `photo`     VARCHAR(255) DEFAULT NULL,
     `createdat` TIMESTAMP    DEFAULT NOW(),
     `updatedat`  TIMESTAMP    DEFAULT NOW(),
