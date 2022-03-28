@@ -1,9 +1,9 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
-import com.alkemy.ong.web.utils.PageDTO;
+import com.alkemy.ong.web.pagination.PageDTOMapper;
+import com.alkemy.ong.web.pagination.PageDTO;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -21,18 +21,18 @@ import java.time.LocalDateTime;
 public class MemberController {
 
     private final MemberService memberService;
-    private final PageMapper<MemberDTO,Member> pageMapper;
+    private final PageDTOMapper<MemberDTO,Member> pageDTOMapper;
 
-    public MemberController(MemberService memberService, PageMapper bodyMapper) {
+    public MemberController(MemberService memberService, PageDTOMapper pageDTOMapper) {
         this.memberService = memberService;
-        this.pageMapper =bodyMapper;
+        this.pageDTOMapper =pageDTOMapper;
     }
 
     @GetMapping("/members")
     public ResponseEntity<PageDTO<MemberDTO>> findAll(@RequestParam("page") int numberPage) {
         WebUtils.validatePageNumber(numberPage);
         return ResponseEntity.ok()
-                .body(pageMapper
+                .body(pageDTOMapper
                         .toPageDTO(memberService.findAll(numberPage),MemberDTO.class));
     }
 
