@@ -18,6 +18,5 @@ public class News {
     private String image;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean deleted;
     private String type;
 }

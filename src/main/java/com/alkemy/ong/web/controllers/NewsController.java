@@ -1,18 +1,19 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.entities.CategoryEntity;
-import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+
 import java.time.LocalDateTime;
+
+import static com.alkemy.ong.web.utils.WebUtils.validateDtoIdWithBodyId;
 
 @RestController
 @RequestMapping("/news")
@@ -35,14 +36,14 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newsService.saveNews(toModel(newsDTO))));
     }
 
-
     @PutMapping("/{newsId}")
-    public ResponseEntity<NewsDTO> updateNews(@PathVariable Long newsId, @Valid @RequestBody NewsDTO newsDTO){
+    public ResponseEntity<NewsDTO> updateNews(@PathVariable Long newsId, @Valid @RequestBody NewsDTO newsDTO) {
+        validateDtoIdWithBodyId(newsId, newsDTO.getNewsId());
         return ResponseEntity.ok(toDTO(newsService.updateNews(newsId, toModel(newsDTO))));
     }
 
     @DeleteMapping("/{newsId}")
-    public ResponseEntity<Void> deleteNews(@PathVariable Long newsId){
+    public ResponseEntity<Void> deleteNews(@PathVariable Long newsId) {
         newsService.deleteNews(newsId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -55,7 +56,6 @@ public class NewsController {
                 .image(newsDTO.getImage())
                 .createdAt(newsDTO.getCreatedAt())
                 .updatedAt(newsDTO.getUpdatedAt())
-                .deleted(newsDTO.getDeleted())
                 .type(newsDTO.getType())
                 .build();
     }
@@ -68,11 +68,9 @@ public class NewsController {
                 .image(news.getImage())
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
-                .deleted(news.getDeleted())
                 .type(news.getType())
                 .build();
     }
-
 
     @Builder
     @Getter
@@ -81,16 +79,22 @@ public class NewsController {
     @NoArgsConstructor
     private static class NewsDTO {
 
+        @ApiModelProperty(value = "ID", required = true)
         private Long newsId;
+        @ApiModelProperty(value = "Name", required = true)
         @NotEmpty(message = "The name field cannot be empty.")
         private String name;
+        @ApiModelProperty(value = "Content", required = true)
         @NotEmpty(message = "The content field cannot be empty.")
         private String content;
+        @ApiModelProperty(value = "Image", required = true)
         @NotEmpty(message = "The image field cannot be empty.")
         private String image;
+        @ApiModelProperty(value = "Creation Date", required = true)
         private LocalDateTime createdAt;
+        @ApiModelProperty(value = "Modification Date", required = true)
         private LocalDateTime updatedAt;
-        private Boolean deleted;
+        @ApiModelProperty(value = "Type", required = true)
         private String type = "news";
     }
 }
