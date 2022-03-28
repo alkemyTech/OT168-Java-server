@@ -6,8 +6,13 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialGateway;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
+import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultTestimonialGateway implements TestimonialGateway {
@@ -32,7 +37,12 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
         return toModel(testimonialRepository.save(entity));
     }
 
-    private Testimonial toModel(TestimonialEntity testimonialEntity) {
+    public void delete(Long id) {
+        testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        testimonialRepository.deleteById(id);
+    }
+
+    private static Testimonial toModel(TestimonialEntity testimonialEntity) {
         return Testimonial.builder()
                 .id(testimonialEntity.getId())
                 .name(testimonialEntity.getName())
@@ -54,9 +64,7 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
                 .updatedAt(testimonialModel.getUpdatedAt())
                 .deleted(testimonialModel.getDeleted())
                 .build();
-        if (testimonialModel.getDeleted() == null) {
-            testimonial.setDeleted(false);
-        }
         return testimonial;
     }
+
 }
