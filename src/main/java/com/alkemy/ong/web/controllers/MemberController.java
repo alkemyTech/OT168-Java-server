@@ -1,8 +1,7 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.pagination.BodyMapper;
+import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.domain.members.Member;
-import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.domain.members.MemberService;
 import com.alkemy.ong.web.utils.PageDTO;
 import com.alkemy.ong.web.utils.WebUtils;
@@ -21,9 +20,9 @@ import java.time.LocalDateTime;
 public class MemberController {
 
     private final MemberService memberService;
-    private final BodyMapper<MemberDTO,Member> bodyMapper;
+    private final PageMapper<MemberDTO,Member> bodyMapper;
 
-    public MemberController(MemberService memberService,BodyMapper bodyMapper) {
+    public MemberController(MemberService memberService, PageMapper bodyMapper) {
         this.memberService = memberService;
         this.bodyMapper=bodyMapper;
     }

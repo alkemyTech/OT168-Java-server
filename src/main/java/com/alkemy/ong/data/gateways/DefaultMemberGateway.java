@@ -1,6 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
-import com.alkemy.ong.data.pagination.BodyMapper;
+import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberGateway;
@@ -13,15 +13,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultMemberGateway implements MemberGateway {
 
     private final MemberRepository memberRepository;
-    private final BodyMapper<Member, MemberEntity> bodyMapper;
+    private final PageMapper<Member, MemberEntity> bodyMapper;
 
-    public DefaultMemberGateway(MemberRepository memberRepository, BodyMapper<Member, MemberEntity> bodyMapper) {
+    public DefaultMemberGateway(MemberRepository memberRepository, PageMapper<Member, MemberEntity> bodyMapper) {
         this.memberRepository = memberRepository;
         this.bodyMapper = bodyMapper;
     }

@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class BodyMapper<T, S> {
+public class PageMapper<T, S> {
 
     private final ModelMapper modelMapper;
 
-    public BodyMapper(ModelMapper modelMapper){
+    public PageMapper(ModelMapper modelMapper){
         this.modelMapper=modelMapper;
     }
 
