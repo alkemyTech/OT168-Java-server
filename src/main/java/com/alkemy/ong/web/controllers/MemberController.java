@@ -30,7 +30,9 @@ public class MemberController {
     @GetMapping("/members")
     public ResponseEntity<PageDTO<MemberDTO>> findAll(@RequestParam("page") int numberPage) {
         WebUtils.validatePageNumber(numberPage);
-        return ResponseEntity.ok().body(bodyMapper.toPageDTO(memberService.findAll(numberPage),MemberDTO.class));
+        return ResponseEntity.ok()
+                .body(bodyMapper
+                        .toPageDTO(memberService.findAll(numberPage),MemberDTO.class));
     }
 
     @PostMapping("/members")

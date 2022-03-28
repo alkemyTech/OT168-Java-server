@@ -18,18 +18,18 @@ import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 public class DefaultMemberGateway implements MemberGateway {
 
     private final MemberRepository memberRepository;
-    private final PageMapper<Member, MemberEntity> bodyMapper;
+    private final PageMapper<Member, MemberEntity> pageMapper;
 
     public DefaultMemberGateway(MemberRepository memberRepository, PageMapper<Member, MemberEntity> bodyMapper) {
         this.memberRepository = memberRepository;
-        this.bodyMapper = bodyMapper;
+        this.pageMapper = bodyMapper;
     }
 
 
 
     @Override
     public PageModel<Member> findAll(int pageNumber) {
-        return bodyMapper.toPageModel(PaginationUtils.setPagesNumbers(memberRepository
+        return pageMapper.toPageModel(PaginationUtils.setPagesNumbers(memberRepository
                 .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/members?page="),Member.class);
     }
 
