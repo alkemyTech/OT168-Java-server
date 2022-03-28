@@ -1,5 +1,6 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.data.pagination.BodyMapper;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.domain.members.MemberService;
@@ -20,15 +21,19 @@ import java.time.LocalDateTime;
 public class MemberController {
 
     private final MemberService memberService;
+    private final BodyMapper<MemberDTO,Member> bodyMapper;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService,BodyMapper bodyMapper) {
+
         this.memberService = memberService;
+        this.bodyMapper=bodyMapper;
     }
 
     @GetMapping("/members")
     public ResponseEntity<PageDTO<MemberDTO>> findAll(@RequestParam("page") Integer numberPage) {
         WebUtils.validateNumberPage(numberPage);
-        return ResponseEntity.ok().body(toMemberPageDTO(memberService.findAll(numberPage)));
+        ResponseEntity.ok().body(bodyMapper.toPageDTO(memberService.findAll(numberPage),MemberDTO.class));
+        return ResponseEntity.ok().body(bodyMapper.toPageDTO(memberService.findAll(numberPage),MemberDTO.class));
     }
 
     @PostMapping("/members")
@@ -78,14 +83,6 @@ public class MemberController {
                 .build();
     }
 
-    private PageDTO toMemberPageDTO(PageModel modelPage) {
-        return PageDTO.builder()
-                .DTOs(modelPage.getBody())
-                .nextPage(modelPage.getNextPage())
-                .previuosPage(modelPage.getPreviousPage())
-                .build();
-    }
-
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
@@ -107,4 +104,5 @@ public class MemberController {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
+
 }

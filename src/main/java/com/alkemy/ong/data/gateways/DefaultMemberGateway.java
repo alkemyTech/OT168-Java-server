@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.data.pagination.BodyMapper;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberGateway;
@@ -18,16 +19,21 @@ import static java.util.stream.Collectors.toList;
 public class DefaultMemberGateway implements MemberGateway {
 
     private final MemberRepository memberRepository;
+    private final BodyMapper<Member, MemberEntity> bodyMapper;
 
-    public DefaultMemberGateway(MemberRepository memberRepository) {
+    public DefaultMemberGateway(MemberRepository memberRepository, BodyMapper<Member, MemberEntity> bodyMapper) {
         this.memberRepository = memberRepository;
+        this.bodyMapper = bodyMapper;
     }
+
+
 
     @Override
     public PageModel<Member> findAll(Integer pageNumber) {
-        return toMemberPage(PaginationUtils.setPagesNumbers(memberRepository
-                .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/members?page="));
+        return bodyMapper.toPageModel(PaginationUtils.setPagesNumbers(memberRepository
+                .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/members?page="),Member.class);
     }
+
 
     @Override
     public Member save(Member member) {
@@ -50,14 +56,6 @@ public class DefaultMemberGateway implements MemberGateway {
     public Member update(Member member) {
         MemberEntity memberEntity = toEntity(findById(member.getId()));
         return toModel(memberRepository.save(toUpdate(memberEntity, member)));
-    }
-
-    private PageModel toMemberPage(PageModel<MemberEntity> entityPage){
-        return PageModel.builder()
-                .body(entityPage.getBody().stream().map(this::toModel).collect(toList()))
-                .previousPage(entityPage.getPreviousPage())
-                .nextPage(entityPage.getNextPage())
-                .build();
     }
 
     private Member toModel(MemberEntity memberEntity) {

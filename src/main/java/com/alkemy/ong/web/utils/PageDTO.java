@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Builder
 public class PageDTO<T> {
-    private List<T> DTOs;
+    private List<T> body;
     private String previuosPage;
     private String nextPage;
 }

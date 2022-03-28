@@ -4,7 +4,6 @@ import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.domain.exceptions.WebRequestException;
 import org.springframework.data.domain.Page;
 
-
 public class PaginationUtils {
 
     public static final Integer DEFAULT_PAGE_SIZE = 10;

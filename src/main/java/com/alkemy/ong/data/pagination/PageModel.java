@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class PageModel<S> {
-    private List<S> body;
+public class PageModel<T> {
+    private List<T> body;
     private String nextPage;
     private String previousPage;
 }
