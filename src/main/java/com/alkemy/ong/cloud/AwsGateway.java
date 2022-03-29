@@ -1,5 +1,7 @@
-package com.alkemy.ong.domain.aws;
+package com.alkemy.ong.cloud;
 
+import com.alkemy.ong.domain.cloud.CloudGateway;
+import com.alkemy.ong.domain.exceptions.ServiceUnavailableException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -18,7 +20,7 @@ import java.io.IOException;
 import java.util.Date;
 
 @Component
-public class AmazonGateway {
+public class AwsGateway implements CloudGateway {
 
         private AmazonS3 s3client;
 
@@ -37,16 +39,17 @@ public class AmazonGateway {
             this.s3client = new AmazonS3Client(credentials);
         }
 
+        @Override
         public String uploadFile(MultipartFile multipartFile) {
             String fileUrl = "";
             try {
                 File file = convertMultiPartToFile(multipartFile);
                 String fileName = generateFileName(multipartFile);
                 fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
-                uploadFileTos3bucket(fileName, file);
+                uploadFileToS3bucket(fileName, file);
                 file.delete();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IOException e) {
+                throw new ServiceUnavailableException("The server is not available to save the file");
             }
             return fileUrl;
         }
@@ -63,7 +66,8 @@ public class AmazonGateway {
             return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
         }
 
-        private void uploadFileTos3bucket(String fileName, File file) {
+        @Override
+        public void uploadFileToS3bucket(String fileName, File file) {
             s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         }

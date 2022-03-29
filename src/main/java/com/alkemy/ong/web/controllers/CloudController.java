@@ -1,20 +1,18 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.aws.AmazonService;
+import com.alkemy.ong.domain.cloud.CloudService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URI;
-
 @RestController
 @RequestMapping("/storage/")
-public class AmazonController {
+public class CloudController {
 
-    private final AmazonService amazonService;
+    private final CloudService amazonService;
 
-    public AmazonController(AmazonService amazonService) {
+    public CloudController(CloudService amazonService) {
         this.amazonService = amazonService;
     }
 
