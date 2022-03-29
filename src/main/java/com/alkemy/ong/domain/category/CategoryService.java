@@ -1,8 +1,8 @@
 package com.alkemy.ong.domain.category;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
+
+import com.alkemy.ong.data.pagination.PageModel;
 
 @Service
 public class CategoryService {
@@ -13,8 +13,8 @@ public class CategoryService {
 		this.categoryGateway = categoryGateway;
 	}
 
-	public List<Category> findAll() {
-		return categoryGateway.findAll();
+	public PageModel<Category> findAll(int pageNumber) {
+		return categoryGateway.findAll(pageNumber);
 	}
 	
 	public Category findById(Long id) {
