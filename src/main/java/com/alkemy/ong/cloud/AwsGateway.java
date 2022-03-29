@@ -66,7 +66,6 @@ public class AwsGateway implements CloudGateway {
             return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
         }
 
-        @Override
         public void uploadFileToS3bucket(String fileName, File file) {
             s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
