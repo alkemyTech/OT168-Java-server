@@ -50,7 +50,6 @@ public class TestimonialController {
                 .content(testimonialDTO.getContent())
                 .createdAt(testimonialDTO.getCreatedAt())
                 .updatedAt(testimonialDTO.getUpdatedAt())
-                .deleted(testimonialDTO.getDeleted())
                 .build();
     }
 
@@ -62,7 +61,6 @@ public class TestimonialController {
                 .content(testimonial.getContent())
                 .createdAt(testimonial.getCreatedAt())
                 .updatedAt(testimonial.getUpdatedAt())
-                .deleted(testimonial.getDeleted())
                 .build();
     }
 
@@ -90,8 +88,6 @@ public class TestimonialController {
         private LocalDateTime createdAt;
 
         private LocalDateTime updatedAt;
-
-        private Boolean deleted;
 
         private String type = "testimonial";
     }

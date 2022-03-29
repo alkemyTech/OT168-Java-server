@@ -65,6 +65,12 @@ public class DefaultCommentGateway implements CommentGateway {
         return toModel(commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, "comment")));
     }
 
+    public void delete(Long id) {
+        CommentEntity comment = commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, "comment"));
+        commentRepository.deleteById(comment.getId());
+    }
+
+
     private CommentEntity toEntity (Comment comment){
         return CommentEntity.builder()
                 .id(comment.getId())

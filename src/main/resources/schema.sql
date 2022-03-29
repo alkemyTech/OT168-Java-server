@@ -23,7 +23,7 @@ CREATE TABLE `alkemy_ong`.`users`
     `firstName` VARCHAR(50)        NOT NULL,
     `lastName`  VARCHAR(50)        NOT NULL,
     `email`     VARCHAR(30) UNIQUE NOT NULL,
-    `password`  VARCHAR(50)        NOT NULL,
+    `password`  VARCHAR(255)        NOT NULL,
     `photo`     VARCHAR(255) DEFAULT NULL,
     `createdat` TIMESTAMP    DEFAULT NOW(),
     `updatedat`  TIMESTAMP    DEFAULT NOW(),
@@ -124,7 +124,7 @@ image VARCHAR (255),
 content VARCHAR (255),
 created_at TIMESTAMP DEFAULT NOW(),
 updated_at TIMESTAMP,
-deleted BIT(1) NOT NULL DEFAULT 0
+deleted BIT(1) DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS alkemy_ong.categories (

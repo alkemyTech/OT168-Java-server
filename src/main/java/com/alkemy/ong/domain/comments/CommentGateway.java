@@ -8,5 +8,5 @@ public interface CommentGateway {
     Comment update(Long id, Comment comment);
     Comment findById(Long id);
     List<Comment> findAll();
-
+    void delete(Long id);
 }
