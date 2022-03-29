@@ -1,8 +1,7 @@
 package com.alkemy.ong.domain.members;
 
+import com.alkemy.ong.data.pagination.PageModel;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class MemberService {
@@ -12,8 +11,8 @@ public class MemberService {
         this.memberGateway=memberGateway;
     }
 
-    public List<Member> findAll(){
-        return memberGateway.findAll();
+    public PageModel<Member> findAll(int pageNumber){
+        return memberGateway.findAll(pageNumber);
     }
 
     public Member save(Member member){

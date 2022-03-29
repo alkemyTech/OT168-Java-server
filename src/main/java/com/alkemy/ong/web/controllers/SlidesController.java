@@ -3,14 +3,12 @@ package com.alkemy.ong.web.controllers;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.slides.Slides;
 import com.alkemy.ong.domain.slides.SlidesService;
+import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,6 +39,18 @@ public class SlidesController {
         Slides slides = slidesService.findById(id);
         return ResponseEntity.ok(toFullDto(slides));
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<SlidesDto> update(@PathVariable Long id, @RequestBody SlidesDto slides){
+        WebUtils.validateDtoIdWithBodyId(id, slides.getIdSlides());
+        SlidesDto slidesDto = toFullDto(slidesService.updateSlides(toModel(slides)));
+        return ResponseEntity.ok(slidesDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+        slidesService.deleteSlideById(id);
+        return ResponseEntity.noContent().build();
+    }
 
     private SlidesSimpleDTO toDto(Slides slides){
         return SlidesSimpleDTO.builder()
@@ -56,6 +66,16 @@ public class SlidesController {
                 .text(slides.getText())
                 .order(slides.getOrder())
                 .organization(slides.getOrganization())
+                .build();
+    }
+
+    private Slides toModel(SlidesDto slidesDto){
+        return Slides.builder()
+                .idSlides(slidesDto.getIdSlides())
+                .imageUrl(slidesDto.getImageUrl())
+                .text(slidesDto.getText())
+                .order(slidesDto.getOrder())
+                .organization(slidesDto.getOrganization())
                 .build();
     }
 
