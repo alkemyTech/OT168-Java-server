@@ -2,7 +2,12 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/alkemy_ong
     username: root
-    password:
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
     continue-on-error: true
+amazonProperties:
+      endpointUrl: https://s3.us-west-2.amazonaws.com
+      accessKey: ${ACCESS_KEY}
+      secretKey: ${SECRET_KEY}
+      bucketName: ${BUCKET_NAME}

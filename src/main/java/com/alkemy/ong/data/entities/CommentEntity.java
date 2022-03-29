@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SQLDelete(sql = "Update deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE comments SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false")
 @Table(name = "comments")
 public class CommentEntity {

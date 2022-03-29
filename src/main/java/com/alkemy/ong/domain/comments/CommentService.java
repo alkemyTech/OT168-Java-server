@@ -28,4 +28,5 @@ public class CommentService {
     public Comment updateComment(Long id, Comment comment){
         return commentGateway.update(id, comment);
     }
+	public void deleteComment(Long id) {commentGateway.delete(id);}
 }
