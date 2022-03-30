@@ -3,6 +3,7 @@ package com.alkemy.ong.web.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
+
+import static com.alkemy.ong.web.utils.WebUtils.*;
 
 import lombok.*;
 
@@ -52,6 +55,20 @@ public class AuthController {
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
+
+	@PostMapping("/register")
+	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO, HttpServletRequest request) throws Exception {
+		validatePassword(registrationDTO.password, registrationDTO.matchingPassword);
+		Map<String, Object> response = new HashMap<>();
+		if (!userService.checkEmail(registrationDTO.email)) {
+			UserDTO user = toDTO(userService.register(toModel(registrationDTO)));
+			response.put("User", user);
+		} else {
+			response.put("Error", "Email already exists.");
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 	
 	private UserDTO toDTO(User user) {
 		return UserDTO.builder()
@@ -59,6 +76,17 @@ public class AuthController {
 				.firstName(user.getFirstName())
 				.lastName(user.getLastName())
 				.email(user.getEmail())
+				.password(user.getPassword())
+				.photo(user.getPhoto())
+				.build();
+	}
+
+	private User toModel(RegistrationDTO user) {
+		return User.builder()
+				.firstName(user.getFirstName())
+				.lastName(user.getLastName())
+				.email(user.getEmail())
+				.password(user.getPassword())
 				.photo(user.getPhoto())
 				.build();
 	}
@@ -86,7 +114,32 @@ public class AuthController {
 	    private String firstName;
 	    private String lastName;
 		private String email;
+		private String password;
 	    private String photo;
+	}
+
+	@Getter
+	@Setter
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	private static class RegistrationDTO {
+
+		@NotEmpty(message = "The 'name' field is required.")
+		private String firstName;
+
+		@NotEmpty(message = "The 'last name' field is required.")
+		private String lastName;
+
+		@Email(message = "This field must be an email.")
+		@NotEmpty(message = "The 'email' field is required.")
+		private String email;
+
+		@NotEmpty(message = "The 'password' field is required.")
+		@Size(min = 8, message = "Password must be at least 8 characters long.")
+		private String password;
+		private String matchingPassword;
+		private String photo;
 	}
 
 }

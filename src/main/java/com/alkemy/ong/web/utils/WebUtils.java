@@ -13,4 +13,8 @@ public class WebUtils {
             throw new WebRequestException("The page number can not be lower a zero.");
         }
     }
+
+    public static void validatePassword(String pswd1, String pswd2) {
+        if(!pswd1.equals(pswd2)){throw new WebRequestException("The passwords don't match.");}
+    }
 }
