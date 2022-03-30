@@ -1,6 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
-import com.alkemy.ong.data.pagination.PageMapper;
+import com.alkemy.ong.data.pagination.PageModelMapper;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberGateway;
@@ -18,9 +18,9 @@ import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 public class DefaultMemberGateway implements MemberGateway {
 
     private final MemberRepository memberRepository;
-    private final PageMapper<Member, MemberEntity> pageMapper;
+    private final PageModelMapper<Member, MemberEntity> pageMapper;
 
-    public DefaultMemberGateway(MemberRepository memberRepository, PageMapper<Member, MemberEntity> bodyMapper) {
+    public DefaultMemberGateway(MemberRepository memberRepository, PageModelMapper<Member, MemberEntity> bodyMapper) {
         this.memberRepository = memberRepository;
         this.pageMapper = bodyMapper;
     }

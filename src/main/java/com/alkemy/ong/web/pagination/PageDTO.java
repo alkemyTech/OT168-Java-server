@@ -1,4 +1,4 @@
-package com.alkemy.ong.web.utils;
+package com.alkemy.ong.web.pagination;
 
 import lombok.*;
 
