@@ -20,3 +20,5 @@ public class CloudService {
         return cloudGateway.deleteFileFromS3Bucket(fileUrl);
     }
 }
+
+

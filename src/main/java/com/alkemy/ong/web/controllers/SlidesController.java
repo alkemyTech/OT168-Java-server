@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -39,6 +40,7 @@ public class SlidesController {
         Slides slides = slidesService.findById(id);
         return ResponseEntity.ok(toFullDto(slides));
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<SlidesDto> update(@PathVariable Long id, @RequestBody SlidesDto slides){
         WebUtils.validateDtoIdWithBodyId(id, slides.getIdSlides());

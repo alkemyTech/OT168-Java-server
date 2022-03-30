@@ -35,7 +35,8 @@ public class DefaultNewsGateway implements NewsGateway {
     @SneakyThrows
     @Override
     public News findById(Long newsId) {
-        NewsEntity newsEntity = newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        NewsEntity newsEntity = newsRepository.findById(newsId).
+                orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         return toModel(newsEntity);
     }
 
@@ -46,7 +47,8 @@ public class DefaultNewsGateway implements NewsGateway {
 
     @Override
     public News updateNews(Long newsId, News news){
-        NewsEntity newsEntity = newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        NewsEntity newsEntity = newsRepository.findById(newsId).
+                orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         newsEntity.setName(newsEntity.getName());
         newsEntity.setContent(newsEntity.getContent());
         newsEntity.setImage(newsEntity.getImage());

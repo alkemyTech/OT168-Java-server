@@ -6,6 +6,7 @@ import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
