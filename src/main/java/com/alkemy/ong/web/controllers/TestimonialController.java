@@ -1,9 +1,9 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialService;
-import com.alkemy.ong.web.utils.PageDTO;
+import com.alkemy.ong.web.pagination.PageDTO;
+import com.alkemy.ong.web.pagination.PageDTOMapper;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -22,11 +22,11 @@ import static com.alkemy.ong.web.utils.WebUtils.*;
 public class TestimonialController {
 
     private final TestimonialService testimonialService;
-    private final PageMapper<TestimonialDTO,Testimonial> pageMapper;
+    private final PageDTOMapper<TestimonialDTO,Testimonial> pageDTOMapper;
 
-    public TestimonialController(TestimonialService testimonialService, PageMapper bodyMapper) {
+    public TestimonialController(TestimonialService testimonialService, PageDTOMapper pageDTOMapper) {
         this.testimonialService = testimonialService;
-        this.pageMapper =bodyMapper;
+        this.pageDTOMapper =pageDTOMapper;
     }
 
     @PostMapping
@@ -50,7 +50,7 @@ public class TestimonialController {
     public ResponseEntity<PageDTO<TestimonialDTO>> findAll(@RequestParam("page") int numberPage) {
         validatePageNumber(numberPage);
         return ResponseEntity.ok().
-                body(pageMapper.toPageDTO(testimonialService.findAll(numberPage), TestimonialDTO.class));
+                body(pageDTOMapper.toPageDTO(testimonialService.findAll(numberPage), TestimonialDTO.class));
     }
 
     private Testimonial toModel(TestimonialDTO testimonialDTO) {

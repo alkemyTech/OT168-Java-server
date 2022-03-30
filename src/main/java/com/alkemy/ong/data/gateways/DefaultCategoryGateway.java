@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import com.alkemy.ong.data.entities.CategoryEntity;
-import com.alkemy.ong.data.pagination.PageMapper;
+import com.alkemy.ong.data.pagination.PageModelMapper;
 import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.repositories.CategoryRepository;
 import com.alkemy.ong.data.utils.PaginationUtils;
@@ -18,16 +18,16 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 public class DefaultCategoryGateway implements CategoryGateway {
 
 	private final CategoryRepository categoryRepository;
-	private final PageMapper<Category, CategoryEntity> pageMapper;
+	private final PageModelMapper<Category, CategoryEntity> pageModelMapper;
 
-	public DefaultCategoryGateway(CategoryRepository categoryRepository, PageMapper<Category, CategoryEntity> bodyMapper) {
+	public DefaultCategoryGateway(CategoryRepository categoryRepository, PageModelMapper<Category, CategoryEntity> pageModelMapper) {
 		this.categoryRepository = categoryRepository;
-		this.pageMapper = bodyMapper;
+		this.pageModelMapper = pageModelMapper;
 	}
 
 	@Override
 	public PageModel<Category> findAll(int pageNumber) {
-		return pageMapper.toPageModel(PaginationUtils.setPagesNumbers(categoryRepository
+		return pageModelMapper.toPageModel(PaginationUtils.setPagesNumbers(categoryRepository
                 .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/members?page="),Category.class);
 	}
 
