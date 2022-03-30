@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.news;
 
+import com.alkemy.ong.data.pagination.PageModel;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,6 +10,10 @@ public class NewsService {
 
     public NewsService(NewsGateway newsGateway){
         this.newsGateway = newsGateway;
+    }
+
+    public PageModel<News> findAll(int pageNumber){
+        return newsGateway.findAll(pageNumber);
     }
 
     public News findById(Long newsId){
