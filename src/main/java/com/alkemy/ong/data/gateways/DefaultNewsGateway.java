@@ -1,20 +1,35 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.NewsEntity;
+import com.alkemy.ong.data.pagination.PageMapper;
+import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.repositories.NewsRepository;
-import com.alkemy.ong.domain.news.NewsGateway;
-import com.alkemy.ong.domain.news.News;
+import com.alkemy.ong.data.utils.PaginationUtils;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.news.News;
+import com.alkemy.ong.domain.news.NewsGateway;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 
 @Component
 public class DefaultNewsGateway implements NewsGateway {
 
     private final NewsRepository newsRepository;
+    private final PageMapper<News, NewsEntity> pageMapper;
 
-    public DefaultNewsGateway(NewsRepository newsRepository) {
+    public DefaultNewsGateway(NewsRepository newsRepository, PageMapper pageMapper) {
         this.newsRepository = newsRepository;
+        this.pageMapper = pageMapper;
+    }
+
+    @Override
+    public PageModel<News> findAll(int pageNumber){
+        return pageMapper.toPageModel(PaginationUtils
+                .setPagesNumbers(newsRepository
+                        .findAll(PageRequest
+                        .of(pageNumber, DEFAULT_PAGE_SIZE)), "/news?page="), News.class);
     }
 
     @SneakyThrows

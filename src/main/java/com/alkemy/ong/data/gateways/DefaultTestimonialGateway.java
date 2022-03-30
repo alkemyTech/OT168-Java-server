@@ -1,21 +1,27 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.TestimonialEntity;
+import com.alkemy.ong.data.pagination.PageMapper;
+import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.repositories.TestimonialRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialGateway;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
+import static com.alkemy.ong.data.utils.PaginationUtils.*;
 
 @Component
 public class DefaultTestimonialGateway implements TestimonialGateway {
 
     private final TestimonialRepository testimonialRepository;
+    private final PageMapper<Testimonial, TestimonialEntity> pageMapper;
 
-    public DefaultTestimonialGateway(TestimonialRepository testimonialRepository) {
+    public DefaultTestimonialGateway(TestimonialRepository testimonialRepository, PageMapper<Testimonial, TestimonialEntity> bodyMapper) {
         this.testimonialRepository = testimonialRepository;
+        this.pageMapper = bodyMapper;
     }
 
     @SneakyThrows
@@ -35,6 +41,11 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
     public void delete(Long id) {
         testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         testimonialRepository.deleteById(id);
+    }
+
+    public PageModel<Testimonial> findAll(int pageNumber) {
+        return pageMapper.toPageModel(setPagesNumbers(testimonialRepository
+                .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/testimonials?page="), Testimonial.class);
     }
 
     private static Testimonial toModel(TestimonialEntity testimonialEntity) {
