@@ -37,6 +37,8 @@ el programa 30 adolescentes.
 ● Paseos recreativos y educativos: Estos paseos están pensados para promover la participación y sentido de pertenencia de los niños, niñas
 y adolescentes al área educativa.', 'Foto 4.jpg');
 
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `role_id`) VALUES ('1', 'admin', 'admin', 'admin@gmail.com', '$2a$10$hT/Z5h0af5KTF//vIYiRwOCGbjyin8x.UE/rkaFA0nWPkRv1gf482', 'admin.png', '1');
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `role_id`) VALUES ('2', 'user', 'user', 'user@gmail.com', '$2a$10$hT/Z5h0af5KTF//vIYiRwOCGbjyin8x.UE/rkaFA0nWPkRv1gf482', 'user.png', '2');
 
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
