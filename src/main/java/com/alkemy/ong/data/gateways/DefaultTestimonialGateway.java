@@ -1,8 +1,8 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.TestimonialEntity;
-import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.data.pagination.PageModel;
+import com.alkemy.ong.data.pagination.PageModelMapper;
 import com.alkemy.ong.data.repositories.TestimonialRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonial.Testimonial;
@@ -17,11 +17,11 @@ import static com.alkemy.ong.data.utils.PaginationUtils.*;
 public class DefaultTestimonialGateway implements TestimonialGateway {
 
     private final TestimonialRepository testimonialRepository;
-    private final PageMapper<Testimonial, TestimonialEntity> pageMapper;
+    private final PageModelMapper<Testimonial, TestimonialEntity> pageModelMapper;
 
-    public DefaultTestimonialGateway(TestimonialRepository testimonialRepository, PageMapper<Testimonial, TestimonialEntity> bodyMapper) {
+    public DefaultTestimonialGateway(TestimonialRepository testimonialRepository, PageModelMapper<Testimonial, TestimonialEntity> pageModelMapper) {
         this.testimonialRepository = testimonialRepository;
-        this.pageMapper = bodyMapper;
+        this.pageModelMapper = pageModelMapper;
     }
 
     @SneakyThrows
@@ -44,7 +44,7 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
     }
 
     public PageModel<Testimonial> findAll(int pageNumber) {
-        return pageMapper.toPageModel(setPagesNumbers(testimonialRepository
+        return pageModelMapper.toPageModel(setPagesNumbers(testimonialRepository
                 .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/testimonials?page="), Testimonial.class);
     }
 

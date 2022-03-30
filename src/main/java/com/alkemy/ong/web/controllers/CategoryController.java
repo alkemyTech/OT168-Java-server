@@ -4,6 +4,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import com.alkemy.ong.web.pagination.PageDTO;
+import com.alkemy.ong.web.pagination.PageDTOMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.domain.category.Category;
 import com.alkemy.ong.domain.category.CategoryService;
-import com.alkemy.ong.web.utils.PageDTO;
 import com.alkemy.ong.web.utils.WebUtils;
 
 import java.time.LocalDateTime;
@@ -31,17 +31,17 @@ import lombok.*;
 public class CategoryController {
 
 	private final CategoryService categoryService;
-	private final PageMapper<CategorySlimDTO, Category> pageMapper;
+	private final PageDTOMapper<CategorySlimDTO, Category> pageDTOMapper;
 
-	public CategoryController(CategoryService categoryService, PageMapper bodyMapper) {
+	public CategoryController(CategoryService categoryService, PageDTOMapper pageDTOMapper) {
 		this.categoryService = categoryService;
-		this.pageMapper = bodyMapper;
+		this.pageDTOMapper = pageDTOMapper;
 	}
 
 	@GetMapping
 	public ResponseEntity<PageDTO<CategorySlimDTO>> getAllCategories(@RequestParam("page") int numberPage) {
 		WebUtils.validatePageNumber(numberPage);
-        return ResponseEntity.ok().body(pageMapper.toPageDTO(categoryService.findAll(numberPage),CategorySlimDTO.class));
+        return ResponseEntity.ok().body(pageDTOMapper.toPageDTO(categoryService.findAll(numberPage),CategorySlimDTO.class));
 	}
 
 	@GetMapping("/{id}")

@@ -12,4 +12,5 @@ public class DefaultRoleGateway implements RoleGateway {
     public DefaultRoleGateway(RoleRepository roleRepository){
         this.roleRepository=roleRepository;
     }
+
 }

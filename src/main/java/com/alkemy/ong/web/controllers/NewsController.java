@@ -1,9 +1,9 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
-import com.alkemy.ong.web.utils.PageDTO;
+import com.alkemy.ong.web.pagination.PageDTO;
+import com.alkemy.ong.web.pagination.PageDTOMapper;
 import com.alkemy.ong.web.utils.WebUtils;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -23,18 +23,18 @@ import static com.alkemy.ong.web.utils.WebUtils.validateDtoIdWithBodyId;
 public class NewsController {
 
     private final NewsService newsService;
-    private final PageMapper<NewsDTO, News> pageMapper;
+    private final PageDTOMapper<NewsDTO, News> pageDTOMapper;
 
-    public NewsController(NewsService newsService, PageMapper pageMapper) {
+    public NewsController(NewsService newsService, PageDTOMapper pageMapper) {
         this.newsService = newsService;
-        this.pageMapper = pageMapper;
+        this.pageDTOMapper = pageMapper;
     }
 
     @GetMapping
     public ResponseEntity<PageDTO<NewsDTO>> findAll(@RequestParam("page") int numberPage) {
         WebUtils.validatePageNumber(numberPage);
         return ResponseEntity.ok()
-                .body(pageMapper
+                .body(pageDTOMapper
                         .toPageDTO(newsService.findAll(numberPage), NewsDTO.class));
     }
 

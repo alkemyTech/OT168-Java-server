@@ -37,69 +37,76 @@ el programa 30 adolescentes.
 ● Paseos recreativos y educativos: Estos paseos están pensados para promover la participación y sentido de pertenencia de los niños, niñas
 y adolescentes al área educativa.', 'Foto 4.jpg');
 
-INSERT INTO `alkemy_ong`.`roles` (`id`, `name`, `description`) VALUES ('1', 'ROLE_ADMIN', 'admin');
-INSERT INTO `alkemy_ong`.`roles` (`id`, `name`, `description`) VALUES ('2', 'ROLE_USER', 'user');
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `role_id`) VALUES ('1', 'admin', 'admin', 'admin@gmail.com', '$2a$10$hT/Z5h0af5KTF//vIYiRwOCGbjyin8x.UE/rkaFA0nWPkRv1gf482', 'admin.png', '1');
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `role_id`) VALUES ('2', 'user', 'user', 'user@gmail.com', '$2a$10$hT/Z5h0af5KTF//vIYiRwOCGbjyin8x.UE/rkaFA0nWPkRv1gf482', 'user.png', '2');
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (1, 'Jose', 'Perez', 'jose@mail.com', '1234', 'jose.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(3, 'Sofia', 'Gimenez', 'sofi@mail.com', '1234', 'sofi.jpg', NOW(), NOW(), 0, 1);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (2, 'Maximiliano', 'Meza', 'maxi@mail.com', '1234', 'maxi.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(4, 'Camila', 'Medina', 'cami@mail.com', '1234', 'cami.jpg', NOW(), NOW(), 0, 1);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (3, 'Sofia', 'Gimenez', 'sofi@mail.com', '1234', 'sofi.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(5, 'Victoria', 'Medina', 'vicki@mail.com', '1234', 'vicki.jpg', NOW(), NOW(), 0, 1);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (4, 'Camila', 'Medina', 'cami@mail.com', '1234', 'cami.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(6, 'Jorgue', 'Nogueira', 'jorge@mail.com', '1234', 'jorge.jpg', NOW(), NOW(), 0, 1);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (5, 'Victoria', 'Medina', 'vicki@mail.com', '1234', 'vicki.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(7, 'Facundo', 'Benitez', 'facu@mail.com', '1234', 'facu.jpg', NOW(), NOW(), 0, 1);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (6, 'Jorgue', 'Nogueira', 'jorge@mail.com', '1234', 'jorge.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(8, 'Andrea', 'Reina', 'andre@mail.com', '1234', 'andre.jpg', NOW(), NOW(), 0, 1);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (7, 'Facundo', 'Benitez', 'facu@mail.com', '1234', 'facu.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(9, 'Eliana', 'Paniagua', 'eli@mail.com', '1234', 'eli.jpg', NOW(), NOW(), 0, 1);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (8, 'Andrea', 'Reina', 'andre@mail.com', '1234', 'andre.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(10, 'Victor', 'Montivero', 'victor@mail.com', '1234', 'victor.jpg', NOW(), NOW(), 0, 1);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (9, 'Eliana', 'Paniagua', 'eli@mail.com', '1234', 'eli.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(11, 'Mauro', 'Montenegro', 'mauro@mail.com', '1234', 'mauro.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (10, 'Victor', 'Montivero', 'victor@mail.com', '1234', 'victor.jpg', NOW(), NOW(), 0, 1);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(12, 'Eugenia', 'Flores', 'euge@mail.com', '1234', 'euge.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (11, 'Mauro', 'Montenegro', 'mauro@mail.com', '1234', 'mauro.jpg', NOW(), NOW(), 0, 2);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(13, 'Natalia', 'Ramirez', 'nati@mail.com', '1234', 'nati.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (12, 'Eugenia', 'Flores', 'euge@mail.com', '1234', 'euge.jpg', NOW(), NOW(), 0, 2);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(14, 'Sergio', 'Suarez', 'sergio@mail.com', '1234', 'sergio.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (13, 'Natalia', 'Ramirez', 'nati@mail.com', '1234', 'nati.jpg', NOW(), NOW(), 0, 2);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(15, 'Silvia', 'Otaka', 'sil@mail.com', '1234', 'sil.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (14, 'Sergio', 'Suarez', 'sergio@mail.com', '1234', 'sergio.jpg', NOW(), NOW(), 0, 2);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(16, 'Lucas', 'Spareche', 'lucas@mail.com', '1234', 'lucas.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`,
-                                  `deleted`, `roleentity`)
-VALUES (15, 'Silvia', 'Otaka', 'sil@mail.com', '1234', 'sil.jpg', NOW(), NOW(), 0, 2);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(17, 'Pamela', 'Diaz', 'pame@mail.com', '1234', 'pame.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (16, 'Lucas', 'Spareche', 'lucas@mail.com', '1234', 'lucas.jpg', NOW(), NOW(), 0, 2);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(18, 'Manuel', 'Orsini', 'mano@mail.com', '1234', 'mano.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (17, 'Pamela', 'Diaz', 'pame@mail.com', '1234', 'pame.jpg', NOW(), NOW(), 0, 2);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(19, 'Hector', 'Salamanca', 'hector@mail.com', '1234', 'hector.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (18, 'Manuel', 'Orsini', 'mano@mail.com', '1234', 'mano.jpg', NOW(), NOW(), 0, 2);
-
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (19, 'Hector', 'Salamanca', 'hector@mail.com', '1234', 'hector.jpg', NOW(), NOW(), 0, 2);
-
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `roleentity`)
-VALUES (20, 'Matias', 'Montoto', 'mumo@mail.com', '1234', 'mumo.jpg', NOW(), NOW(), 0, 2);
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
+VALUES
+(20, 'Matias', 'Montoto', 'mumo@mail.com', '1234', 'mumo.jpg', NOW(), NOW(), 0, 2);

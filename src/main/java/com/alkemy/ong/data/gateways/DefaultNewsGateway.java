@@ -1,8 +1,8 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.NewsEntity;
-import com.alkemy.ong.data.pagination.PageMapper;
 import com.alkemy.ong.data.pagination.PageModel;
+import com.alkemy.ong.data.pagination.PageModelMapper;
 import com.alkemy.ong.data.repositories.NewsRepository;
 import com.alkemy.ong.data.utils.PaginationUtils;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
@@ -17,16 +17,16 @@ import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 public class DefaultNewsGateway implements NewsGateway {
 
     private final NewsRepository newsRepository;
-    private final PageMapper<News, NewsEntity> pageMapper;
+    private final PageModelMapper<News, NewsEntity> pageModelMapper;
 
-    public DefaultNewsGateway(NewsRepository newsRepository, PageMapper pageMapper) {
+    public DefaultNewsGateway(NewsRepository newsRepository, PageModelMapper pageModelMapper) {
         this.newsRepository = newsRepository;
-        this.pageMapper = pageMapper;
+        this.pageModelMapper = pageModelMapper;
     }
 
     @Override
     public PageModel<News> findAll(int pageNumber){
-        return pageMapper.toPageModel(PaginationUtils
+        return pageModelMapper.toPageModel(PaginationUtils
                 .setPagesNumbers(newsRepository
                         .findAll(PageRequest
                         .of(pageNumber, DEFAULT_PAGE_SIZE)), "/news?page="), News.class);
