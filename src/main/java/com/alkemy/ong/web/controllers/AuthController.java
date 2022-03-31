@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
+import com.alkemy.ong.domain.security.jwt.AunthenticationResponse;
+import com.alkemy.ong.domain.security.jwt.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,44 +15,47 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemy.ong.domain.users.User;
-import com.alkemy.ong.domain.users.UserService;
 
 import lombok.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-	
-	private final UserService userService;
+
 	private final AuthenticationManager authenticationManager;
+	private final UserDetailsService userDetailsService;
+	private final JwtUtil jwtUtil;
 	
-	public AuthController(UserService userService, AuthenticationManager authenticationManager) {
-		this.userService = userService;
+	public AuthController(AuthenticationManager authenticationManager,UserDetailsService userDetailsService,JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
+		this.userDetailsService= userDetailsService;
+		this.jwtUtil=jwtUtil;
     }
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception{
 		Authentication authentication;
-		UserDTO user;
 		Map<String, Object> response = new HashMap<>();
 		try {
 			authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			user = toDTO(userService.findByEmail(loginDTO.getEmail()));
-			response.put("User", user);
+
 		} catch (BadCredentialsException e) {
 			response.put("messaje", "ok: false");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getEmail());
+		final String jwt = jwtUtil.generateToken(userDetails);
+		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
 	}
 	
 	private UserDTO toDTO(User user) {
