@@ -8,6 +8,10 @@ import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("/organizations")
 public class OrganizationController {
@@ -18,43 +22,53 @@ public class OrganizationController {
         this.organizationService = organizationService;
     }
 
+    @GetMapping("/public")
+    public ResponseEntity<List<OrganizationDTO>> filterByOrder() {
+        List<OrganizationDTO> organizationListDTO;
+        return (ResponseEntity<List<OrganizationDTO>>) (organizationListDTO = organizationService.filterByOrder()
+                        .stream()
+                        .map(this::toDto)
+                        .collect(toList()));
+    }
+
     @GetMapping("/public/{id}")
-    public ResponseEntity<OrganizationSimpleDTO> getOrganization(@PathVariable Long id){
-        Organization organization =  organizationService.findById(id);
+    public ResponseEntity<OrganizationSimpleDTO> getOrganization(@PathVariable Long id) {
+        Organization organization = organizationService.findById(id);
         return ResponseEntity.ok(toSimpleDto(organization));
     }
 
     @PutMapping("/public/{id}")
-    public ResponseEntity<OrganizationDTO> update(@PathVariable Long id, @RequestBody OrganizationDTO fullDTO){
+    public ResponseEntity<OrganizationDTO> update(@PathVariable Long id, @RequestBody OrganizationDTO fullDTO) {
         WebUtils.validateDtoIdWithBodyId(id, fullDTO.getIdOrganization());
-        OrganizationDTO organization  = toDto(organizationService.updateOrganization(toModel(fullDTO)));
-        return  ResponseEntity.ok(organization);
+        OrganizationDTO organization = toDto(organizationService.updateOrganization(toModel(fullDTO)));
+        return ResponseEntity.ok(organization);
     }
 
     @PatchMapping("/public/{id}")
-    public ResponseEntity<OrganizationDTO> updateSocial(@PathVariable Long id, @RequestBody OrganizationDTO organization){
+    public ResponseEntity<OrganizationDTO> updateSocial(@PathVariable Long id, @RequestBody OrganizationDTO organization) {
         WebUtils.validateDtoIdWithBodyId(id, organization.getIdOrganization());
-        OrganizationDTO organizationDto  = toDto(organizationService.updateSocialcontact(toModel(organization)));
-        return  ResponseEntity.ok(organizationDto);
+        OrganizationDTO organizationDto = toDto(organizationService.updateSocialcontact(toModel(organization)));
+        return ResponseEntity.ok(organizationDto);
     }
 
-    private OrganizationDTO toDto(Organization organization){
+    private OrganizationDTO toDto(Organization organization) {
 
         return OrganizationDTO.builder()
-                                            .idOrganization(organization.getIdOrganization())
-                                            .name(organization.getName())
-                                            .image(organization.getImage())
-                                            .address(organization.getAddress())
-                                            .phone(organization.getPhone())
-                                            .email(organization.getEmail())
-                                            .aboutUsText(organization.getAboutUsText())
-                                            .welcomeText(organization.getWelcomeText())
-                                            .facebookUrl(organization.getFacebookUrl())
-                                            .linkedinUrl(organization.getLinkedinUrl())
-                                            .instagramUrl(organization.getInstagramUrl())
-                                            .build();
+                .idOrganization(organization.getIdOrganization())
+                .name(organization.getName())
+                .image(organization.getImage())
+                .address(organization.getAddress())
+                .phone(organization.getPhone())
+                .email(organization.getEmail())
+                .aboutUsText(organization.getAboutUsText())
+                .welcomeText(organization.getWelcomeText())
+                .facebookUrl(organization.getFacebookUrl())
+                .linkedinUrl(organization.getLinkedinUrl())
+                .instagramUrl(organization.getInstagramUrl())
+                .build();
     }
-    private Organization toModel(OrganizationDTO organization){
+
+    private Organization toModel(OrganizationDTO organization) {
         return Organization.builder()
                 .idOrganization(organization.getIdOrganization())
                 .name(organization.getName())
@@ -70,7 +84,7 @@ public class OrganizationController {
                 .build();
     }
 
-    public static OrganizationSimpleDTO toSimpleDto(Organization organization){
+    public static OrganizationSimpleDTO toSimpleDto(Organization organization) {
         return OrganizationSimpleDTO.builder()
                 .idOrganization(organization.getIdOrganization())
                 .name(organization.getName())
@@ -85,7 +99,7 @@ public class OrganizationController {
 
     @Data
     @Builder
-    public static class OrganizationDTO{
+    public static class OrganizationDTO {
         private Long idOrganization;
         private String name;
         private String image;
@@ -101,7 +115,7 @@ public class OrganizationController {
 
     @Data
     @Builder
-    public static class OrganizationSimpleDTO{
+    public static class OrganizationSimpleDTO {
         private Long idOrganization;
         private String name;
         private String image;
