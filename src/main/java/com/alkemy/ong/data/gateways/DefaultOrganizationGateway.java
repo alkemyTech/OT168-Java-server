@@ -1,21 +1,13 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.OrganizationEntity;
-import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.data.repositories.OrganizationRepository;
-import com.alkemy.ong.data.repositories.SlidesRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationGateway;
-import com.alkemy.ong.domain.slides.Slides;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
-
 
 @Component
 public class DefaultOrganizationGateway implements OrganizationGateway {
@@ -91,6 +83,4 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
         entity.setInstagramUrl(organization.getInstagramUrl());
         return entity;
     }
-
-
 }
