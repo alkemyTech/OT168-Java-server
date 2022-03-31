@@ -15,7 +15,5 @@ public class UserService {
         return userGateway.findByEmail(email);
     }
 
-    public boolean checkEmail(String email) { return userGateway.checkEmail(email); }
-
     public User register(User user) { return userGateway.register(user); }
 }

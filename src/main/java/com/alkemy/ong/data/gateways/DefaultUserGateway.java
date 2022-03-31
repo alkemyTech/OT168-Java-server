@@ -2,6 +2,7 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.repositories.RoleRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.exceptions.WebRequestException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import com.alkemy.ong.data.entities.UserEntity;
@@ -32,20 +33,15 @@ public class DefaultUserGateway implements UserGateway {
         return toModel(entity);
     }
 
-    public boolean checkEmail(String email) {
-        Boolean exists = false;
+    public void emailExists(String email) {
         if (userRepository.findByEmail(email).isPresent()) {
-            exists = true;
+            throw new WebRequestException("Email already exists.");
         }
-        return exists;
     }
 
     public User register(User user) {
-        if (userRepository.findAll().size() == 0) {
-            user.setRole(1L);
-        } else {
-            user.setRole(2L);
-        }
+        emailExists(user.getEmail());
+        user.setRole(2L);
         return toModel(userRepository.save(toEntity(user)));
     }
     

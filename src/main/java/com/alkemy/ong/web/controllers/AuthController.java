@@ -3,10 +3,10 @@ package com.alkemy.ong.web.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
+import com.alkemy.ong.domain.exceptions.WebRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
-
-import static com.alkemy.ong.web.utils.WebUtils.*;
 
 import lombok.*;
 
@@ -57,17 +55,17 @@ public class AuthController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO, HttpServletRequest request) throws Exception {
-		validatePassword(registrationDTO.password, registrationDTO.matchingPassword);
+	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO) throws Exception {
 		Map<String, Object> response = new HashMap<>();
-		if (!userService.checkEmail(registrationDTO.email)) {
+		try {
+			validatePassword(registrationDTO.password, registrationDTO.matchingPassword);
 			UserDTO user = toDTO(userService.register(toModel(registrationDTO)));
 			response.put("User", user);
-		} else {
-			response.put("Error", "Email already exists.");
+		} catch (Exception ex) {
+			response.put("Error", ex.getMessage());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 	
 	private UserDTO toDTO(User user) {
@@ -89,6 +87,10 @@ public class AuthController {
 				.password(user.getPassword())
 				.photo(user.getPhoto())
 				.build();
+	}
+
+	public static void validatePassword(String pswd1, String pswd2) {
+		if(!pswd1.equals(pswd2)){throw new WebRequestException("The passwords don't match.");}
 	}
 	
 	@Getter
