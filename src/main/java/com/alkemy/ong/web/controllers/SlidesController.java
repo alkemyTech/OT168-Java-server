@@ -6,14 +6,10 @@ import com.alkemy.ong.domain.slides.SlidesService;
 import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static java.util.stream.Collectors.toList;
 
 @RestController

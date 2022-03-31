@@ -20,41 +20,41 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
     @Override
     public Organization findById(Long id) {
         OrganizationEntity organizationEntity = organizationRepository.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException("No organization with id: " + id + " exists."));
+                .orElseThrow(() -> new ResourceNotFoundException("No organization with id: " + id + " exists."));
         return toModel(organizationEntity);
     }
 
     @Override
     public Organization updateOrganization(Organization organization) {
         OrganizationEntity entity = organizationRepository.findById(organization.getIdOrganization())
-                .orElseThrow(()-> new ResourceNotFoundException("No organization with id: " + organization.getIdOrganization() + " exists."));
+                .orElseThrow(() -> new ResourceNotFoundException("No organization with id: " + organization.getIdOrganization() + " exists."));
         return toModel(organizationRepository.save(updateEntity(entity, organization)));
     }
 
     @Override
-    public Organization updateSocialContact(Organization organization){
+    public Organization updateSocialContact(Organization organization) {
         OrganizationEntity entity = organizationRepository.findById(organization.getIdOrganization())
-                .orElseThrow(()-> new ResourceNotFoundException("No organization with id: " + organization.getIdOrganization() + " exists."));
+                .orElseThrow(() -> new ResourceNotFoundException("No organization with id: " + organization.getIdOrganization() + " exists."));
         return toModel(organizationRepository.save(updateSocial(entity, organization)));
     }
 
-    public static Organization toModel(OrganizationEntity entity){
+    public static Organization toModel(OrganizationEntity entity) {
         return Organization.builder()
-                                                .idOrganization(entity.getIdOrganization())
-                                                .name(entity.getName())
-                                                .image(entity.getImage())
-                                                .phone(entity.getPhone())
-                                                .address(entity.getAddress())
-                                                .email(entity.getEmail())
-                                                .aboutUsText(entity.getAboutUsText())
-                                                .welcomeText(entity.getWelcomeText())
-                                                .facebookUrl(entity.getFacebookUrl())
-                                                .linkedinUrl(entity.getLinkedinUrl())
-                                                .instagramUrl(entity.getInstagramUrl())
-                                                .build();
+                .idOrganization(entity.getIdOrganization())
+                .name(entity.getName())
+                .image(entity.getImage())
+                .phone(entity.getPhone())
+                .address(entity.getAddress())
+                .email(entity.getEmail())
+                .aboutUsText(entity.getAboutUsText())
+                .welcomeText(entity.getWelcomeText())
+                .facebookUrl(entity.getFacebookUrl())
+                .linkedinUrl(entity.getLinkedinUrl())
+                .instagramUrl(entity.getInstagramUrl())
+                .build();
     }
 
-    private OrganizationEntity updateEntity (OrganizationEntity entity, Organization organization){
+    private OrganizationEntity updateEntity(OrganizationEntity entity, Organization organization) {
         entity.setIdOrganization(organization.getIdOrganization());
         entity.setName(organization.getName());
         entity.setImage(organization.getImage());
@@ -69,7 +69,7 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
         return entity;
     }
 
-    private OrganizationEntity updateSocial (OrganizationEntity entity, Organization organization){
+    private OrganizationEntity updateSocial(OrganizationEntity entity, Organization organization) {
         entity.setIdOrganization(organization.getIdOrganization());
         entity.setFacebookUrl(organization.getFacebookUrl());
         entity.setLinkedinUrl(organization.getLinkedinUrl());
