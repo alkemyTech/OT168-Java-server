@@ -25,16 +25,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.csrf().disable()
-		.authorizeRequests()
-		.antMatchers(HttpMethod.GET, "/**").permitAll()
-		.antMatchers(HttpMethod.POST,"/**").permitAll()
-		.antMatchers(HttpMethod.PUT,"/**").permitAll()
-		.antMatchers(HttpMethod.DELETE,"/**").permitAll()
-		.antMatchers("/auth/**").permitAll()		
-		.anyRequest().authenticated()
-		.and()
-		.httpBasic();
+				.csrf().disable()
+				.authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
+				.antMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
+				.antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+				.antMatchers("/auth/**").permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.httpBasic();
 	}
 		
 	@Override
