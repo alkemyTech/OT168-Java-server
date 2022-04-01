@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 @Component
 public class DefaultUserGateway implements UserGateway {
 
@@ -23,6 +27,13 @@ public class DefaultUserGateway implements UserGateway {
     public DefaultUserGateway(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::toModel)
+                .collect(toList());
     }
 
     @Override
@@ -55,7 +66,7 @@ public class DefaultUserGateway implements UserGateway {
                 .photo(userEntity.getPhoto())
                 .createdAt(userEntity.getCreatedAt())
                 .updatedAt(userEntity.getUpdatedAt())
-                .role(userEntity.getRoleEntity().getId())
+                .roleId(userEntity.getRoleEntity().getId())
                 .build();
     }
 

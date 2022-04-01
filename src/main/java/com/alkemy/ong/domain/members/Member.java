@@ -2,7 +2,6 @@ package com.alkemy.ong.domain.members;
 
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class Member implements Serializable {
+public class Member {
 
     private Long id;
     private String name;

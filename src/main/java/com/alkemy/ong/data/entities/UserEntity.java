@@ -2,7 +2,9 @@ package com.alkemy.ong.data.entities;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +15,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 @Table(name = "users", schema = "alkemy_ong")
 public class UserEntity {
 
@@ -43,7 +48,9 @@ public class UserEntity {
     private LocalDateTime updatedAt;
 
     @Builder.Default
+
     private Boolean deleted = Boolean.FALSE;
+
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id", nullable = false)

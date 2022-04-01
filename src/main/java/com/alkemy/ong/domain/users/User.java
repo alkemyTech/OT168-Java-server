@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class User {
-
     private Long id;
     private String firstName;
     private String lastName;
@@ -20,5 +19,5 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean deleted;
-    private Long role;
+    private Long roleId;
 }

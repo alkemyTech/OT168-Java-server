@@ -1,26 +1,42 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.NewsEntity;
+import com.alkemy.ong.data.pagination.PageModel;
+import com.alkemy.ong.data.pagination.PageModelMapper;
 import com.alkemy.ong.data.repositories.NewsRepository;
-import com.alkemy.ong.domain.news.NewsGateway;
-import com.alkemy.ong.domain.news.News;
+import com.alkemy.ong.data.utils.PaginationUtils;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.news.News;
+import com.alkemy.ong.domain.news.NewsGateway;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 
 @Component
 public class DefaultNewsGateway implements NewsGateway {
 
     private final NewsRepository newsRepository;
+    private final PageModelMapper<News, NewsEntity> pageModelMapper;
 
-    public DefaultNewsGateway(NewsRepository newsRepository) {
+    public DefaultNewsGateway(NewsRepository newsRepository, PageModelMapper pageModelMapper) {
         this.newsRepository = newsRepository;
+        this.pageModelMapper = pageModelMapper;
+    }
+
+    @Override
+    public PageModel<News> findAll(int pageNumber){
+        return pageModelMapper.toPageModel(PaginationUtils
+                .setPagesNumbers(newsRepository
+                        .findAll(PageRequest
+                        .of(pageNumber, DEFAULT_PAGE_SIZE)), "/news?page="), News.class);
     }
 
     @SneakyThrows
     @Override
     public News findById(Long newsId) {
-        NewsEntity newsEntity = newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        NewsEntity newsEntity = newsRepository.findById(newsId).
+                orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         return toModel(newsEntity);
     }
 
@@ -31,7 +47,8 @@ public class DefaultNewsGateway implements NewsGateway {
 
     @Override
     public News updateNews(Long newsId, News news){
-        NewsEntity newsEntity = newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
+        NewsEntity newsEntity = newsRepository.findById(newsId).
+                orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         newsEntity.setName(newsEntity.getName());
         newsEntity.setContent(newsEntity.getContent());
         newsEntity.setImage(newsEntity.getImage());

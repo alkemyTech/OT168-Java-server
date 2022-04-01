@@ -1,5 +1,6 @@
-package com.alkemy.ong.web.utils;
+package com.alkemy.ong.web.pagination;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.util.List;
@@ -10,7 +11,12 @@ import java.util.List;
 @Setter
 @Builder
 public class PageDTO<T> {
+
     private List<T> body;
+
+    @Schema(example = "This is the first page", required = true)
     private String previuosPage;
+
+    @Schema(example = "This is the last page", required = true)
     private String nextPage;
 }

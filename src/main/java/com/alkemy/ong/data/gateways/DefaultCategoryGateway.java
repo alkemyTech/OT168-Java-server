@@ -1,12 +1,15 @@
 package com.alkemy.ong.data.gateways;
 
-import java.util.List;
-import static java.util.stream.Collectors.toList;
+import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import com.alkemy.ong.data.entities.CategoryEntity;
+import com.alkemy.ong.data.pagination.PageModelMapper;
+import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.repositories.CategoryRepository;
+import com.alkemy.ong.data.utils.PaginationUtils;
 import com.alkemy.ong.domain.category.Category;
 import com.alkemy.ong.domain.category.CategoryGateway;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
@@ -15,22 +18,23 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 public class DefaultCategoryGateway implements CategoryGateway {
 
 	private final CategoryRepository categoryRepository;
+	private final PageModelMapper<Category, CategoryEntity> pageModelMapper;
 
-	public DefaultCategoryGateway(CategoryRepository categoryRepository) {
+	public DefaultCategoryGateway(CategoryRepository categoryRepository, PageModelMapper<Category, CategoryEntity> pageModelMapper) {
 		this.categoryRepository = categoryRepository;
+		this.pageModelMapper = pageModelMapper;
 	}
 
 	@Override
-	public List<Category> findAll() {
-		List<Category> categories;
-		categories = categoryRepository.findAll().stream().map(cat -> toModel(cat)).collect(toList());
-		return categories;
+	public PageModel<Category> findAll(int pageNumber) {
+		return pageModelMapper.toPageModel(PaginationUtils.setPagesNumbers(categoryRepository
+                .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/members?page="),Category.class);
 	}
 
 	@Override
 	public Category findById(Long id) {
 		CategoryEntity categoryEntity = categoryRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("The id %d doesn't exist.", id));
+				.orElseThrow(() -> new ResourceNotFoundException(id, "category"));
 		return toModel(categoryEntity);
 	}
 	
@@ -42,7 +46,7 @@ public class DefaultCategoryGateway implements CategoryGateway {
 	@Override
 	public Category update(Long id, Category category) {
 		CategoryEntity categoryEntity = categoryRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("The id %d doesn't exist.", id));
+				.orElseThrow(() -> new ResourceNotFoundException(id, "category"));
 		categoryEntity.setName(category.getName());
 		categoryEntity.setDescription(category.getDescription());
 		categoryEntity.setName(category.getName());
@@ -52,7 +56,7 @@ public class DefaultCategoryGateway implements CategoryGateway {
 	@Override
 	public void delete(Long id) {
 		CategoryEntity categoryEntity = categoryRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("The id %d doesn't exist.", id));
+				.orElseThrow(() -> new ResourceNotFoundException(id, "category"));
 		categoryEntity.setDeleted(true);
 		categoryRepository.save(categoryEntity);
 	}

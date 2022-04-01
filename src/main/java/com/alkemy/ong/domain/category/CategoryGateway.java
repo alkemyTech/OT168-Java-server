@@ -1,10 +1,10 @@
 package com.alkemy.ong.domain.category;
 
-import java.util.List;
+import com.alkemy.ong.data.pagination.PageModel;
 
 public interface CategoryGateway {
 
-	List<Category> findAll();
+	PageModel<Category> findAll(int pageNumber);
 	
 	Category findById(Long id);
 	
