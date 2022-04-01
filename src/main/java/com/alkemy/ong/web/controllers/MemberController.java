@@ -6,7 +6,6 @@ import com.alkemy.ong.web.pagination.PageDTOMapper;
 import com.alkemy.ong.web.pagination.PageDTO;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -223,7 +222,7 @@ public class MemberController {
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime createdAt;
 
-        @JsonProperty("updatedAt")
+
         @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56", required = true)
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime updatedAt;;
