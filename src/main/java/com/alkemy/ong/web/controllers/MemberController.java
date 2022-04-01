@@ -196,38 +196,29 @@ public class MemberController {
     @Valid
     private static class MemberDTO {
 
-        @JsonProperty("id")
         @Schema(example = "1", required = true)
         private Long id;
 
-        @JsonProperty("name")
         @Schema(example = "Jose Perez", required = true)
         @NotBlank(message = "Name field cannot be empty or be null.")
         @Pattern(regexp = "[a-zA-Z ]{0,50}", message = "Name field cannot admit number.")
         private String name;
 
-        @JsonProperty("facebookUrl")
         @Schema(example = "wwww.facebook.com", required = true)
         private String facebookUrl;
 
-        @JsonProperty("instagramUrl")
         @Schema(example = "wwww.instagram.com", required = true)
         private String instagramUrl;
 
-        @JsonProperty("linkedinUrl")
         @Schema(example = "wwww.linkedin.com", required = true)
         private String linkedinUrl;
 
-        @JsonProperty("image")
         @Schema(example = "photo.jpg", required = true)
         private String image;
 
-        @JsonProperty("description")
         @Schema(example = "some description of the member", required = true)
         private String description;
 
-
-        @JsonProperty("createdAt")
         @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56", required = true)
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime createdAt;
