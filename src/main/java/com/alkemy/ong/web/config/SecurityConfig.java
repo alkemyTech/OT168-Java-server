@@ -1,7 +1,7 @@
 package com.alkemy.ong.web.config;
 
 import com.alkemy.ong.domain.security.jwt.JwtRequestFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,13 +33,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.csrf().disable()
-		.authorizeRequests()
-		.antMatchers("/auth/**").permitAll()
-		.anyRequest().authenticated()
-		.and()
-		.sessionManagement()
-		.sessionCreationPolicy(STATELESS);
+				.csrf().disable()
+				.authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
+				.antMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
+				.antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+				.antMatchers("/auth/**").permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.sessionManagement()
+				.sessionCreationPolicy(STATELESS)
+				.and()
+				.httpBasic();
 
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}

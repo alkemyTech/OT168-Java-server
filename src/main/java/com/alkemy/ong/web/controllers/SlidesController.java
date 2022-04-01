@@ -6,14 +6,10 @@ import com.alkemy.ong.domain.slides.SlidesService;
 import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -39,6 +35,7 @@ public class SlidesController {
         Slides slides = slidesService.findById(id);
         return ResponseEntity.ok(toFullDto(slides));
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<SlidesDto> update(@PathVariable Long id, @RequestBody SlidesDto slides){
         WebUtils.validateDtoIdWithBodyId(id, slides.getIdSlides());
