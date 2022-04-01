@@ -11,3 +11,6 @@ amazonProperties:
       accessKey: ${ACCESS_KEY}
       secretKey: ${SECRET_KEY}
       bucketName: ${BUCKET_NAME}
+sendgridProperties:
+      apiKey: ${API_KEY}
+      email: ${SENGRID_EMAIL}}
