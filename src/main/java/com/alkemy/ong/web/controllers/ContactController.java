@@ -4,7 +4,6 @@ import com.alkemy.ong.domain.contacts.Contact;
 import com.alkemy.ong.domain.contacts.ContactService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +13,7 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.net.URI.create;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -33,8 +33,9 @@ public class ContactController {
     }
 
     @PostMapping
-    public ResponseEntity<ContactDTO> saveActivity(@Valid @RequestBody ContactDTO contactDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(contactService.saveContact(toModel(contactDTO))));
+    public ResponseEntity<ContactDTO> saveContact(@Valid @RequestBody ContactDTO contactDTO){
+        contactDTO = toDTO(contactService.saveContact(toModel(contactDTO)));
+        return ResponseEntity.created(create("contacts/" + contactDTO.getId())).body(contactDTO);
     }
 
     private ContactDTO toDTO (Contact contact){
