@@ -13,10 +13,6 @@ public class OrganizationService {
         this.organizationGateway = organizationGateway;
     }
 
-    public List<Organization> filterByOrder(){
-        return organizationGateway.filterByOrder();
-    }
-
     public Organization findById(Long id){
         return organizationGateway.findById(id);
     }

@@ -5,12 +5,9 @@ import com.alkemy.ong.domain.organization.OrganizationService;
 import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/organizations")
@@ -20,15 +17,6 @@ public class OrganizationController {
 
     public OrganizationController(OrganizationService organizationService) {
         this.organizationService = organizationService;
-    }
-
-    @GetMapping("/public")
-    public ResponseEntity<List<OrganizationDTO>> filterByOrder() {
-        List<OrganizationDTO> organizationListDTO;
-        return (ResponseEntity<List<OrganizationDTO>>) (organizationListDTO = organizationService.filterByOrder()
-                        .stream()
-                        .map(this::toDto)
-                        .collect(toList()));
     }
 
     @GetMapping("/public/{id}")

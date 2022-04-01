@@ -7,8 +7,6 @@ import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationGateway;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class DefaultOrganizationGateway implements OrganizationGateway {
 
@@ -16,12 +14,6 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
 
     public DefaultOrganizationGateway(OrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;
-    }
-
-    @Override
-    public List<Organization> filterByOrder(){
-        List<Organization> organizationList = organizationRepository.filterByOrder();
-        return organizationList;
     }
 
     @Override
