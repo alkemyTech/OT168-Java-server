@@ -20,4 +20,6 @@ public class UserService {
 	public User findByEmail(String email) {
         return userGateway.findByEmail(email);
     }
+
+    public User register(User user) { return userGateway.register(user); }
 }

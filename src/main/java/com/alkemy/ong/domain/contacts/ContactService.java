@@ -13,12 +13,11 @@ public class ContactService {
         this.contactGateway = contactGateway;
     }
 
-    public Contact saveContact(Contact contact) throws Exception {
-            contactGateway.save(contact);
-            return contact;
+    public Contact saveContact(Contact contact){
+        return contactGateway.save(contact);
     }
 
-    public List<Contact> getContacts() throws Exception{
-            return contactGateway.findAll();
+    public List<Contact> getContacts(){
+        return contactGateway.findAll();
     }
 }
