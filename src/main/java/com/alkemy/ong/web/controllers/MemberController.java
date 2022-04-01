@@ -6,17 +6,17 @@ import com.alkemy.ong.web.pagination.PageDTOMapper;
 import com.alkemy.ong.web.pagination.PageDTO;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.Example;
-import io.swagger.annotations.ExampleProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +25,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
+
+@Tag(name = "members")
 @RestController
 @RequestMapping
 public class MemberController {
@@ -37,31 +39,12 @@ public class MemberController {
         this.pageDTOMapper =pageDTOMapper;
     }
 
+    @Operation(description = "Show a list of active members in the system, using pagination", operationId = "showAllMember", summary = "Show a list of the members actives", tags = {"users"})
     @ApiResponses(
             value = {
                     @ApiResponse(
-
                             responseCode = "200",
-                            description = "Show list of active members in the system.",
-                            content = {
-                                    @Content(
-                                            schema = @Schema(implementation = PageDTO.class),
-                                            examples = @ExampleObject(value = "\"body\" : [\n{\n" +
-                                                    "\"id\" : \"1\"\n"+
-                                                    "\"name\" : \"Jose Perez\"\n"+
-                                                    "\"facebookUrl\" : \"www.josefacebook.com\"\n"+
-                                                    "\"instagramUrl\" : \"www.joseinstagram.com\"\n"+
-                                                    "\"linkedinUrl\" : \"www.joselinkedin.com\"\n"+
-                                                    "\"image\" : \"joseperez.jpg\"\n"+
-                                                    "\"description\" : \"Some desciption of Jose Perez\"\n"+
-                                                    "\"createdAt\" : \"2022-03-29 18:58:56\"\n"+
-                                                    "\"updatedAt\" : \"2022-03-30 19:38:22\"\n"+
-                                            "}\n"+
-                                            "],\n"+
-                                            "\"previuosPage\" : \"This is the first page\"\n"+
-                                            "\"nextPage\" : \"This is the last page\"")
-                                            )
-                            }),
+                            description = "Show list of active members in the system."),
                     @ApiResponse(
                             responseCode = "400",
                             description = "BAD REQUEST",
@@ -78,34 +61,20 @@ public class MemberController {
                     )
             })
     @GetMapping("/members")
-    public ResponseEntity<PageDTO<MemberDTO>> findAll(@RequestParam("page") int numberPage) {
+    public ResponseEntity<PageDTO<MemberDTO>> findAll(@Parameter(description = "Page number you want to view",example = "0")@RequestParam("page") int numberPage) {
         WebUtils.validatePageNumber(numberPage);
         return ResponseEntity.ok()
                 .body(pageDTOMapper
                         .toPageDTO(memberService.findAll(numberPage),MemberDTO.class));
     }
 
+    @Operation(description = "Adds an member to the system", operationId = "saveMember", summary = "Adds an active member to the system", tags = {
+            "admins", })
     @ApiResponses(
             value = {
                     @ApiResponse(
-                            responseCode = "200",
-                            description = "Show registered member information.",
-                            content = {
-                                    @Content(
-                                            schema = @Schema(implementation = PageDTO.class),
-                                            examples = @ExampleObject(value = "{\n" +
-                                                    "\"id\" : \"1\"\n"+
-                                                    "\"name\" : \"Jose Perez\"\n"+
-                                                    "\"facebookUrl\" : \"www.josefacebook.com\"\n"+
-                                                    "\"instagramUrl\" : \"www.joseinstagram.com\"\n"+
-                                                    "\"linkedinUrl\" : \"www.joselinkedin.com\"\n"+
-                                                    "\"image\" : \"joseperez.jpg\"\n"+
-                                                    "\"description\" : \"Some description of Jose Perez\"\n"+
-                                                    "\"createdAt\" : \"2022-03-29 18:58:56\"\n"+
-                                                    "\"updatedAt\" : \"2022-03-29 18:58:56\"\n"+
-                                                    "}")
-                                    )
-                            }),
+                            responseCode = "201",
+                            description = "Show registered member information."),
                     @ApiResponse(
                             responseCode = "400",
                             description = "BAD REQUEST",
@@ -120,12 +89,15 @@ public class MemberController {
                     )
             })
     @PostMapping("/members")
-    public ResponseEntity<MemberDTO> save(@Valid @RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<MemberDTO> save(@Parameter(description = "Member to add") @Valid @RequestBody MemberDTO memberDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(toDTO(memberService.save(toModel(memberDTO))));
     }
 
+
+    @Operation(description = "Remove a member from the system", operationId = "DeleteMember", summary = "Change member status to inactive", tags = {
+            "admins", })
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -147,33 +119,17 @@ public class MemberController {
                     )
             })
     @DeleteMapping("/members/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@Parameter(description = "ID of the member to delete",example = "1")@PathVariable Long id) {
         memberService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Operation(description = "Information of the member to update", operationId = "updateMember", summary = "Update member information", tags = {"admins"})
     @ApiResponses(
             value = {
                     @ApiResponse(
-
                             responseCode = "200",
-                            description = "Show updated member information.",
-                            content = {
-                                    @Content(
-                                            schema = @Schema(implementation = PageDTO.class),
-                                            examples = @ExampleObject(value = "{\n" +
-                                                    "\"id\" : \"1\"\n"+
-                                                    "\"name\" : \"Jose Perez\"\n"+
-                                                    "\"facebookUrl\" : \"www.josefacebook.com\"\n"+
-                                                    "\"instagramUrl\" : \"www.joseinstagram.com\"\n"+
-                                                    "\"linkedinUrl\" : \"www.joselinkedin.com\"\n"+
-                                                    "\"image\" : \"joseperez.jpg\"\n"+
-                                                    "\"description\" : \"Some updated description of Jose Perez\"\n"+
-                                                    "\"createdAt\" : \"2022-03-29 18:58:56\"\n"+
-                                                    "\"updatedAt\" : \"2022-04-01 14:21:48\"\n"+
-                                                    "}")
-                                    )
-                            }),
+                            description = "Show updated member information."),
                     @ApiResponse(
                             responseCode = "400",
                             description = "BAD REQUEST",
@@ -200,7 +156,8 @@ public class MemberController {
                     )
             })
     @PutMapping("members/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody MemberDTO member) {
+    public ResponseEntity<MemberDTO> update(@Parameter(description = "ID of the member to update",example = "1")@PathVariable Long id,
+                                            @Parameter(description = "Member to add") @Valid @RequestBody MemberDTO member) {
         WebUtils.validateDtoIdWithBodyId(id, member.getId());
         return ResponseEntity.ok(toDTO(memberService.update(toModel(member))));
     }
@@ -241,31 +198,44 @@ public class MemberController {
     @Valid
     private static class MemberDTO {
 
-        @ApiModelProperty(value = "ID", required = true)
+        @JsonProperty("id")
+        @Schema(example = "1", required = true)
         private Long id;
 
-        @ApiModelProperty(value = "Name")
+        @JsonProperty("name")
+        @Schema(example = "Jose Perez", required = true)
         @NotBlank(message = "Name field cannot be empty or be null.")
         @Pattern(regexp = "[a-zA-Z ]{0,50}", message = "Name field cannot admit number.")
         private String name;
 
-        @ApiModelProperty(value = "Facebook Url")
+        @JsonProperty("facebookUrl")
+        @Schema(example = "wwww.facebook.com", required = true)
         private String facebookUrl;
 
-        @ApiModelProperty(value = "Instagram Url")
+        @JsonProperty("instagramUrl")
+        @Schema(example = "wwww.instagram.com", required = true)
         private String instagramUrl;
 
-        @ApiModelProperty(value = "Linkedin Url")
+        @JsonProperty("linkedinUrl")
+        @Schema(example = "wwww.linkedin.com", required = true)
         private String linkedinUrl;
 
-        @ApiModelProperty(value = "Image")
+        @JsonProperty("image")
+        @Schema(example = "photo.jpg", required = true)
         private String image;
 
-        @ApiModelProperty(value = "Description")
+        @JsonProperty("description")
+        @Schema(example = "some description of the member", required = true)
         private String description;
 
+
+        @JsonProperty("createdAt")
+        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56", required = true)
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime createdAt;
+
+        @JsonProperty("updatedAt")
+        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56", required = true)
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime updatedAt;;
     }
