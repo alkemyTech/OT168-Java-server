@@ -9,6 +9,9 @@ import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("/slides")
 public class SlidesController {
@@ -17,6 +20,14 @@ public class SlidesController {
 
     public SlidesController(SlidesService slidesService) {
         this.slidesService = slidesService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SlidesSimpleDTO>> getAllSlides(){
+        List<Slides> slidesList =slidesService.findAll();
+        return ResponseEntity.ok(slidesList.stream()
+                .map(slide -> toDto(slide))
+                .collect(toList()));
     }
 
     @GetMapping("/{id}")
