@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Component
 public class DefaultSlidesGateway implements SlidesGateway {
 
@@ -18,7 +20,15 @@ public class DefaultSlidesGateway implements SlidesGateway {
         this.slidesRepository = slidesRepository;
     }
 
-   @Override
+    @Override
+    public List<Slides> findAll() {
+        List<SlidesEntity> slidesEntity = slidesRepository.findAll();
+        return slidesEntity.stream()
+                .map(s -> toModel(s))
+                .collect(toList());
+    }
+
+        @Override
     public Slides findById(Long idSlides) {
         SlidesEntity entity = slidesRepository.findById(idSlides)
                 .orElseThrow(()-> new ResourceNotFoundException("No slide with id: " + idSlides + " exists."));
