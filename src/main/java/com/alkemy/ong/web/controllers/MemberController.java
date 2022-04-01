@@ -218,12 +218,12 @@ public class MemberController {
         @Schema(example = "some description of the member", required = true)
         private String description;
 
-        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56", required = true)
+        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime createdAt;
 
 
-        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56", required = true)
+        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime updatedAt;;
     }
