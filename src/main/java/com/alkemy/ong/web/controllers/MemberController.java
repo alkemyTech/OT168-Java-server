@@ -39,7 +39,7 @@ public class MemberController {
         this.pageDTOMapper =pageDTOMapper;
     }
 
-    @Operation(description = "Show a list of active members in the system, using pagination", operationId = "showAllMember", summary = "Show a list of the members actives")
+    @Operation(description = "Show a list of active members in the system, using pagination", operationId = "findAll", summary = "Show a list of the members actives")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -68,7 +68,7 @@ public class MemberController {
                         .toPageDTO(memberService.findAll(numberPage),MemberDTO.class));
     }
 
-    @Operation(description = "Adds an member to the system", operationId = "saveMember", summary = "Adds an active member to the system")
+    @Operation(description = "Adds an member to the system", operationId = "save", summary = "Adds an active member to the system")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -95,7 +95,7 @@ public class MemberController {
     }
 
 
-    @Operation(description = "Remove a member from the system", operationId = "DeleteMember", summary = "Change member status to inactive")
+    @Operation(description = "Remove a member from the system", operationId = "delete", summary = "Change member status to inactive")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -122,7 +122,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @Operation(description = "Information of the member to update", operationId = "updateMember", summary = "Update member information")
+    @Operation(description = "Information of the member to update", operationId = "update", summary = "Update member information")
     @ApiResponses(
             value = {
                     @ApiResponse(
