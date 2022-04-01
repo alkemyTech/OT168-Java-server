@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -47,7 +48,9 @@ public class UserEntity {
     private LocalDateTime updatedAt;
 
     @Builder.Default
-    private Boolean deleted = false;
+
+    private Boolean deleted = Boolean.FALSE;
+
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id", nullable = false)
