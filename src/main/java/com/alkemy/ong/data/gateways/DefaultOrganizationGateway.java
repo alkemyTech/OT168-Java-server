@@ -1,7 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.OrganizationEntity;
-import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.data.repositories.OrganizationRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.organization.Organization;
@@ -22,18 +21,17 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
     }
 
     @Override
-    public List<Organization> findById(Long id) {
-        List<OrganizationEntity> organizationEntityList = (List<OrganizationEntity>) organizationRepository.findById(id)
+    public Organization findById(Long id) {
+        OrganizationEntity organizationEntity = organizationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No organization with id: " + id + " exists."));
-        return organizationEntityList.stream()
-                .map(organizationEntity1 -> toModel(organizationEntity1))
-                .toList();
+        return toModel(organizationEntity);
     }
 
-    public List<Organization> findAll(){
-       List<OrganizationEntity> organizationEntityList = organizationRepository.findAll(Sort.by(Sort.Direction.ASC, "idOrganization"));
-        return organizationEntityList.stream()
-                .map(organizationEntity -> toModel(organizationEntity))
+    @Override
+    public List<Organization> findAll() {
+        List<OrganizationEntity> organizationList = organizationRepository.findAll(Sort.by(Sort.Direction.ASC, "idOrganization"));
+        return organizationList.stream()
+                .map(organization -> toModel(organization))
                 .toList();
     }
 

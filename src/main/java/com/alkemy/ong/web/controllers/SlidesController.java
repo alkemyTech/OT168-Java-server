@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/slides")
@@ -24,10 +23,10 @@ public class SlidesController {
 
     @GetMapping
     public ResponseEntity<List<SlidesSimpleDTO>> getAllSlides(){
-        List<Slides> slidesList = slidesService.findAll();
+        List<Slides> slidesList = (List<Slides>) slidesService.findAll();
         return ResponseEntity.ok(slidesList.stream()
                 .map(slides -> toDto(slides))
-                .collect(toList()));
+                .toList());
     }
 
     @GetMapping("/{id}")

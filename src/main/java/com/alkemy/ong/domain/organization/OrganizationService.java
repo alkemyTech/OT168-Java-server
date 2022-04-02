@@ -13,12 +13,12 @@ public class OrganizationService {
         this.organizationGateway = organizationGateway;
     }
 
-    public List<Organization> findById(Long id){
-        return organizationGateway.findById(id);
-    }
-
     public List<Organization> findAll(){
         return organizationGateway.findAll();
+    }
+
+    public Organization findById(Long id){
+        return organizationGateway.findById(id);
     }
 
     public Organization updateOrganization(Organization organization){
