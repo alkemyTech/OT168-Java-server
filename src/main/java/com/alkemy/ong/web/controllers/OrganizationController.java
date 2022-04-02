@@ -3,8 +3,6 @@ package com.alkemy.ong.web.controllers;
 import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationService;
-import com.alkemy.ong.domain.slides.Slides;
-import com.alkemy.ong.domain.slides.SlidesService;
 import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
@@ -61,7 +59,7 @@ public class OrganizationController {
                 .facebookUrl(organization.getFacebookUrl())
                 .linkedinUrl(organization.getLinkedinUrl())
                 .instagramUrl(organization.getInstagramUrl())
-                .slidesEntity((List<SlidesEntity>) organization.getSlidesEntity())
+                .slidesEntityList(organization.getSlidesEntityList())
                 .build();
     }
 
@@ -78,7 +76,7 @@ public class OrganizationController {
                 .facebookUrl(organization.getFacebookUrl())
                 .linkedinUrl(organization.getLinkedinUrl())
                 .instagramUrl(organization.getInstagramUrl())
-                .slidesEntity((SlidesEntity) organization.getSlidesEntity())
+                .slidesEntityList(organization.getSlidesEntityList())
                 .build();
     }
 
@@ -92,7 +90,7 @@ public class OrganizationController {
                 .facebookUrl(organization.getFacebookUrl())
                 .linkedinUrl(organization.getLinkedinUrl())
                 .instagramUrl(organization.getInstagramUrl())
-                .slidesEntity(organization.getSlidesEntity())
+                .slidesEntityList(organization.getSlidesEntityList())
                 .build();
     }
 
@@ -110,7 +108,7 @@ public class OrganizationController {
         private String facebookUrl;
         private String linkedinUrl;
         private String instagramUrl;
-        private List<SlidesEntity> slidesEntity;
+        private List<SlidesEntity> slidesEntityList;
     }
 
     @Data
@@ -124,6 +122,6 @@ public class OrganizationController {
         private String facebookUrl;
         private String linkedinUrl;
         private String instagramUrl;
-        private SlidesEntity slidesEntity;
+        private List<SlidesEntity> slidesEntityList;
     }
 }

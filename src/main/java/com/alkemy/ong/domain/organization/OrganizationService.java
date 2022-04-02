@@ -13,8 +13,8 @@ public class OrganizationService {
         this.organizationGateway = organizationGateway;
     }
 
-    public List<Organization> filterByOrder(Long id){
-        return organizationGateway.filterByOrder(id);
+    public List<Organization> findById(Long id){
+        return organizationGateway.findById(id);
     }
 
     public List<Organization> findAll(){

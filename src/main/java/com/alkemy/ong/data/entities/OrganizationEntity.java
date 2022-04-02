@@ -66,7 +66,7 @@ public class OrganizationEntity {
     private LocalDateTime updatedAt;
 
     @OneToMany
-    private List<SlidesEntity> slidesEntity;
+    private List<SlidesEntity> slidesEntityList;
 
     @Override
     public String toString() {
@@ -78,6 +78,6 @@ public class OrganizationEntity {
                 ", email='" + email + '\'' +
                 ", welcomeText='" + welcomeText + '\'' +
                 ", aboutUsText='" + aboutUsText + '\'' +
-                ", slidesEntity='" + slidesEntity + '\'';
+                ", slidesEntityList='" + slidesEntityList + '\'';
     }
 }

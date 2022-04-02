@@ -3,7 +3,6 @@ package com.alkemy.ong.data.gateways;
 import com.alkemy.ong.data.entities.OrganizationEntity;
 import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.data.repositories.OrganizationRepository;
-import com.alkemy.ong.data.repositories.SlidesRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationGateway;
@@ -23,17 +22,17 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
     }
 
     @Override
-    public List<Organization> filterByOrder(Long id) {
-        List<OrganizationEntity> organizationList = (List<OrganizationEntity>) organizationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No organization with id: " + id + " exists."));;
-        return organizationList.stream()
-                .map(organizationEntity -> toModel(organizationEntity))
+    public List<Organization> findById(Long id) {
+        List<OrganizationEntity> organizationEntityList = (List<OrganizationEntity>) organizationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No organization with id: " + id + " exists."));
+        return organizationEntityList.stream()
+                .map(organizationEntity1 -> toModel(organizationEntity1))
                 .toList();
     }
 
     public List<Organization> findAll(){
-        List<OrganizationEntity> organizationList = organizationRepository.findAll(Sort.by(Sort.Direction.ASC, "idOrganization"));
-        return organizationList.stream()
+       List<OrganizationEntity> organizationEntityList = organizationRepository.findAll(Sort.by(Sort.Direction.ASC, "idOrganization"));
+        return organizationEntityList.stream()
                 .map(organizationEntity -> toModel(organizationEntity))
                 .toList();
     }

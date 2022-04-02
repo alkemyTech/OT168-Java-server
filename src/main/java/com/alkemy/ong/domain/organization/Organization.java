@@ -1,9 +1,10 @@
 package com.alkemy.ong.domain.organization;
 
 import com.alkemy.ong.data.entities.SlidesEntity;
-import com.alkemy.ong.domain.slides.Slides;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -19,7 +20,7 @@ public class Organization {
     private String facebookUrl;
     private String linkedinUrl;
     private String instagramUrl;
-    private SlidesEntity slidesEntity;
+    private List<SlidesEntity> slidesEntityList;
 
     @Override
     public String toString() {
@@ -32,6 +33,7 @@ public class Organization {
                 ", email='" + email + '\'' +
                 ", about_us_text='" + aboutUsText + '\'' +
                 ", welcome_text='" + welcomeText + '\'' +
+                ", slidesEntityList='" + slidesEntityList +
                 '}';
     }
 }
