@@ -1,6 +1,5 @@
 package com.alkemy.ong.domain.organization;
 
-import com.alkemy.ong.domain.slides.Slides;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +13,12 @@ public class OrganizationService {
         this.organizationGateway = organizationGateway;
     }
 
-    public List<Organization> filterByOrder(Slides slides, Organization organization){
-        return organizationGateway.filterByOrder(slides, organization);
+    public List<Organization> filterByOrder(Long id){
+        return organizationGateway.filterByOrder(id);
     }
 
-    public Organization findById(Long id){
-        return organizationGateway.findById(id);
+    public List<Organization> findAll(){
+        return organizationGateway.findAll();
     }
 
     public Organization updateOrganization(Organization organization){

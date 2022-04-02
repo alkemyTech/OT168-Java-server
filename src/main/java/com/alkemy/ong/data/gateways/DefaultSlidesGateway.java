@@ -5,6 +5,7 @@ import com.alkemy.ong.data.repositories.SlidesRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.slides.Slides;
 import com.alkemy.ong.domain.slides.SlidesGateway;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class DefaultSlidesGateway implements SlidesGateway {
                 .collect(toList());
     }
 
-        @Override
+    @Override
     public Slides findById(Long idSlides) {
         SlidesEntity entity = slidesRepository.findById(idSlides)
                 .orElseThrow(()-> new ResourceNotFoundException("No slide with id: " + idSlides + " exists."));

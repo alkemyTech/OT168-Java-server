@@ -1,13 +1,19 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationService;
+import com.alkemy.ong.domain.slides.Slides;
+import com.alkemy.ong.domain.slides.SlidesService;
 import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/organizations")
@@ -20,9 +26,11 @@ public class OrganizationController {
     }
 
     @GetMapping("/public/{id}")
-    public ResponseEntity<OrganizationSimpleDTO> getOrganization(@PathVariable Long id) {
-        Organization organization = organizationService.findById(id);
-        return ResponseEntity.ok(toSimpleDto(organization));
+    public ResponseEntity<List<OrganizationSimpleDTO>> getOrganization(){
+        List<Organization> organizationList = (List<Organization>) organizationService.findAll();
+        return ResponseEntity.ok(organizationList.stream()
+                .map(organization -> toSimpleDto(organization))
+                .collect(toList()));
     }
 
     @PutMapping("/public/{id}")
@@ -53,6 +61,7 @@ public class OrganizationController {
                 .facebookUrl(organization.getFacebookUrl())
                 .linkedinUrl(organization.getLinkedinUrl())
                 .instagramUrl(organization.getInstagramUrl())
+                .slidesEntity((List<SlidesEntity>) organization.getSlidesEntity())
                 .build();
     }
 
@@ -69,6 +78,7 @@ public class OrganizationController {
                 .facebookUrl(organization.getFacebookUrl())
                 .linkedinUrl(organization.getLinkedinUrl())
                 .instagramUrl(organization.getInstagramUrl())
+                .slidesEntity((SlidesEntity) organization.getSlidesEntity())
                 .build();
     }
 
@@ -82,6 +92,7 @@ public class OrganizationController {
                 .facebookUrl(organization.getFacebookUrl())
                 .linkedinUrl(organization.getLinkedinUrl())
                 .instagramUrl(organization.getInstagramUrl())
+                .slidesEntity(organization.getSlidesEntity())
                 .build();
     }
 
@@ -99,6 +110,7 @@ public class OrganizationController {
         private String facebookUrl;
         private String linkedinUrl;
         private String instagramUrl;
+        private List<SlidesEntity> slidesEntity;
     }
 
     @Data
@@ -112,5 +124,6 @@ public class OrganizationController {
         private String facebookUrl;
         private String linkedinUrl;
         private String instagramUrl;
+        private SlidesEntity slidesEntity;
     }
 }

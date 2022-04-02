@@ -115,6 +115,7 @@ CREATE TABLE if NOT EXISTS slides (
     updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted BIT(1) DEFAULT 0,
     organization_id BIGINT unsigned NOT NULL
+    FOREIGN KEY (`organization_id`) REFERENCES `slides` (`id_slides`),
 );
 
 CREATE TABLE IF NOT EXISTS testimonials (
