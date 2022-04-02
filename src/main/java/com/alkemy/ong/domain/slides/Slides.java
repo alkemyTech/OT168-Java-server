@@ -5,8 +5,6 @@ import com.alkemy.ong.domain.organization.Organization;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 public class Slides {

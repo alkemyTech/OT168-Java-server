@@ -1,6 +1,5 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationService;
 import com.alkemy.ong.web.utils.WebUtils;
