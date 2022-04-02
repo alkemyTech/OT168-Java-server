@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-import java.io.IOException;
 
 @RestController
-@RequestMapping("mail/")
+@RequestMapping("/mail")
 public class MailController {
 
     private final MailService mailService;
@@ -22,9 +21,9 @@ public class MailController {
     }
 
     @PostMapping("/sendmail")
-    public ResponseEntity<String> sendMail(@RequestBody @Valid MailDTO mailDTO) throws IOException {
+    public ResponseEntity<String> sendMail(@RequestBody @Valid MailDTO mailDTO){
         String email = mailService.sendMail(toModel(mailDTO));
-        return ResponseEntity.ok("Email enviado exitosamente a: " + mailDTO.getTo());
+        return ResponseEntity.ok("Email successfully sent to : " + mailDTO.getTo());
     }
 
     private MailRequest toModel(MailDTO dto){

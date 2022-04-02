@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.domain.exceptions.SendgridException;
 import com.alkemy.ong.domain.mail.MailGateway;
 import com.alkemy.ong.domain.mail.MailRequest;
 import com.sendgrid.Method;
@@ -23,22 +24,24 @@ public class DefaultMailGateway implements MailGateway {
     }
 
     @Override
-    public String sendMail(MailRequest mailRequest) throws IOException {
+    public String sendMail(MailRequest mailRequest){
 
         Email email = new Email(System.getenv("SENGRID_EMAIL"), "ONG - Somos Más");
         Mail mail = new Mail(email, mailRequest.getSubject(), new Email(mailRequest.getTo()), new Content("text/plain", mailRequest.getBody()));
         mail.setReplyTo(email);
-        Request request = new Request();
-        Response response = null;
 
+        /**
+         * IOException nunca se produce, revisar!!
+         */
         try {
+            Request request = new Request();
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
-            response = sendgrid.api(request);
+            Response response = sendgrid.api(request);
             return response.getBody();
-        } catch (IOException ex) {
-            throw new IOException(ex.getMessage());
+        }catch (IOException ex){
+            throw new SendgridException("ERROR building mail");
         }
     }
 }

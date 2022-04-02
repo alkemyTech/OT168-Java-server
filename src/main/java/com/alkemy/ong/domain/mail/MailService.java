@@ -1,9 +1,6 @@
 package com.alkemy.ong.domain.mail;
 
-
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Service
 public class MailService {
@@ -14,7 +11,7 @@ public class MailService {
         this.mailGateway = mailGateway;
     }
 
-    public String sendMail(MailRequest mailRequest) throws IOException {
+    public String sendMail(MailRequest mailRequest){
         return mailGateway.sendMail(mailRequest);
     }
 }
