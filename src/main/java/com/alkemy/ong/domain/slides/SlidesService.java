@@ -2,6 +2,8 @@ package com.alkemy.ong.domain.slides;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SlidesService {
 
@@ -11,12 +13,13 @@ public class SlidesService {
         this.slidesGateway = slidesGateway;
     }
 
-    public Slides findById(Long id){
-        return slidesGateway.findById(id);
+    public List<Slides> findAll(){
+        return slidesGateway.findAll();
     }
 
-    public <List>Slides findAll(){
-        return (Slides) slidesGateway.findAll();}
+    public Slides findById(Long idSlides){
+        return slidesGateway.findById(idSlides);
+    }
 
     public Slides updateSlides(Slides slides) { return slidesGateway.update(slides);}
 

@@ -6,10 +6,7 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationGateway;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class DefaultOrganizationGateway implements OrganizationGateway {
@@ -25,14 +22,6 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
         OrganizationEntity organizationEntity = organizationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No organization with id: " + id + " exists."));
         return toModel(organizationEntity);
-    }
-
-    @Override
-    public List<Organization> findAll() {
-        List<OrganizationEntity> organizationList = organizationRepository.findAll(Sort.by(Sort.Direction.ASC, "idOrganization"));
-        return organizationList.stream()
-                .map(organization -> toModel(organization))
-                .toList();
     }
 
     @Override

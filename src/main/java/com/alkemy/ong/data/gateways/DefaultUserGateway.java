@@ -29,7 +29,7 @@ public class DefaultUserGateway implements UserGateway {
         this.roleRepository = roleRepository;
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll(){
         return userRepository.findAll()
                 .stream()
                 .map(this::toModel)

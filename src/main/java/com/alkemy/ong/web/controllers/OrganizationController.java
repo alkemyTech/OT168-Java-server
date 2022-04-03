@@ -8,8 +8,6 @@ import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/organizations")
 public class OrganizationController {
@@ -20,30 +18,27 @@ public class OrganizationController {
         this.organizationService = organizationService;
     }
 
-   @GetMapping("/public/{id}")
-    public ResponseEntity<List<OrganizationSimpleDTO>> getOrganization(@PathVariable Long id){
-        List<Organization> organizationList = organizationService.findAll();
-        return ResponseEntity.ok(organizationList
-                .stream()
-                .map(organization -> toSimpleDto(organization))
-                .toList());
+    @GetMapping("/public/{id}")
+    public ResponseEntity<OrganizationSimpleDTO> getOrganization(@PathVariable Long id){
+        Organization organization =  organizationService.findById(id);
+        return ResponseEntity.ok(toSimpleDto(organization));
     }
 
     @PutMapping("/public/{id}")
-    public ResponseEntity<OrganizationDTO> update(@PathVariable Long idOrganization, @RequestBody OrganizationDTO fullDTO) {
-        WebUtils.validateDtoIdWithBodyId(idOrganization, fullDTO.getIdOrganization());
-        OrganizationDTO organization = toDto(organizationService.updateOrganization(toModel(fullDTO)));
-        return ResponseEntity.ok(organization);
+    public ResponseEntity<OrganizationDTO> update(@PathVariable Long id, @RequestBody OrganizationDTO fullDTO){
+        WebUtils.validateDtoIdWithBodyId(id, fullDTO.getIdOrganization());
+        OrganizationDTO organization  = toDto(organizationService.updateOrganization(toModel(fullDTO)));
+        return  ResponseEntity.ok(organization);
     }
 
     @PatchMapping("/public/{id}")
-    public ResponseEntity<OrganizationDTO> updateSocial(@PathVariable Long idOrganization, @RequestBody OrganizationDTO organization) {
-        WebUtils.validateDtoIdWithBodyId(idOrganization, organization.getIdOrganization());
-        OrganizationDTO organizationDto = toDto(organizationService.updateSocialcontact(toModel(organization)));
-        return ResponseEntity.ok(organizationDto);
+    public ResponseEntity<OrganizationDTO> updateSocial(@PathVariable Long id, @RequestBody OrganizationDTO organization){
+        WebUtils.validateDtoIdWithBodyId(id, organization.getIdOrganization());
+        OrganizationDTO organizationDto  = toDto(organizationService.updateSocialcontact(toModel(organization)));
+        return  ResponseEntity.ok(organizationDto);
     }
 
-    private OrganizationDTO toDto(Organization organization) {
+    private OrganizationDTO toDto(Organization organization){
 
         return OrganizationDTO.builder()
                 .idOrganization(organization.getIdOrganization())
@@ -59,8 +54,7 @@ public class OrganizationController {
                 .instagramUrl(organization.getInstagramUrl())
                 .build();
     }
-
-    private Organization toModel(OrganizationDTO organization) {
+    private Organization toModel(OrganizationDTO organization){
         return Organization.builder()
                 .idOrganization(organization.getIdOrganization())
                 .name(organization.getName())
@@ -76,7 +70,7 @@ public class OrganizationController {
                 .build();
     }
 
-    public static OrganizationSimpleDTO toSimpleDto(Organization organization) {
+    public static OrganizationSimpleDTO toSimpleDto(Organization organization){
         return OrganizationSimpleDTO.builder()
                 .idOrganization(organization.getIdOrganization())
                 .name(organization.getName())
@@ -91,7 +85,7 @@ public class OrganizationController {
 
     @Data
     @Builder
-    public static class OrganizationDTO {
+    public static class OrganizationDTO{
         private Long idOrganization;
         private String name;
         private String image;
@@ -107,7 +101,7 @@ public class OrganizationController {
 
     @Data
     @Builder
-    public static class OrganizationSimpleDTO {
+    public static class OrganizationSimpleDTO{
         private Long idOrganization;
         private String name;
         private String image;

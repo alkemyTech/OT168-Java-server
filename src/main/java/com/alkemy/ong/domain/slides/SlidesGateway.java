@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface SlidesGateway {
     List<Slides> findAll();
-    Slides findById(Long id);
+    Slides findById(Long idSlides);
     Slides update(Slides slides);
     void delete(Long id);
 }
