@@ -20,7 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemy.ong.domain.category.Category;
 import com.alkemy.ong.domain.category.CategoryService;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.web.utils.WebUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.time.LocalDateTime;
 
@@ -38,12 +47,61 @@ public class CategoryController {
 		this.pageDTOMapper = pageDTOMapper;
 	}
 
+	 @Operation(summary = "Get a paginated list of categories")
+	    @ApiResponses(
+	    		value = {
+	    				@ApiResponse(
+	    						responseCode = "200", 
+	    						description = "Retrieve a paginated list of categories",
+	    						content = {
+	    								@Content(
+	    										mediaType = "application/json",
+	    										schema = @Schema(
+	    												implementation = CategorySlimDTO.class)) }),
+	    				@ApiResponse(
+	                            responseCode = "400",
+	                            description = "BAD REQUEST",
+	                            content = {
+	                                    @Content(
+	                                            schema = @Schema(implementation = String.class),
+	                                            examples = @ExampleObject(
+	                                                    name = "Message of error",
+	                                                    summary = "400 from the server directly.",
+	                                                    value = "The page does not exist"
+	                                            )
+	                                    )
+	                            }
+	                    )
+	    })
 	@GetMapping
 	public ResponseEntity<PageDTO<CategorySlimDTO>> getAllCategories(@RequestParam("page") int numberPage) {
 		WebUtils.validatePageNumber(numberPage);
         return ResponseEntity.ok().body(pageDTOMapper.toPageDTO(categoryService.findAll(numberPage),CategorySlimDTO.class));
 	}
 
+	@Operation(summary = "Get a category by id")
+	@ApiResponses(
+			value = {
+					@ApiResponse(
+							responseCode = "200", 
+							description = "Found category", 
+							content = {
+									@Content(
+											mediaType = "application/json",
+											schema = @Schema(implementation = CategoryDTO.class)) }),
+					@ApiResponse(
+							responseCode = "404", 
+							description = "Category not found",
+							content = {
+									@Content(
+											mediaType = "application/json",
+											schema = @Schema(implementation = ResourceNotFoundException.class),
+											examples = @ExampleObject(
+                                                    name = "Message of error",
+                                                    summary = "404 from the server directly.",
+                                                    value = "The ID doesn't exist."
+                                            )) })
+	})
 	@GetMapping("/{id}")
 	public ResponseEntity<CategoryDTO> getCategoryByID(@PathVariable("id") Long id) {
 		Category category = categoryService.findById(id);
@@ -51,17 +109,71 @@ public class CategoryController {
 		return ResponseEntity.ok(categoryDTO);
 	}
 
+	@Operation(summary = "Add a new category to the database")
+    @ApiResponses(
+    		value = {
+            @ApiResponse(
+            		responseCode = "201",
+            		description = "Create category",
+            		content = @Content),
+            @ApiResponse(
+            		responseCode = "400", 
+            		description = "Invalid field",
+            		content = { 
+            				@Content(
+            						mediaType = "application/json",
+            						schema = @Schema(implementation = String.class),
+            						examples = @ExampleObject(
+                                            name = "Message of error",
+                                            summary = "400 from the server directly.",
+                                            value = "\"The name field is required.\" or \"The name field must not have numbers.\""))
+            		})
+    })
 	@PostMapping
 	public ResponseEntity<CategoryDTO> saveCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(categoryService.save(toModel(categoryDTO))));
 	}
 
+	@Operation(summary = "Update category")
+    @ApiResponses(
+    		value = {
+            @ApiResponse(
+            		responseCode = "200",
+            		description = "Update category",
+            		content = @Content),
+            @ApiResponse(
+            		responseCode = "400", 
+            		description = "Invalid field",
+            		content = { 
+            				@Content(
+            						mediaType = "application/json",
+            						schema = @Schema(implementation = String.class),
+            						examples = @ExampleObject(
+                                            name = "Message of error",
+                                            summary = "400 from the server directly.",
+                                            value = "\"The name field is required.\" or \"The name field must not have numbers.\""))
+            		})
+    })
 	@PutMapping("/{id}")
 	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id,
 			@Valid @RequestBody CategoryDTO categoryDTO) {
 		return ResponseEntity.status(HttpStatus.OK).body(toDTO(categoryService.update(id, toModel(categoryDTO))));
 	}
 
+	@Operation(summary = "Delete a category by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Delete the category",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Category not found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResourceNotFoundException.class),
+                            examples = @ExampleObject(
+                                    name = "Message of error",
+                                    summary = "404 from the server directly.",
+                                    value = "The ID doesn't exist.")
+                            ) }),
+
+    })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long id) {
 		categoryService.delete(id);
@@ -81,7 +193,6 @@ public class CategoryController {
 				.image(category.getImage())
 				.createdAt(category.getCreatedAt())
 				.updatedAt(category.getUpdatedAt())
-				.deleted(category.getDeleted())
 				.build();
 	}
 
@@ -93,7 +204,6 @@ public class CategoryController {
 				.image(categoryDTO.getImage())
 				.createdAt(categoryDTO.getCreatedAt())
 				.updatedAt(categoryDTO.getUpdatedAt())
-				.deleted(categoryDTO.getDeleted())
 				.build();
 	}
 	@Getter
@@ -102,6 +212,7 @@ public class CategoryController {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	private static class CategorySlimDTO {
+		@Schema(example = "RRHH", required = true)
 		private String name;
 	}
 
@@ -111,14 +222,21 @@ public class CategoryController {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	private static class CategoryDTO {
+		@Schema(example = "1", required = true)
 		private Long id;
+		@Schema(example = "RRHH", required = true)
 		@NotEmpty(message = "The name field is required.")
 		@Pattern(regexp = "[a-zA-Z]{0,255}", message = "The name field must not have numbers.")
 		private String name;
+		@Schema(example = "some description of the category", required = true)
 		private String description;
+		@Schema(example = "photo.jpg", required = true)
 		private String image;
+		@Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-02 18:58:56")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		private LocalDateTime createdAt;
+		@Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-02 18:58:56")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		private LocalDateTime updatedAt;
-		private Boolean deleted;
 	}
 }
