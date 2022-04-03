@@ -36,10 +36,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private GrantedAuthority getAuthority(User user) {
 
-        if (user.getRole() == 1L) {
+        if (user.getRoleId() == 1L) {
             return new SimpleGrantedAuthority("ROLE_ADMIN");
         }
-        if (user.getRole() == 2L) {
+        if (user.getRoleId() == 2L) {
             return new SimpleGrantedAuthority("ROLE_USER");
         }
         return null;

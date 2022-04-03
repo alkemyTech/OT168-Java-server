@@ -2,6 +2,8 @@ package com.alkemy.ong.domain.users;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 	
@@ -11,7 +13,13 @@ public class UserService {
         this.userGateway = userGateway;
     }
 
+    public List<User> findAll(){
+        return userGateway.findAll();
+    }
+
 	public User findByEmail(String email) {
         return userGateway.findByEmail(email);
     }
+
+    public User register(User user) { return userGateway.register(user); }
 }
