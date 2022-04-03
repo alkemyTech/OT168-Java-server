@@ -27,6 +27,7 @@ public class DefaultUserGateway implements UserGateway {
     public DefaultUserGateway(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+    }
 
     @Override
     public List<User> findAll() {
@@ -52,8 +53,16 @@ public class DefaultUserGateway implements UserGateway {
 
     public User register(User user) {
         emailExists(user.getEmail());
-        user.setRole(2L);
+        user.setRoleId(2L);
         return toModel(userRepository.save(toEntity(user)));
+    }
+    
+    @Override
+    public void deleteById(Long id) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(
+        		()-> new ResourceNotFoundException("User not found"));
+        userEntity.setDeleted(true);
+        userRepository.save(userEntity);
     }
     
     private User toModel(UserEntity userEntity) {
@@ -76,8 +85,9 @@ public class DefaultUserGateway implements UserGateway {
                 lastName(userModel.getLastName()).
                 email(userModel.getEmail()).
                 password(passwordEncoder.encode(userModel.getPassword())).
-                roleEntity(roleRepository.findById(userModel.getRole()).get()).
+                roleEntity(roleRepository.findById(userModel.getRoleId()).get()).
                 photo(userModel.getPhoto()).
                 build();
     }
+
 }

@@ -22,4 +22,8 @@ public class UserService {
     }
 
     public User register(User user) { return userGateway.register(user); }
+    
+    public void deleteById(Long id) {
+        userGateway.deleteById(id);
+    }
 }
