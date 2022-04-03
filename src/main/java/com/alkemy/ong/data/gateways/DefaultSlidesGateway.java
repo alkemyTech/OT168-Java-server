@@ -3,7 +3,6 @@ package com.alkemy.ong.data.gateways;
 import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.data.repositories.SlidesRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
-import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.slides.Slides;
 import com.alkemy.ong.domain.slides.SlidesGateway;
 import org.springframework.data.domain.Sort;
@@ -19,7 +18,6 @@ public class DefaultSlidesGateway implements SlidesGateway {
     public DefaultSlidesGateway(SlidesRepository slidesRepository) {
         this.slidesRepository = slidesRepository;
     }
-
 
     @Override
     public List<Slides> findAll() {

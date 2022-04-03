@@ -24,10 +24,11 @@ public class SlidesController {
 
     @GetMapping
     public ResponseEntity<List<SlidesSimpleDTO>> getAllSlides(){
-        List<Slides> slidesList =slidesService.findAll();
-        return ResponseEntity.ok(slidesList.stream()
-                .map(slide -> toDto(slide))
-                .collect(toList()));
+        List<Slides> slidesList = slidesService.findAll();
+        return ResponseEntity.ok(slidesList
+                .stream()
+                .map(s -> toDto(s))
+                .toList());
     }
 
     @GetMapping("/{id}")

@@ -10,13 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-//@Data
+@Data
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Table(name = "slides")
 @SQLDelete(sql = "UPDATE slides SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
@@ -35,7 +30,6 @@ public class SlidesEntity {
 
     @Column(nullable = false, name = "slide_order")
     private Integer order;
-
 
     private Boolean deleted = Boolean.FALSE;
 

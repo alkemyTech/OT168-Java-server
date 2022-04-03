@@ -2,8 +2,6 @@ package com.alkemy.ong.domain.organization;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class OrganizationService {
 
@@ -13,8 +11,8 @@ public class OrganizationService {
         this.organizationGateway = organizationGateway;
     }
 
-    public Organization findById(Long id){
-        return organizationGateway.findById(id);
+    public Organization findById(Long idOrganization){
+        return organizationGateway.findById(idOrganization);
     }
 
     public Organization updateOrganization(Organization organization){

@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -9,14 +10,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-//@Data
+@Data
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Table(name = "organizations")
 @SQLDelete(sql = "UPDATE organization SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
@@ -68,6 +66,10 @@ public class OrganizationEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
+    @JsonIgnore
+    private List<SlidesEntity> slidesEntityList = new ArrayList<>();
 
     @Override
     public String toString() {

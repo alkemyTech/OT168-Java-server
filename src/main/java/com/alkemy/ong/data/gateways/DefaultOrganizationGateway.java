@@ -1,26 +1,33 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.OrganizationEntity;
+import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.data.repositories.OrganizationRepository;
+import com.alkemy.ong.data.repositories.SlidesRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationGateway;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class DefaultOrganizationGateway implements OrganizationGateway {
 
     private final OrganizationRepository organizationRepository;
+    private final SlidesRepository slidesRepository;
 
-    public DefaultOrganizationGateway(OrganizationRepository organizationRepository) {
+    public DefaultOrganizationGateway(OrganizationRepository organizationRepository,
+                                      SlidesRepository slidesRepository) {
         this.organizationRepository = organizationRepository;
+        this.slidesRepository = slidesRepository;
     }
 
     @Override
-    public Organization findById(Long id) {
-        OrganizationEntity organizationEntity = organizationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No organization with id: " + id + " exists."));
+    public Organization findById(Long idOrganization) {
+        OrganizationEntity organizationEntity = organizationRepository.findById(idOrganization)
+                .orElseThrow(() -> new ResourceNotFoundException("No organization with id: " + idOrganization + " exists."));
         return toModel(organizationEntity);
     }
 
@@ -51,6 +58,7 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
                 .facebookUrl(entity.getFacebookUrl())
                 .linkedinUrl(entity.getLinkedinUrl())
                 .instagramUrl(entity.getInstagramUrl())
+                .slidesEntityList(entity.getSlidesEntityList())
                 .build();
     }
 
@@ -66,6 +74,7 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
         entity.setFacebookUrl(organization.getFacebookUrl());
         entity.setLinkedinUrl(organization.getLinkedinUrl());
         entity.setInstagramUrl(organization.getInstagramUrl());
+        entity.setSlidesEntityList(organization.getSlidesEntityList());
         return entity;
     }
 
@@ -74,6 +83,7 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
         entity.setFacebookUrl(organization.getFacebookUrl());
         entity.setLinkedinUrl(organization.getLinkedinUrl());
         entity.setInstagramUrl(organization.getInstagramUrl());
+        entity.setSlidesEntityList(organization.getSlidesEntityList());
         return entity;
     }
 }

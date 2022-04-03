@@ -1,6 +1,5 @@
 package com.alkemy.ong.domain.slides;
 
-
 import com.alkemy.ong.domain.organization.Organization;
 import lombok.Builder;
 import lombok.Data;
