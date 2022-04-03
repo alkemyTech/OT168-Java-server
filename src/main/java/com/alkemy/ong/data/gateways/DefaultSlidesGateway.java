@@ -21,7 +21,7 @@ public class DefaultSlidesGateway implements SlidesGateway {
 
     @Override
     public List<Slides> findAll() {
-        List<SlidesEntity> slidesEntityList = slidesRepository.findAll(Sort.by(Sort.Direction.ASC, "order"));
+        List<SlidesEntity> slidesEntityList = slidesRepository.findAll();
         return slidesEntityList.stream()
                 .map(slides -> toModel(slides))
                 .toList();

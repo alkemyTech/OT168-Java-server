@@ -69,6 +69,7 @@ public class OrganizationEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
     @JsonIgnore
+    @OrderBy(value = "order")
     private List<SlidesEntity> slidesEntityList = new ArrayList<>();
 
     @Override
