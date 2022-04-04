@@ -20,7 +20,9 @@ import static java.util.stream.Collectors.toList;
 public class DefaultUserGateway implements UserGateway {
 
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final RoleRepository roleRepository;
 
     public DefaultUserGateway(UserRepository userRepository, RoleRepository roleRepository,@Lazy PasswordEncoder passwordEncoder) {
@@ -28,12 +30,19 @@ public class DefaultUserGateway implements UserGateway {
         this.roleRepository = roleRepository;
         this.passwordEncoder=passwordEncoder;
     }
+
     @Override
-    public List<User> findAll() {
+    public List<User> findAll(){
         return userRepository.findAll()
                 .stream()
                 .map(this::toModel)
                 .collect(toList());
+    }
+
+    @Override
+    public User findById(Long id) {
+        return toModel(userRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("The ID doesn't exist.")));
     }
 
     @Override
@@ -55,7 +64,14 @@ public class DefaultUserGateway implements UserGateway {
         user.setRoleId(2l);
         return toModel(userRepository.save(toEntity(user)));
     }
-    
+
+    @Override
+    public User update(User user) {
+        roleRepository.findById(user.getRoleId()).orElseThrow(()->new ResourceNotFoundException(user.getRoleId(), "Role"));
+        UserEntity userEntity = toEntity(findById(user.getId()));
+        return toModel(userRepository.save(toUpdate(userEntity, user)));
+    }
+
     private User toModel(UserEntity userEntity) {
         return User.builder()
                 .id(userEntity.getId())
@@ -72,12 +88,25 @@ public class DefaultUserGateway implements UserGateway {
 
     private UserEntity toEntity(User userModel) {
         return UserEntity.builder().
+                id(userModel.getId()).
                 firstName(userModel.getFirstName()).
                 lastName(userModel.getLastName()).
                 email(userModel.getEmail()).
                 password(passwordEncoder.encode(userModel.getPassword())).
                 roleEntity(roleRepository.findById(userModel.getRoleId()).get()).
                 photo(userModel.getPhoto()).
+                createdAt(userModel.getCreatedAt()).
                 build();
+    }
+
+    private UserEntity toUpdate(UserEntity entity, User userModel){
+        entity.setFirstName(userModel.getFirstName());
+        entity.setLastName(userModel.getLastName());
+        entity.setEmail(userModel.getEmail());
+        entity.setPassword(passwordEncoder.encode(userModel.getPassword()));
+        entity.setPhoto(userModel.getPhoto());
+        entity.setRoleEntity(roleRepository.findById(userModel.getRoleId()).get());
+
+        return entity;
     }
 }

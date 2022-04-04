@@ -15,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 import static com.alkemy.ong.web.utils.WebUtils.*;
@@ -28,26 +29,26 @@ public class CommentController {
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
-    
+
     @GetMapping
-    public ResponseEntity<List<CommentSlimDTO>> getAllComments(){
-    	List<CommentSlimDTO> commentsSlimDTO;
-    	commentsSlimDTO = commentService.findAll().stream().map(this::toSlimDTO).collect(toList());
-    	return ResponseEntity.ok(commentsSlimDTO);
+    public ResponseEntity<List<CommentSlimDTO>> getAllComments() {
+        List<CommentSlimDTO> commentsSlimDTO;
+        commentsSlimDTO = commentService.findAll().stream().map(this::toSlimDTO).collect(toList());
+        return ResponseEntity.ok(commentsSlimDTO);
     }
 
     @PostMapping
-    public ResponseEntity<CommentDTO> saveComment(@Valid @RequestBody CommentDTO commentDTO){
+    public ResponseEntity<CommentDTO> saveComment(@Valid @RequestBody CommentDTO commentDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(commentService.saveComment(toModel(commentDTO))));
     }
-    
+
     private CommentSlimDTO toSlimDTO(Comment comment) {
-    	CommentSlimDTO newCommentSlimDTO = CommentSlimDTO.builder().body(comment.getBody()).build();
-    	return newCommentSlimDTO;
+        CommentSlimDTO newCommentSlimDTO = CommentSlimDTO.builder().body(comment.getBody()).build();
+        return newCommentSlimDTO;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentDTO> updateComment(@PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO){
+    public ResponseEntity<CommentDTO> updateComment(@PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO) {
         validateDtoIdWithBodyId(id, commentDTO.getId());
         return ResponseEntity.ok(toDTO(commentService.updateComment(id, toModel(commentDTO))));
     }
@@ -58,7 +59,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    private Comment toModel(CommentDTO commentDTO){
+    private Comment toModel(CommentDTO commentDTO) {
         return Comment.builder()
                 .body(commentDTO.getBody())
                 .userId(commentDTO.getUserId())
@@ -68,7 +69,7 @@ public class CommentController {
                 .build();
     }
 
-    private CommentDTO toDTO(Comment comment){
+    private CommentDTO toDTO(Comment comment) {
         return CommentDTO.builder()
                 .id(comment.getId())
                 .body(comment.getBody())
@@ -92,18 +93,18 @@ public class CommentController {
         private Long userId;
         @NotNull(message = "News can't be null")
         private Long newsId;
-        @JsonFormat(pattern="dd-MM-yyyy hh:mm")
+        @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
         private LocalDateTime createdAt;
-        @JsonFormat(pattern="dd-MM-yyyy hh:mm")
+        @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
         private LocalDateTime updatedAt;
     }
-    
+
     @Getter
-	@Setter
-	@Builder
-	@AllArgsConstructor
-	@NoArgsConstructor
-	private static class CommentSlimDTO {
-		private String body;
-	}
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class CommentSlimDTO {
+        private String body;
+    }
 }
