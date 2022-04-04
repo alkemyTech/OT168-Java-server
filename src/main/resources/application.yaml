@@ -7,7 +7,7 @@ spring:
     initialization-mode: always
     continue-on-error: true
 amazonProperties:
-      endpointUrl: https://s3.us-west-2.amazonaws.com
+      endpointUrl: https://s3.us-east-1.amazonaws.com
       accessKey: ${ACCESS_KEY}
       secretKey: ${SECRET_KEY}
       bucketName: ${BUCKET_NAME}
