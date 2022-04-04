@@ -53,11 +53,7 @@ public class DefaultUserGateway implements UserGateway {
 
     public User register(User user) {
         emailExists(user.getEmail());
-<<<<<<< HEAD
-        user.setRoleId(2L);
-=======
         user.setRoleId(2l);
->>>>>>> main
         return toModel(userRepository.save(toEntity(user)));
     }
     
