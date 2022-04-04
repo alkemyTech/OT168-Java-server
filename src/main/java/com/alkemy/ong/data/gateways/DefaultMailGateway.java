@@ -33,7 +33,8 @@ public class DefaultMailGateway implements MailGateway {
         /**
          * IOException nunca se produce, revisar!!
          */
-        try {
+
+/*        try {
             Request request = new Request();
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");

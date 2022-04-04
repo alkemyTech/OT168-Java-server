@@ -37,6 +37,15 @@ public class CommentController {
         return ResponseEntity.ok(commentsSlimDTO);
     }
 
+    @GetMapping("/posts/{newsId}")
+    public ResponseEntity<List<CommentDTO>> getAllCommentsByPost(){
+        List<Comment> commentList = commentService.findAll();
+        return ResponseEntity.ok(commentList
+                .stream()
+                .map(comment -> toDTO(comment))
+                .toList());
+    }
+
     @PostMapping
     public ResponseEntity<CommentDTO> saveComment(@Valid @RequestBody CommentDTO commentDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(commentService.saveComment(toModel(commentDTO))));

@@ -1,8 +1,12 @@
 package com.alkemy.ong.domain.comments;
 
+import com.alkemy.ong.data.entities.CommentEntity;
+
 import java.util.List;
 
 public interface CommentGateway {
+
+    List<CommentEntity> getAllCommentsByPost();
 
     Comment save(Comment comment);
 

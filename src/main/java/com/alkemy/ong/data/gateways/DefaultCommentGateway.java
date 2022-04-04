@@ -41,6 +41,11 @@ public class DefaultCommentGateway implements CommentGateway {
         return comments.stream().map(this::toModel).collect(toList());
     }
 
+    @Override
+    public List<CommentEntity> getAllCommentsByPost(){
+        return commentRepository.findAll();
+    }
+
     private List<CommentEntity> commentsByDescOrder() {
         return commentRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
@@ -52,6 +57,7 @@ public class DefaultCommentGateway implements CommentGateway {
     private NewsEntity getNewsEntity(Long newsId) {
         return newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException(newsId, "news"));
     }
+
 
     @Override
     public Comment update(Long id, Comment comment) {

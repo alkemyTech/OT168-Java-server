@@ -1,4 +1,4 @@
-package com.alkemy.ong.web.document;
+/*package com.alkemy.ong.web.document;
 
 import com.sendgrid.SendGrid;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,3 +16,4 @@ public class SendgridConfig {
         return new SendGrid(apiKey);
     }
 }
+*/

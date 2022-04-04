@@ -13,6 +13,10 @@ public class CommentService {
         this.commentGateway = commentGateway;
     }
 
+    public List<Comment> getAllCommentsByPost(){
+        return commentGateway.findAll();
+    }
+
     public Comment saveComment(Comment comment) {
         return commentGateway.save(comment);
     }
