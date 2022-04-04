@@ -13,4 +13,4 @@ amazonProperties:
       bucketName: ${BUCKET_NAME}
 sendgridProperties:
       apiKey: ${API_KEY}
-      email: ${SENGRID_EMAIL}}
+      email: ${SENGRID_EMAIL}
