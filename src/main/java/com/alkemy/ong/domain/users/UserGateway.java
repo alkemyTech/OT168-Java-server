@@ -7,4 +7,5 @@ public interface UserGateway {
 	User findByEmail(String email);
 	void emailExists(String email);
 	User register(User user);
+	User findById(Long id);
 }
