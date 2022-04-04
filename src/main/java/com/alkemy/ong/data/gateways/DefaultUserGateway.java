@@ -47,6 +47,11 @@ public class DefaultUserGateway implements UserGateway {
         return toModel(entity);
     }
 
+    @Override
+    public User findById(Long id) {
+        return toModel(userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found")));
+    }
+
     public void emailExists(String email) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new WebRequestException("Email already exists.");
