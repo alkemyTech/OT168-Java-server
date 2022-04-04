@@ -1,7 +1,10 @@
 package com.alkemy.ong.domain.organization;
 
+import com.alkemy.ong.data.entities.SlidesEntity;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -17,6 +20,7 @@ public class Organization {
     private String facebookUrl;
     private String linkedinUrl;
     private String instagramUrl;
+    private List<SlidesEntity> slidesEntityList;
 
     @Override
     public String toString() {

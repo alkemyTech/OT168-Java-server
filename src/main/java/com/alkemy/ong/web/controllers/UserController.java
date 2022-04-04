@@ -1,8 +1,10 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.roles.Role;
+import com.alkemy.ong.domain.exceptions.ForbiddenException;
+import com.alkemy.ong.domain.security.jwt.JwtUtil;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
+import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -13,23 +15,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
 @RestController
-@RequestMapping
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         return ResponseEntity.ok()
                 .body(userService.findAll()
@@ -42,6 +48,23 @@ public class UserController {
     public ResponseEntity delete(@PathVariable Long id){
         userService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id){
+        WebUtils.validateDtoIdWithBodyId(id,userDTO.getId());
+        return ResponseEntity.ok().body(toDTO(userService.update(toModel(userDTO))));
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> findById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        verifyUser(id, token);
+        return ResponseEntity.ok(toDTO(userService.findById(id)));
+    }
+
+    private void verifyUser(Long id, String token){
+        if (userService.findByEmail(jwtUtil.extractEmail(token)).getId() != id)
+            throw new ForbiddenException("Does not have authorization");
     }
 
     private UserDTO toDTO(User user) {
@@ -58,7 +81,19 @@ public class UserController {
                 .build();
     }
 
-
+    private User toModel(UserDTO userDTO){
+        return User.builder()
+                .id(userDTO.getId())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .email(userDTO.getEmail())
+                .password(userDTO.getPassword())
+                .photo(userDTO.getPhoto())
+                .createdAt(userDTO.getCreatedAt())
+                .updatedAt(userDTO.getUpdatedAt())
+                .roleId(userDTO.getRoleId())
+                .build();
+    }
 
     @NoArgsConstructor
     @AllArgsConstructor
