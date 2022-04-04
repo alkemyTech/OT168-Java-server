@@ -8,6 +8,7 @@ import com.alkemy.ong.domain.users.UserGateway;
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -19,14 +20,15 @@ import static java.util.stream.Collectors.toList;
 public class DefaultUserGateway implements UserGateway {
 
     private final UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+    private final PasswordEncoder passwordEncoder;
 
     private final RoleRepository roleRepository;
 
-    public DefaultUserGateway(UserRepository userRepository, RoleRepository roleRepository) {
+    public DefaultUserGateway(UserRepository userRepository, RoleRepository roleRepository,@Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @Override

@@ -7,6 +7,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 import com.alkemy.ong.domain.exceptions.WebRequestException;
+import com.alkemy.ong.domain.security.jwt.AunthenticationResponse;
+import com.alkemy.ong.domain.security.jwt.JwtUtil;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -21,6 +24,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,16 +40,18 @@ import lombok.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-	
-	private final UserService userService;
+
 	private final AuthenticationManager authenticationManager;
-	
-	public AuthController(UserService userService, AuthenticationManager authenticationManager) {
-		this.userService = userService;
-        this.authenticationManager = authenticationManager;
-    }
+	private final UserDetailsService userDetailsService;
+	private final UserService userService;
+	private final JwtUtil jwtUtil;
 
-
+	public AuthController(AuthenticationManager authenticationManager,UserDetailsService userDetailsService,JwtUtil jwtUtil,UserService userService) {
+		this.authenticationManager = authenticationManager;
+		this.userDetailsService= userDetailsService;
+		this.jwtUtil=jwtUtil;
+		this.userService=userService;
+	}
 
 	@Operation(summary = "Login with email and password")
 	@ApiResponses( value = {
@@ -61,20 +68,21 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception{
 		Authentication authentication;
-		UserDTO user;
 		Map<String, Object> response = new HashMap<>();
 		try {
 			authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			user = toDTO(userService.findByEmail(loginDTO.getEmail()));
-			response.put("User", user);
+
 		} catch (BadCredentialsException e) {
 			response.put("messaje", "ok: false");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getEmail());
+		final String jwt = jwtUtil.generateToken(userDetails);
+		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
 	}
+
 
 
 	@Operation(summary = "New user registration")
@@ -158,7 +166,7 @@ public class AuthController {
 		private String lastName;
 		@Schema(required = true, example = "juanperez@gmail.com")
 		private String email;
-		@Schema(required = true, example = "passwordExample")
+		@Hidden
 		private String password;
 		@Schema(example = "http://photoExample.com")
 		private String photo;
@@ -175,16 +183,13 @@ public class AuthController {
 		@NotEmpty(message = "The 'name' field is required.")
 		@Schema(required = true, example = "Juan")
 		private String firstName;
-
 		@NotEmpty(message = "The 'last name' field is required.")
 		@Schema(required = true, example = "Perez")
 		private String lastName;
-
 		@Email(message = "This field must be an email.")
 		@NotEmpty(message = "The 'email' field is required.")
 		@Schema(required = true, example = "juanperez@gmail.com")
 		private String email;
-
 		@NotEmpty(message = "The 'password' field is required.")
 		@Size(min = 8, message = "Password must be at least 8 characters long.")
 		@Schema(required = true, example = "passwordExample")
@@ -194,5 +199,4 @@ public class AuthController {
 		@Schema(example = "http://photoExample.com")
 		private String photo;
 	}
-
 }
