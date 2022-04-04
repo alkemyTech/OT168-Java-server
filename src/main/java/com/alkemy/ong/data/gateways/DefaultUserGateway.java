@@ -32,7 +32,7 @@ public class DefaultUserGateway implements UserGateway {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll(){
         return userRepository.findAll()
                 .stream()
                 .map(this::toModel)
