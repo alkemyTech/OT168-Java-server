@@ -26,4 +26,8 @@ public class UserService {
     public User update (User user){
         return userGateway.update(user);
     }
+
+    public User findById(Long id){
+        return userGateway.findById(id);
+    }
 }
