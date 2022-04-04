@@ -48,7 +48,7 @@ public class CategoryControllerTest {
 	void getCategoryByIdSuccessTest() throws Exception {
 		CategoryEntity categoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
 
-		when(categoryRepository.findById(1L)).thenReturn(Optional.of(categoryEntity));
+		when(categoryRepository.findById(categoryEntity.getId())).thenReturn(Optional.of(categoryEntity));
 
 		mockMvc.perform(get("/categories/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -74,7 +74,7 @@ public class CategoryControllerTest {
 	void saveCategorySuccessTest() throws Exception {
 		CategoryEntity categoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
 
-		when(categoryRepository.save(any())).thenReturn(categoryEntity);
+		when(categoryRepository.save(categoryEntity)).thenReturn(categoryEntity);
 
 		mockMvc.perform(post("/categories").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(categoryEntity))).andExpect(status().isCreated())
@@ -100,8 +100,8 @@ public class CategoryControllerTest {
 	void updateCategorySuccessTest() throws Exception {
 		CategoryEntity updateCategoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
 
-		when(categoryRepository.findById(1L)).thenReturn(Optional.of(updateCategoryEntity));
-		when(categoryRepository.save(any())).thenReturn(updateCategoryEntity);
+		when(categoryRepository.findById(updateCategoryEntity.getId())).thenReturn(Optional.of(updateCategoryEntity));
+		when(categoryRepository.save(updateCategoryEntity)).thenReturn(updateCategoryEntity);
 
 		mockMvc.perform(put("/categories/1").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(updateCategoryEntity))).andExpect(status().isOk())
@@ -117,8 +117,8 @@ public class CategoryControllerTest {
 	void updateCategoryFailTest() throws Exception {
 		CategoryEntity updateCategoryEntity = toEntity(1L, null, null, null);
 
-		when(categoryRepository.findById(1L)).thenReturn(Optional.of(updateCategoryEntity));
-		when(categoryRepository.save(any())).thenReturn(updateCategoryEntity);
+		when(categoryRepository.findById(updateCategoryEntity.getId())).thenReturn(Optional.of(updateCategoryEntity));
+		when(categoryRepository.save(updateCategoryEntity)).thenReturn(updateCategoryEntity);
 
 		mockMvc.perform(put("/categories/1").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(updateCategoryEntity))).andExpect(status().isBadRequest());
