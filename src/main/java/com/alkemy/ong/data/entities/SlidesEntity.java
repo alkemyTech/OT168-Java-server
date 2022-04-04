@@ -1,17 +1,15 @@
 package com.alkemy.ong.data.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
+import org.springframework.core.annotation.Order;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
 
 @Data
 @Entity
@@ -33,7 +31,6 @@ public class SlidesEntity {
 
     @Column(nullable = false, name = "slide_order")
     private Integer order;
-
 
     private Boolean deleted = Boolean.FALSE;
 
