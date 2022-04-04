@@ -1,14 +1,13 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.roles.Role;
+import com.alkemy.ong.domain.exceptions.ForbiddenException;
+import com.alkemy.ong.domain.security.jwt.JwtUtil;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,22 +15,32 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @RestController
-@RequestMapping
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwt;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtUtil jwt) {
         this.userService = userService;
+        this.jwt = jwt;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         return ResponseEntity.ok()
                 .body(userService.findAll()
                 .stream()
                 .map(this::toDTO)
                 .collect(toList()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> findById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+        if (!(userService.findByEmail(jwt.extractUsername(token.replace("Bearer ", ""))).getId() == id)) {
+            throw new ForbiddenException("Does not have authorization");
+        }
+        return ResponseEntity.ok(toDTO(userService.findById(id)));
     }
 
     private UserDTO toDTO(User user) {
