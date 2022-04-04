@@ -20,7 +20,9 @@ import static java.util.stream.Collectors.toList;
 public class DefaultUserGateway implements UserGateway {
 
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final RoleRepository roleRepository;
 
     public DefaultUserGateway(UserRepository userRepository, RoleRepository roleRepository,@Lazy PasswordEncoder passwordEncoder) {
@@ -28,6 +30,7 @@ public class DefaultUserGateway implements UserGateway {
         this.roleRepository = roleRepository;
         this.passwordEncoder=passwordEncoder;
     }
+
     @Override
     public List<User> findAll() {
         return userRepository.findAll()
