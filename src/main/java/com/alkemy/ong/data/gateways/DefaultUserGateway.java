@@ -64,6 +64,7 @@ public class DefaultUserGateway implements UserGateway {
 
     @Override
     public User update(User user) {
+        roleRepository.findById(user.getRoleId()).orElseThrow(()->new ResourceNotFoundException(user.getRoleId(), "Role"));
         UserEntity userEntity = toEntity(findById(user.getId()));
         return toModel(userRepository.save(toUpdate(userEntity, user)));
     }
@@ -89,7 +90,7 @@ public class DefaultUserGateway implements UserGateway {
                 lastName(userModel.getLastName()).
                 email(userModel.getEmail()).
                 password(passwordEncoder.encode(userModel.getPassword())).
-                roleEntity(roleRepository.findById(userModel.getRoleId()).orElseThrow(() -> new ResourceNotFoundException("Role not found"))).
+                roleEntity(roleRepository.findById(userModel.getRoleId()).get()).
                 photo(userModel.getPhoto()).
                 createdAt(userModel.getCreatedAt()).
                 build();
@@ -101,7 +102,7 @@ public class DefaultUserGateway implements UserGateway {
         entity.setEmail(userModel.getEmail());
         entity.setPassword(passwordEncoder.encode(userModel.getPassword()));
         entity.setPhoto(userModel.getPhoto());
-        entity.setRoleEntity(roleRepository.findById(userModel.getRoleId()).orElseThrow(() -> new ResourceNotFoundException("Role not found")));
+        entity.setRoleEntity(roleRepository.findById(userModel.getRoleId()).get());
 
         return entity;
     }
