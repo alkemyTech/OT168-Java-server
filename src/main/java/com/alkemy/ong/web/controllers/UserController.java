@@ -19,11 +19,11 @@ import static java.util.stream.Collectors.toList;
 public class UserController {
 
     private final UserService userService;
-    private final JwtUtil jwt;
+    private final JwtUtil jwtUtil;
 
-    public UserController(UserService userService, JwtUtil jwt) {
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
-        this.jwt = jwt;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping
@@ -37,10 +37,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
-        if (!(userService.findByEmail(jwt.extractUsername(token.replace("Bearer ", ""))).getId() == id)) {
-            throw new ForbiddenException("Does not have authorization");
-        }
+        verifyUser(id, token);
         return ResponseEntity.ok(toDTO(userService.findById(id)));
+    }
+
+    private void verifyUser(Long id, String token){
+        if (userService.findByEmail(jwtUtil.extractEmail(token)).getId() != id)
+            throw new ForbiddenException("Does not have authorization");
     }
 
     private UserDTO toDTO(User user) {
@@ -56,7 +59,6 @@ public class UserController {
                 .roleId(user.getRoleId())
                 .build();
     }
-
 
 
     @NoArgsConstructor
