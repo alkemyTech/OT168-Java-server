@@ -17,13 +17,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.hasSize;
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.Matchers.is;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,23 +38,17 @@ class ContactControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @BeforeEach
-    void setUp() {
-        List<ContactEntity> contacts = Arrays.asList(
-                createContact(1L, "Juan Perez", "342525156", "juanperez@gmail.com", "MessageExample" ),
-                createContact(2L, "Ignacio Rodriguez", "11334565", "ignacior@gmail.com", "MessageExample2" ));
-        when(contactRepository.findAll()).thenReturn(contacts);
-
-        ContactEntity contact = createContact(null, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" );
-        ContactEntity contactSaved = createContact(1L, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" );
-        when(contactRepository.save(contact)).thenReturn(contactSaved);
-    }
-
+    private final String url = "/contacts";
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void getAllContacts() throws Exception {
-        mockMvc.perform(get("/contacts").contentType(MediaType.APPLICATION_JSON))
+        List<ContactEntity> contacts = asList(
+                createContact(1L, "Juan Perez", "342525156", "juanperez@gmail.com", "MessageExample" ),
+                createContact(2L, "Ignacio Rodriguez", "11334565", "ignacior@gmail.com", "MessageExample2" ));
+        when(contactRepository.findAll()).thenReturn(contacts);
+
+        mockMvc.perform(get(url).contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id").value(1L))
@@ -72,7 +66,7 @@ class ContactControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void getAllContactsUser() throws Exception {
-        mockMvc.perform(get("/contacts").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(url).contentType(APPLICATION_JSON))
                 .andExpect(status().isForbidden());
     }
 
@@ -80,9 +74,12 @@ class ContactControllerTest {
     @WithMockUser(roles = "ADMIN")
     void saveContactOk() throws Exception {
         ContactDTO contactDTO = createContactDTO("Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3");
+        ContactEntity contact = createContact(null, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" );
+        ContactEntity contactSaved = createContact(1L, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" );
+        when(contactRepository.save(contact)).thenReturn(contactSaved);
 
-        mockMvc.perform(post("/contacts")
-                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(url)
+                .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(contactDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
@@ -94,11 +91,14 @@ class ContactControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void saveContactBadRequest() throws Exception {
+        ContactEntity contact = createContact(null, "", "341232456", "", "MessageExample3" );
+        ContactEntity contactSaved = createContact(1L, "", "341232456", "", "MessageExample3" );
         ContactDTO contactDTO = createContactDTO("", "341232456", "", "MessageExample3");
+        when(contactRepository.save(contact)).thenReturn(contactSaved);
 
-        mockMvc.perform(post("/contacts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(contactDTO)))
+        mockMvc.perform(post(url)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(contactDTO)))
                 .andExpect(status().isBadRequest());
     }
 
