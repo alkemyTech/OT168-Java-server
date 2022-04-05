@@ -71,7 +71,6 @@ public class DefaultCommentGateway implements CommentGateway {
         commentRepository.deleteById(comment.getId());
     }
 
-
     private CommentEntity toEntity(Comment comment) {
         return CommentEntity.builder()
                 .id(comment.getId())

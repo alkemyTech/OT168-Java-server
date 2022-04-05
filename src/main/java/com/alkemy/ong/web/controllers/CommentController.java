@@ -1,7 +1,11 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentService;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.news.News;
+import com.alkemy.ong.domain.news.NewsService;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -25,9 +29,11 @@ import static com.alkemy.ong.web.utils.WebUtils.*;
 public class CommentController {
 
     private final CommentService commentService;
+    private final NewsService newsService;
 
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, NewsService newsService) {
         this.commentService = commentService;
+        this.newsService = newsService;
     }
 
     @GetMapping

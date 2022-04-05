@@ -1,6 +1,8 @@
 package com.alkemy.ong.data.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -9,6 +11,8 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -49,4 +53,8 @@ public class NewsEntity {
     private Boolean deleted = Boolean.FALSE;
 
     private String type;
+
+    @OneToMany (mappedBy = "newsEntity")
+    @JsonIgnore
+    private List<CommentEntity> comments = new ArrayList<>();
 }
