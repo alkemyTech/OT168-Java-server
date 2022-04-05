@@ -4,11 +4,20 @@ import com.alkemy.ong.domain.exceptions.ForbiddenException;
 import com.alkemy.ong.domain.security.jwt.JwtUtil;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
+import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +43,19 @@ public class UserController {
                 .map(this::toDTO)
                 .collect(toList()));
     }
+    
+    @DeleteMapping("/users//{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        userService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id){
+        WebUtils.validateDtoIdWithBodyId(id,userDTO.getId());
+        return ResponseEntity.ok().body(toDTO(userService.update(toModel(userDTO))));
+    }
+    
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
         verifyUser(id, token);
@@ -60,6 +81,19 @@ public class UserController {
                 .build();
     }
 
+    private User toModel(UserDTO userDTO){
+        return User.builder()
+                .id(userDTO.getId())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .email(userDTO.getEmail())
+                .password(userDTO.getPassword())
+                .photo(userDTO.getPhoto())
+                .createdAt(userDTO.getCreatedAt())
+                .updatedAt(userDTO.getUpdatedAt())
+                .roleId(userDTO.getRoleId())
+                .build();
+    }
 
     @NoArgsConstructor
     @AllArgsConstructor
