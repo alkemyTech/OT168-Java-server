@@ -16,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -86,10 +85,10 @@ class ContactControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(contactDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.phone", is("341232456")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email", is("mariagonzalez@gmail.com")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("MessageExample3")));
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.phone", is("341232456")))
+                .andExpect(jsonPath("$.email", is("mariagonzalez@gmail.com")))
+                .andExpect(jsonPath("$.message", is("MessageExample3")));
     }
 
     @Test
