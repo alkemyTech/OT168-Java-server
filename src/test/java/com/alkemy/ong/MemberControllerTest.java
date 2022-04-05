@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 import static org.hamcrest.Matchers.*;
@@ -37,7 +38,7 @@ public class MemberControllerTest {
     MemberRepository memberRepository;
 
     @Autowired
-    ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper;
 
     @Test
     void save() throws Exception {
@@ -55,7 +56,7 @@ public class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dtoTest)))
                 //.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id",is(1)))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name",is("James Potter")))
                 .andExpect(jsonPath("$.facebookUrl",is("wwww.facebook/jamespotter.com")))
                 .andExpect(jsonPath("$.instagramUrl",is("wwww.instagram/jamespotter.com")))
@@ -130,5 +131,22 @@ public class MemberControllerTest {
         @JsonSerialize(using = LocalDateTimeSerializer.class)
         @JsonDeserialize(using = LocalDateTimeDeserializer.class)
         private LocalDateTime updatedAt = LocalDateTime.of(2022,03,29,18,58,56,555);
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof MemberDTOTest)) return false;
+            MemberDTOTest dtoTest = (MemberDTOTest) o;
+            return Objects.equals(getId(), dtoTest.getId())
+                    && Objects.equals(getName(), dtoTest.getName())
+                    && Objects.equals(getFacebookUrl(), dtoTest.getFacebookUrl())
+                    && Objects.equals(getInstagramUrl(), dtoTest.getInstagramUrl())
+                    && Objects.equals(getLinkedinUrl(), dtoTest.getLinkedinUrl())
+                    && Objects.equals(getImage(), dtoTest.getImage())
+                    && Objects.equals(getDescription(), dtoTest.getDescription())
+                    && Objects.equals(getCreatedAt(), dtoTest.getCreatedAt())
+                    && Objects.equals(getUpdatedAt(), dtoTest.getUpdatedAt());
+        }
+
     }
 }
