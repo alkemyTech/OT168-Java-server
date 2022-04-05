@@ -66,10 +66,6 @@ public class DefaultSlidesGateway implements SlidesGateway {
         }
         byte[] imageByte= Base64.getDecoder().decode(slides.getImageUrl());
         FileItem fileItem = new DiskFileItem(new String(imageByte), dataType, true, fileName, DiskFileItemFactory.DEFAULT_SIZE_THRESHOLD, new java.io.File(System.getProperty("java.io.tmpdir")));
-        //fileItem.getOutputStream();
-        /*
-        New code
-         */
         InputStream input =  new ByteArrayInputStream(imageByte);
         OutputStream os = fileItem.getOutputStream();
         int ret = input.read();
@@ -79,9 +75,6 @@ public class DefaultSlidesGateway implements SlidesGateway {
             ret = input.read();
         }
         os.flush();
-          /*
-        END New code
-         */
         MultipartFile image = new CommonsMultipartFile(fileItem);
         slides.setImageUrl(awsGateway.uploadFile(image));
         // Campo 'order'
