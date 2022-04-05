@@ -194,7 +194,7 @@ public class MemberController {
     @Setter
     @Builder
     @Valid
-    private static class MemberDTO {
+    public static class MemberDTO {
 
         @Schema(example = "1", required = true)
         private Long id;
