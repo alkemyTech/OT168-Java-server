@@ -1,5 +1,7 @@
 package com.alkemy.ong.domain.users;
 
+import com.alkemy.ong.domain.mail.MailGateway;
+import com.alkemy.ong.domain.mail.MailService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.List;
 public class UserService {
 	
 	private final UserGateway userGateway;
-	
+
 	public UserService(UserGateway userGateway) {
         this.userGateway = userGateway;
     }
@@ -21,7 +23,8 @@ public class UserService {
         return userGateway.findByEmail(email);
     }
 
-    public User register(User user) { return userGateway.register(user); }
+    public User register(User user) {
+        return userGateway.register(user); }
 
     public User update (User user){
         return userGateway.update(user);
