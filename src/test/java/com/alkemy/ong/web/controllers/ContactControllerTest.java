@@ -44,10 +44,11 @@ class ContactControllerTest {
         List<ContactEntity> contacts = Arrays.asList(
                 createContact(1L, "Juan Perez", "342525156", "juanperez@gmail.com", "MessageExample" ),
                 createContact(2L, "Ignacio Rodriguez", "11334565", "ignacior@gmail.com", "MessageExample2" ));
-//                createEntity(3L, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" ),
-//                createEntity(4L, "Sofia Martinez", "343567543", "sofiam@gmail.com", "MessageExample4" ));
         when(contactRepository.findAll()).thenReturn(contacts);
 
+        ContactEntity contact = createContact(null, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" );
+        ContactEntity contactSaved = createContact(1L, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" );
+        when(contactRepository.save(contact)).thenReturn(contactSaved);
     }
 
 
@@ -72,10 +73,6 @@ class ContactControllerTest {
     @WithMockUser(roles = "ADMIN")
     void saveContactOk() throws Exception {
         ContactDTO contactDTO = createContactDTO("Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3");
-        ContactEntity contact = createContact(null, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" );
-        ContactEntity ContactSaved = createContact(1L, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" );
-
-        when(contactRepository.save(contact)).thenReturn(ContactSaved);
 
         mockMvc.perform(post("/contacts")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -85,6 +82,17 @@ class ContactControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.phone", is("341232456")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email", is("mariagonzalez@gmail.com")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("MessageExample3")));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void saveContactBadRequest() throws Exception {
+        ContactDTO contactDTO = createContactDTO("", "341232456", "", "MessageExample3");
+
+        mockMvc.perform(post("/contacts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(contactDTO)))
+                .andExpect(status().isBadRequest());
     }
 
     private ContactEntity createContact(Long id, String name, String phone, String email, String message){
