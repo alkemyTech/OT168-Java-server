@@ -1,4 +1,4 @@
-/*package com.alkemy.ong.data.gateways;
+package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.domain.exceptions.SendgridException;
 import com.alkemy.ong.domain.mail.MailGateway;
@@ -45,4 +45,4 @@ public class DefaultMailGateway implements MailGateway {
             throw new SendgridException("ERROR building mail");
         }
     }
-}*/
+}
