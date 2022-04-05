@@ -56,6 +56,7 @@ class ContactControllerTest {
     @WithMockUser(roles = "ADMIN")
     void getAllContacts() throws Exception {
         mockMvc.perform(get("/contacts").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].name").value("Juan Perez"))
@@ -67,6 +68,13 @@ class ContactControllerTest {
                 .andExpect(jsonPath("$[1].phone").value("11334565"))
                 .andExpect(jsonPath("$[1].email").value("ignacior@gmail.com"))
                 .andExpect(jsonPath("$[1].message").value("MessageExample2"));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void getAllContactsUser() throws Exception {
+        mockMvc.perform(get("/contacts").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
     }
 
     @Test
