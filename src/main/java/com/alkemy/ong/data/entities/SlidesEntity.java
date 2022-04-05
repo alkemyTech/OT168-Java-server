@@ -11,6 +11,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "slides")
@@ -32,6 +35,7 @@ public class SlidesEntity {
     @Column(nullable = false, name = "slide_order")
     private Integer order;
 
+    @Builder.Default
     private Boolean deleted = Boolean.FALSE;
 
     @CreationTimestamp
@@ -44,7 +48,7 @@ public class SlidesEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "organization_id", nullable = false)
     private OrganizationEntity organization;
 

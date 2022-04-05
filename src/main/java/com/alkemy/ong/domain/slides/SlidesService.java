@@ -21,6 +21,8 @@ public class SlidesService {
         return slidesGateway.findById(idSlides);
     }
 
+    public Slides createSlides(Slides slides) throws Exception { return slidesGateway.create(slides);}
+
     public Slides updateSlides(Slides slides) { return slidesGateway.update(slides);}
 
     public void deleteSlideById(Long id){slidesGateway.delete(id);}

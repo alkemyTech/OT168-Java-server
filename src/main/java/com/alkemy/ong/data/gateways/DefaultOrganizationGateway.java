@@ -88,4 +88,20 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
         entity.setSlidesEntityList(organization.getSlidesEntityList());
         return entity;
     }
+
+    public static OrganizationEntity toEntity(Organization organization) {
+        return OrganizationEntity.builder().
+                idOrganization(organization.getIdOrganization()).
+                name(organization.getName()).
+                image(organization.getImage()).
+                address(organization.getAddress()).
+                phone(organization.getPhone()).
+                email(organization.getEmail()).
+                aboutUsText(organization.getAboutUsText()).
+                welcomeText(organization.getWelcomeText()).
+                facebookUrl(organization.getFacebookUrl()).
+                linkedinUrl(organization.getLinkedinUrl()).
+                instagramUrl(organization.getInstagramUrl()).
+                build();
+    }
 }
