@@ -64,10 +64,7 @@ public class MemberEntity {
                 && Objects.equals(getInstagramUrl(), entity.getInstagramUrl())
                 && Objects.equals(getLinkedinUrl(), entity.getLinkedinUrl())
                 && Objects.equals(getImage(), entity.getImage())
-                && Objects.equals(getDescription(), entity.getDescription())
-                && Objects.equals(getCreatedAt(), entity.getCreatedAt())
-                && Objects.equals(getUpdatedAt(), entity.getUpdatedAt())
-                && Objects.equals(getDeleted(), entity.getDeleted());
+                && Objects.equals(getDescription(), entity.getDescription());
     }
 }
 

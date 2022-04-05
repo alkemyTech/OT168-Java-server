@@ -23,8 +23,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.Objects;
-
 
 @Tag(name = "members")
 @RestController
@@ -93,7 +91,6 @@ public class MemberController {
                 .status(HttpStatus.CREATED)
                 .body(toDTO(memberService.save(toModel(memberDTO))));
     }
-
 
     @Operation(description = "Remove a member from the system", operationId = "delete", summary = "Change member status to inactive")
     @ApiResponses(
@@ -227,23 +224,6 @@ public class MemberController {
         @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime updatedAt;
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof MemberDTO)) return false;
-            MemberDTO memberDTO = (MemberDTO) o;
-            return Objects.equals(getId(), memberDTO.getId())
-                    && Objects.equals(getName(), memberDTO.getName())
-                    && Objects.equals(getFacebookUrl(), memberDTO.getFacebookUrl())
-                    && Objects.equals(getInstagramUrl(), memberDTO.getInstagramUrl())
-                    && Objects.equals(getLinkedinUrl(), memberDTO.getLinkedinUrl())
-                    && Objects.equals(getImage(), memberDTO.getImage())
-                    && Objects.equals(getDescription(), memberDTO.getDescription())
-                    && Objects.equals(getCreatedAt(), memberDTO.getCreatedAt())
-                    && Objects.equals(getUpdatedAt(), memberDTO.getUpdatedAt());
-        }
-
     }
 
 }
