@@ -1,7 +1,11 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentService;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.news.News;
+import com.alkemy.ong.domain.news.NewsService;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -25,9 +29,11 @@ import static com.alkemy.ong.web.utils.WebUtils.*;
 public class CommentController {
 
     private final CommentService commentService;
+    private final NewsService newsService;
 
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, NewsService newsService) {
         this.commentService = commentService;
+        this.newsService = newsService;
     }
 
     @GetMapping
@@ -62,7 +68,7 @@ public class CommentController {
     private Comment toModel(CommentDTO commentDTO) {
         return Comment.builder()
                 .body(commentDTO.getBody())
-                .userId(commentDTO.getUserId())
+                .userId(commentDTO.getUser())
                 .newsId(commentDTO.getNewsId())
                 .createdAt(commentDTO.getCreatedAt())
                 .updatedAt(commentDTO.getUpdatedAt())
@@ -73,7 +79,7 @@ public class CommentController {
         return CommentDTO.builder()
                 .id(comment.getId())
                 .body(comment.getBody())
-                .userId(comment.getUserId())
+                .user(comment.getUserId())
                 .newsId(comment.getNewsId())
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
@@ -90,7 +96,7 @@ public class CommentController {
         @NotEmpty(message = "Body can't be empty")
         private String body;
         @NotNull(message = "User can't be null")
-        private Long userId;
+        private Long user;
         @NotNull(message = "News can't be null")
         private Long newsId;
         @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
