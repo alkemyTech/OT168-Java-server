@@ -71,7 +71,7 @@ public class DefaultNewsGateway implements NewsGateway {
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
                 .type(news.getType())
-                .commentEntityList(news.getCommentEntityList())
+                .comments(news.getComments())
                 .build();
     }
 
@@ -84,7 +84,7 @@ public class DefaultNewsGateway implements NewsGateway {
                 .createdAt(newsEntity.getCreatedAt())
                 .updatedAt(newsEntity.getUpdatedAt())
                 .type(newsEntity.getType())
-                .commentEntityList(newsEntity.getCommentEntityList())
+                .comments(newsEntity.getComments())
                 .build();
     }
 }

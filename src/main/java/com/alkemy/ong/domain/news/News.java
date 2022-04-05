@@ -22,5 +22,5 @@ public class News {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String type;
-    private List<CommentEntity> commentEntityList = new ArrayList<>();
+    private List<CommentEntity> comments = new ArrayList<>();
 }

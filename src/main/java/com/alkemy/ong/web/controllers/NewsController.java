@@ -47,6 +47,12 @@ public class NewsController {
         return ResponseEntity.ok(toDTO(news));
     }
 
+   @GetMapping("/posts/{id}/comments")
+    public ResponseEntity<NewsDTO> getComments(@PathVariable ("id") Long id) {
+        News news = newsService.findById(id);
+        return ResponseEntity.ok(toDTO(news));
+    }
+
     @PostMapping
     public ResponseEntity<NewsDTO> saveNews(@Valid @RequestBody NewsDTO newsDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newsService.saveNews(toModel(newsDTO))));
@@ -73,7 +79,7 @@ public class NewsController {
                 .createdAt(newsDTO.getCreatedAt())
                 .updatedAt(newsDTO.getUpdatedAt())
                 .type(newsDTO.getType())
-                .commentEntityList(newsDTO.getCommentEntityList())
+                .comments((newsDTO.getComments()))
                 .build();
     }
 
@@ -86,7 +92,7 @@ public class NewsController {
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
                 .type(news.getType())
-                .commentEntityList(news.getCommentEntityList())
+                .comments(news.getComments())
                 .build();
     }
 
@@ -114,7 +120,7 @@ public class NewsController {
         private LocalDateTime updatedAt;
         @ApiModelProperty(value = "Type", required = true)
         private String type = "news";
-        @ApiModelProperty(value = "Comments")
-        private List<CommentEntity> commentEntityList = new ArrayList<>();
+        @ApiModelProperty(value = "Comments", required = true)
+        private List<CommentEntity> comments = new ArrayList<>();
     }
 }

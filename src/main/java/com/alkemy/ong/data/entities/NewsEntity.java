@@ -2,6 +2,7 @@ package com.alkemy.ong.data.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -53,7 +54,7 @@ public class NewsEntity {
 
     private String type;
 
-    @OneToMany (fetch = FetchType.LAZY, mappedBy = "newsEntity")
+    @OneToMany (mappedBy = "newsEntity")
     @JsonIgnore
-    private List<CommentEntity> commentEntityList = new ArrayList<>();
+    private List<CommentEntity> comments = new ArrayList<>();
 }
