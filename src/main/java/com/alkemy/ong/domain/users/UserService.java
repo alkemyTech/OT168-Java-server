@@ -30,4 +30,8 @@ public class UserService {
     public User findById(Long id){
         return userGateway.findById(id);
     }
+    
+    public void deleteById(Long id) {
+        userGateway.deleteById(id);
+    }
 }
