@@ -1,35 +1,30 @@
 package com.alkemy.ong;
 
 import com.alkemy.ong.data.entities.MemberEntity;
+import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.repositories.MemberRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
-import com.alkemy.ong.web.controllers.MemberController;
 import com.alkemy.ong.web.controllers.MemberController.MemberDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.*;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-
+import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,7 +55,7 @@ public class MemberControllerTest {
         when(memberRepository.save(entityRequest)).thenReturn(entityResponse);
 
         mockMvc.perform(post("/members")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(memberDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
@@ -90,7 +85,7 @@ public class MemberControllerTest {
         when(memberRepository.save(entityRequest)).thenReturn(null);
 
         mockMvc.perform(post("/members")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(memberDTO)))
                 .andExpect(status().isBadRequest());
     }
@@ -130,7 +125,7 @@ public class MemberControllerTest {
         when(memberRepository.save(entity)).thenReturn(entity);
 
         mockMvc.perform(put("/members/{id}",1)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(memberDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
@@ -155,7 +150,7 @@ public class MemberControllerTest {
         memberDTO.setId(22l);
 
         mockMvc.perform(put("/members/{id}",22)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(memberDTO)))
                 .andExpect(status().isNotFound());
     }
@@ -176,9 +171,52 @@ public class MemberControllerTest {
         when(memberRepository.save(memberEntity)).thenReturn(null);
 
         mockMvc.perform(put("/members/{id}",1)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(memberDTO)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void findAllSuccess() throws Exception {
+        PageModel<MemberEntity> pageModel = new PageModel<>();
+        pageModel.setBody(toListEntity());
+        pageModel.setNextPage("This is the last page");
+        pageModel.setPreviousPage("This is the first page");
+
+        when(memberRepository.findAll(PageRequest.of(0,DEFAULT_PAGE_SIZE))).thenReturn(new PageImpl<>(pageModel.getBody()));
+
+        mockMvc.perform(get("/members?page={page}",0)
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(pageModel)))
+                .andExpect(jsonPath("body").isArray())
+                .andExpect(jsonPath("$.body",hasSize(5)))
+                .andExpect(jsonPath("$.body.[0].id",is(1)))
+                .andExpect(jsonPath("$.body.[1].id",is(2)))
+                .andExpect(jsonPath("$.body.[2].id",is(3)))
+                .andExpect(jsonPath("$.body.[3].id",is(4)))
+                .andExpect(jsonPath("$.body.[4].id",is(5)))
+                .andExpect(jsonPath("$.nextPage",is("This is the last page")))
+                .andExpect(jsonPath("$.previuosPage",is("This is the first page")))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void findAllBadRequest() throws Exception {
+        PageModel<MemberEntity> pageModel = new PageModel<>();
+        pageModel.setBody(toListEntity());
+        pageModel.setNextPage("This is the last page");
+        pageModel.setPreviousPage("This is the first page");
+
+        when(memberRepository.findAll(PageRequest.of(0,DEFAULT_PAGE_SIZE))).thenReturn(new PageImpl<>(pageModel.getBody()));
+
+        mockMvc.perform(get("/members?page=")
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(pageModel)))
+                .andExpect(status().isBadRequest());
+
     }
 
     private MemberEntity toEntityTest(){
@@ -206,5 +244,15 @@ public class MemberControllerTest {
                 .createdAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .updatedAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .build();
+    }
+
+    private List<MemberEntity> toListEntity() {
+        List<MemberEntity> memberEntityList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            MemberEntity memberEntity = toEntityTest();
+            memberEntity.setId(i + 1l);
+            memberEntityList.add(memberEntity);
+        }
+        return memberEntityList;
     }
 }
