@@ -27,7 +27,6 @@ public class DefaultMailGateway implements MailGateway {
 
     @Override
     public String sendMail(MailRequest mailRequest){
-
         Email email = new Email(System.getenv("SENGRID_EMAIL"), "ONG - Somos Más");
         Mail mail = new Mail(email, mailRequest.getSubject(), new Email(mailRequest.getTo()), new Content("text/plain", mailRequest.getBody()));
         mail.setReplyTo(email);
