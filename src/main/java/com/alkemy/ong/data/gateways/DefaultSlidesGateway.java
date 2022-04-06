@@ -4,9 +4,9 @@ import com.alkemy.ong.cloud.AwsGateway;
 import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.data.repositories.SlidesRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.exceptions.WebRequestException;
 import com.alkemy.ong.domain.slides.Slides;
 import com.alkemy.ong.domain.slides.SlidesGateway;
-import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -17,8 +17,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Base64;
 import java.util.List;
 
@@ -51,8 +49,48 @@ public class DefaultSlidesGateway implements SlidesGateway {
     }
 
     @Override
-    public Slides create(Slides slides) throws Exception {
+    public Slides create(Slides slides) throws IOException {
+        // Campo 'order'
+        slides.setOrder(checkAndSetOrder(slides.getOrder()));
         // Decodificación de imagen y guardado en Amazon S3.
+        slides.setImageUrl(decodeSlideImage(slides));
+        return toModel(slidesRepository.save(toEntity(slides)));
+    }
+
+    @Override
+    public Slides update(Slides slides) {
+        SlidesEntity entity = slidesRepository.findById(slides.getIdSlides())
+                .orElseThrow(()-> new ResourceNotFoundException("No slide with id: " + slides.getIdSlides() + " exists."));
+        return toModel(slidesRepository.save(updateEntity(entity,slides)));
+    }
+
+    @Override
+    public void delete(Long id) {
+        SlidesEntity entity = slidesRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("No slide with id: " + id + " exists."));
+        entity.setDeleted(Boolean.TRUE);
+        slidesRepository.save(entity);
+    }
+
+    private Integer checkAndSetOrder(Integer order) {
+        List<SlidesEntity> slides = slidesRepository.findAll(Sort.by(Sort.Direction.ASC, "order"));
+        if (order == null) {
+            Integer lastOrder = slides.get(slides.size() - 1).getOrder();
+            if (lastOrder != null) {
+                order = lastOrder + 1;
+            } else {
+                order = 1;
+            }
+        }
+        for (SlidesEntity slide : slides) {
+            if (slide.getOrder() == order) {
+                throw new WebRequestException("The order indicated already exists.");
+            }
+        }
+        return order;
+    }
+
+    private String decodeSlideImage(Slides slides) throws IOException {
         String dataType;
         String fileName = "slide";
         if (slides.getImageUrl().indexOf("data:image/png;") != -1){
@@ -76,38 +114,7 @@ public class DefaultSlidesGateway implements SlidesGateway {
         }
         os.flush();
         MultipartFile image = new CommonsMultipartFile(fileItem);
-        slides.setImageUrl(awsGateway.uploadFile(image));
-        // Campo 'order'
-        if (slides.getOrder() == null) {
-            slides.setOrder(setLastOrder());
-        }
-        return toModel(slidesRepository.save(toEntity(slides)));
-    }
-
-    @Override
-    public Slides update(Slides slides) {
-        SlidesEntity entity = slidesRepository.findById(slides.getIdSlides())
-                .orElseThrow(()-> new ResourceNotFoundException("No slide with id: " + slides.getIdSlides() + " exists."));
-        return toModel(slidesRepository.save(updateEntity(entity,slides)));
-    }
-
-    @Override
-    public void delete(Long id) {
-        SlidesEntity entity = slidesRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("No slide with id: " + id + " exists."));
-        entity.setDeleted(Boolean.TRUE);
-        slidesRepository.save(entity);
-    }
-
-    private Integer setLastOrder() {
-        List<SlidesEntity> all = slidesRepository.findAll();
-        Integer lastOrder = all.get(all.size() - 1).getOrder();
-        if (lastOrder != null) {
-            lastOrder += 1;
-        } else {
-            lastOrder = 1;
-        }
-        return lastOrder;
+        return awsGateway.uploadFile(image);
     }
 
     private Slides toModel(SlidesEntity entity){
