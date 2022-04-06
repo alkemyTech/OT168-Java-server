@@ -34,6 +34,4 @@ public class UserService {
     public void deleteById(Long id) {
         userGateway.deleteById(id);
     }
-
-    public User getUserDetails(String authorizationHeader)  {return userGateway.getUserDetails(authorizationHeader);}
 }

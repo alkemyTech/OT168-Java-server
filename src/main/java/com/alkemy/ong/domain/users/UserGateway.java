@@ -10,5 +10,4 @@ public interface UserGateway {
 	User register(User user);	
 	User update (User user);
 	void deleteById(Long id);
-	User getUserDetails(String authorizationHeader);
 }

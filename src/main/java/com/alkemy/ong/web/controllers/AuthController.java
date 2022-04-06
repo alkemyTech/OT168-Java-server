@@ -10,7 +10,6 @@ import javax.validation.constraints.*;
 import com.alkemy.ong.domain.exceptions.WebRequestException;
 import com.alkemy.ong.domain.security.jwt.AunthenticationResponse;
 import com.alkemy.ong.domain.security.jwt.JwtUtil;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -82,8 +81,9 @@ public class AuthController {
 	}
 
 	@GetMapping("/me")
-	public ResponseEntity<?> getAuthenticatedUserDetails(@RequestHeader(value = "Authorization") String authorizationHeader) {
-		UserDetailsDTO useDTO = toDetailsDTO(userService.getUserDetails(authorizationHeader));
+	public ResponseEntity<UserDTO> getAuthenticatedUserDetails(@RequestHeader(value = "Authorization") String authorizationHeader) {
+		String email = jwtUtil.extractEmail(authorizationHeader);
+		UserDTO useDTO = toDTO(userService.findByEmail(email));
 		return ResponseEntity.ok().body(useDTO);
 	}
 
@@ -119,19 +119,10 @@ public class AuthController {
 				.firstName(user.getFirstName())
 				.lastName(user.getLastName())
 				.email(user.getEmail())
-				.password(user.getPassword())
 				.photo(user.getPhoto())
 				.build();
 	}
 
-	private UserDetailsDTO toDetailsDTO(User user) {
-		return UserDetailsDTO.builder()
-				.firstName(user.getFirstName())
-				.lastName(user.getLastName())
-				.email(user.getEmail())
-				.photo(user.getPhoto())
-				.build();
-	}
 
 	private User toModel(RegistrationDTO user) {
 		return User.builder()
@@ -178,8 +169,6 @@ public class AuthController {
 		private String lastName;
 		@Schema(required = true, example = "juanperez@gmail.com")
 		private String email;
-		@Hidden
-		private String password;
 		@Schema(example = "http://photoExample.com")
 		private String photo;
 	}
@@ -209,15 +198,6 @@ public class AuthController {
 		@Schema(required = true, example = "passwordExample")
 		private String matchingPassword;
 		@Schema(example = "http://photoExample.com")
-		private String photo;
-	}
-
-	@Data
-	@Builder
-	private static class UserDetailsDTO {
-		private String firstName;
-		private String lastName;
-		private String email;
 		private String photo;
 	}
 }

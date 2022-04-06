@@ -81,13 +81,6 @@ public class DefaultUserGateway implements UserGateway {
 		userRepository.save(userEntity);
 	}
 
-	@Override
-	public User getUserDetails(String authorizationHeader) {
-			String email = jwtUtil.extractEmail(authorizationHeader);
-			User authUser = findByEmail(email);
-			return authUser;
-	}
-
 	private User toModel(UserEntity userEntity) {
 		return User.builder().id(userEntity.getId()).firstName(userEntity.getFirstName())
 				.lastName(userEntity.getLastName()).email(userEntity.getEmail()).password(userEntity.getPassword())
