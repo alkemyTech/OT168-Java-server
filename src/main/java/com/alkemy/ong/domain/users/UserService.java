@@ -8,7 +8,7 @@ import java.util.List;
 public class UserService {
 	
 	private final UserGateway userGateway;
-	
+
 	public UserService(UserGateway userGateway) {
         this.userGateway = userGateway;
     }
@@ -21,7 +21,8 @@ public class UserService {
         return userGateway.findByEmail(email);
     }
 
-    public User register(User user) { return userGateway.register(user); }
+    public User register(User user) {
+        return userGateway.register(user); }
 
     public User update (User user){
         return userGateway.update(user);

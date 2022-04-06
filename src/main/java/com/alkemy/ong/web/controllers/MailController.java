@@ -2,6 +2,7 @@ package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.mail.MailRequest;
 import com.alkemy.ong.domain.mail.MailService;
+import com.sendgrid.helpers.mail.Mail;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +22,16 @@ public class MailController {
     }
 
     @PostMapping("/sendmail")
-    public ResponseEntity<String> sendMail(@RequestBody @Valid MailDTO mailDTO){
-        String email = mailService.sendMail(toModel(mailDTO));
-        return ResponseEntity.ok("Email successfully sent to : " + mailDTO.getTo());
+    public ResponseEntity<String> sendMailWithTemplate(@RequestParam("to") String to, @RequestParam("subject") String subject, @RequestParam("body") String body){
+        String email = mailService.sendMailWithTemplate(to, subject, body);
+        return ResponseEntity.ok("Email successfully sent");
     }
 
-    private MailRequest toModel(MailDTO dto){
+    private MailRequest toModel(MailDTO mailDTO) {
         return MailRequest.builder()
-                .to(dto.getTo())
-                .subject(dto.getSubject())
-                .body(dto.getBody())
+                .to(mailDTO.getTo())
+                .subject(mailDTO.getSubject())
+                .body(mailDTO.getBody())
                 .build();
     }
 
@@ -44,5 +45,4 @@ public class MailController {
         private String subject;
         private String body;
     }
-
 }
