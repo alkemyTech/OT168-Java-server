@@ -62,7 +62,7 @@ public class ActivityController {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class ActivityDTO {
+    public static class ActivityDTO {
         private Long id;
         @NotEmpty(message = "Name can't be empty")
         private String name;
