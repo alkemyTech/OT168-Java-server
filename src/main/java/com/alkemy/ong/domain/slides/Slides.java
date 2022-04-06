@@ -11,7 +11,7 @@ public class Slides {
     private String imageUrl;
     private String text;
     private Integer order;
-    private Organization organization;
+    private Long idOrganization;
 
     @Override
     public String toString() {
