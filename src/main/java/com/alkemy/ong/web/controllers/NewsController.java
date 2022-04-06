@@ -47,7 +47,7 @@ public class NewsController {
         return ResponseEntity.ok(toDTO(news));
     }
 
-   @GetMapping("/posts/{id}/comments")
+    @GetMapping("/posts/{id}/comments")
     public ResponseEntity<NewsDTO> getComments(@PathVariable ("id") Long id) {
         News news = newsService.findById(id);
         return ResponseEntity.ok(toDTO(news));

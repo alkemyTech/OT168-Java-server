@@ -68,7 +68,7 @@ public class CommentController {
     private Comment toModel(CommentDTO commentDTO) {
         return Comment.builder()
                 .body(commentDTO.getBody())
-                .userId(commentDTO.getUserId())
+                .userId(commentDTO.getUser())
                 .newsId(commentDTO.getNewsId())
                 .createdAt(commentDTO.getCreatedAt())
                 .updatedAt(commentDTO.getUpdatedAt())
@@ -79,7 +79,7 @@ public class CommentController {
         return CommentDTO.builder()
                 .id(comment.getId())
                 .body(comment.getBody())
-                .userId(comment.getUserId())
+                .user(comment.getUserId())
                 .newsId(comment.getNewsId())
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
@@ -96,7 +96,7 @@ public class CommentController {
         @NotEmpty(message = "Body can't be empty")
         private String body;
         @NotNull(message = "User can't be null")
-        private Long userId;
+        private Long user;
         @NotNull(message = "News can't be null")
         private Long newsId;
         @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
