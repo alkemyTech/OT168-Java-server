@@ -22,4 +22,16 @@ public class UserService {
     }
 
     public User register(User user) { return userGateway.register(user); }
+
+    public User update (User user){
+        return userGateway.update(user);
+    }
+
+    public User findById(Long id){
+        return userGateway.findById(id);
+    }
+    
+    public void deleteById(Long id) {
+        userGateway.deleteById(id);
+    }
 }

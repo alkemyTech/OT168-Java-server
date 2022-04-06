@@ -11,6 +11,7 @@ import com.alkemy.ong.domain.comments.CommentGateway;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 
 import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 import org.springframework.data.domain.Sort;
@@ -23,7 +24,7 @@ public class DefaultCommentGateway implements CommentGateway {
     private final UserRepository userRepository;
     private final NewsRepository newsRepository;
 
-    public DefaultCommentGateway(CommentRepository commentRepository, UserRepository userRepository, NewsRepository newsRepository){
+    public DefaultCommentGateway(CommentRepository commentRepository, UserRepository userRepository, NewsRepository newsRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.newsRepository = newsRepository;
@@ -33,22 +34,22 @@ public class DefaultCommentGateway implements CommentGateway {
     public Comment save(Comment comment) {
         return toModel(commentRepository.save(toEntity(comment)));
     }
-    
+
     @Override
-	public List<Comment> findAll() {
-    	List<CommentEntity> comments = commentsByDescOrder();
-    	return comments.stream().map(this::toModel).collect(toList());
-	}
-    
-    private List<CommentEntity> commentsByDescOrder(){
-    	return commentRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+    public List<Comment> findAll() {
+        List<CommentEntity> comments = commentsByDescOrder();
+        return comments.stream().map(this::toModel).collect(toList());
     }
 
-    private UserEntity getUserEntity(Long id){
-      return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, "user"));
+    private List<CommentEntity> commentsByDescOrder() {
+        return commentRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
-    private NewsEntity getNewsEntity(Long newsId){
+    private UserEntity getUserEntity(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, "user"));
+    }
+
+    private NewsEntity getNewsEntity(Long newsId) {
         return newsRepository.findById(newsId).orElseThrow(() -> new ResourceNotFoundException(newsId, "news"));
     }
 
@@ -61,7 +62,7 @@ public class DefaultCommentGateway implements CommentGateway {
         return toModel(commentRepository.save(updateComment));
     }
 
-    public Comment findById(Long id){
+    public Comment findById(Long id) {
         return toModel(commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id, "comment")));
     }
 
@@ -70,8 +71,7 @@ public class DefaultCommentGateway implements CommentGateway {
         commentRepository.deleteById(comment.getId());
     }
 
-
-    private CommentEntity toEntity (Comment comment){
+    private CommentEntity toEntity(Comment comment) {
         return CommentEntity.builder()
                 .id(comment.getId())
                 .body(comment.getBody())
@@ -80,7 +80,7 @@ public class DefaultCommentGateway implements CommentGateway {
                 .build();
     }
 
-    private Comment toModel (CommentEntity commentEntity){
+    private Comment toModel(CommentEntity commentEntity) {
         return Comment.builder()
                 .id(commentEntity.getId())
                 .body(commentEntity.getBody())

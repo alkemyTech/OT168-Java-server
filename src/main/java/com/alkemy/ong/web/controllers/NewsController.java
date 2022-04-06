@@ -1,5 +1,6 @@
 package com.alkemy.ong.web.controllers;
 
+import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
 import com.alkemy.ong.web.pagination.PageDTO;
@@ -15,6 +16,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.alkemy.ong.web.utils.WebUtils.validateDtoIdWithBodyId;
 
@@ -44,6 +47,12 @@ public class NewsController {
         return ResponseEntity.ok(toDTO(news));
     }
 
+    @GetMapping("/posts/{id}/comments")
+    public ResponseEntity<NewsDTO> getComments(@PathVariable ("id") Long id) {
+        News news = newsService.findById(id);
+        return ResponseEntity.ok(toDTO(news));
+    }
+
     @PostMapping
     public ResponseEntity<NewsDTO> saveNews(@Valid @RequestBody NewsDTO newsDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newsService.saveNews(toModel(newsDTO))));
@@ -70,6 +79,7 @@ public class NewsController {
                 .createdAt(newsDTO.getCreatedAt())
                 .updatedAt(newsDTO.getUpdatedAt())
                 .type(newsDTO.getType())
+                .comments((newsDTO.getComments()))
                 .build();
     }
 
@@ -82,6 +92,7 @@ public class NewsController {
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
                 .type(news.getType())
+                .comments(news.getComments())
                 .build();
     }
 
@@ -109,5 +120,7 @@ public class NewsController {
         private LocalDateTime updatedAt;
         @ApiModelProperty(value = "Type", required = true)
         private String type = "news";
+        @ApiModelProperty(value = "Comments", required = true)
+        private List<CommentEntity> comments = new ArrayList<>();
     }
 }
