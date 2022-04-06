@@ -1,7 +1,5 @@
 package com.alkemy.ong.domain.users;
 
-import com.alkemy.ong.domain.mail.MailGateway;
-import com.alkemy.ong.domain.mail.MailService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
