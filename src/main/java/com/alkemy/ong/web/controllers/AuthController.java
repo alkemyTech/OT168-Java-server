@@ -1,5 +1,6 @@
 package com.alkemy.ong.web.controllers;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,10 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
@@ -83,6 +81,11 @@ public class AuthController {
 		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
 	}
 
+	@GetMapping("/me")
+	public ResponseEntity<?> getAuthenticatedUserDetails(@RequestHeader(value = "Authorization") String authorizationHeader) {
+		UserDetailsDTO useDTO = toDetailsDTO(userService.getUserDetails(authorizationHeader));
+		return ResponseEntity.ok().body(useDTO);
+	}
 
 
 	@Operation(summary = "New user registration")
@@ -97,7 +100,7 @@ public class AuthController {
 	)
 })
 	@PostMapping("/register")
-	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO) throws Exception {
+	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO) {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			validatePassword(registrationDTO.password, registrationDTO.matchingPassword);
@@ -117,6 +120,15 @@ public class AuthController {
 				.lastName(user.getLastName())
 				.email(user.getEmail())
 				.password(user.getPassword())
+				.photo(user.getPhoto())
+				.build();
+	}
+
+	private UserDetailsDTO toDetailsDTO(User user) {
+		return UserDetailsDTO.builder()
+				.firstName(user.getFirstName())
+				.lastName(user.getLastName())
+				.email(user.getEmail())
 				.photo(user.getPhoto())
 				.build();
 	}
@@ -197,6 +209,15 @@ public class AuthController {
 		@Schema(required = true, example = "passwordExample")
 		private String matchingPassword;
 		@Schema(example = "http://photoExample.com")
+		private String photo;
+	}
+
+	@Data
+	@Builder
+	private static class UserDetailsDTO {
+		private String firstName;
+		private String lastName;
+		private String email;
 		private String photo;
 	}
 }
