@@ -6,6 +6,7 @@ import com.alkemy.ong.data.repositories.MemberRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.web.controllers.MemberController.MemberDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,13 +18,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -49,7 +49,7 @@ public class MemberControllerTest {
 
         MemberEntity entityRequest = buildEntity(null);
         MemberEntity entityResponse = buildEntity(1l);
-        MemberDTO memberDTO = buildDto();
+        MemberDTO memberDTO = buildDto(null);
 
         when(memberRepository.save(entityRequest)).thenReturn(entityResponse);
 
@@ -73,7 +73,7 @@ public class MemberControllerTest {
     @WithMockUser(roles = "ADMIN")
     void saveBadRequest() throws Exception {
 
-        MemberDTO memberDTO = buildDto();
+        MemberDTO memberDTO = buildDto(null);
 
         memberDTO.setName(null);
 
@@ -103,6 +103,11 @@ public class MemberControllerTest {
 
         mockMvc.perform(delete("/members/{id}",22))
                 .andExpect(status().isNotFound());
+
+        ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
+                () -> {memberRepository.findById(22l);}, "No Member found with ID 22");
+
+        Assertions.assertEquals("No Member found with ID 22", exceptionThrows.getMessage());
     }
 
     @Test
@@ -110,9 +115,7 @@ public class MemberControllerTest {
     void updateSuccess() throws Exception {
 
         MemberEntity entity = buildEntity(1l);
-        MemberDTO memberDTO = buildDto();
-
-        memberDTO.setId(1l);
+        MemberDTO memberDTO = buildDto(1l);
 
         when(memberRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
         when(memberRepository.save(entity)).thenReturn(entity);
@@ -136,25 +139,28 @@ public class MemberControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateNotFound() throws Exception {
-        MemberDTO memberDTO = buildDto();
+        MemberDTO memberDTO = buildDto(22l);
 
-        when(memberRepository.findById(22l)).thenThrow(new ResourceNotFoundException(22l,"Member"));
+        when(memberRepository.findById(memberDTO.getId())).thenThrow(new ResourceNotFoundException(memberDTO.getId(),"Member"));
 
-        memberDTO.setId(22l);
 
         mockMvc.perform(put("/members/{id}",22)
                         .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(memberDTO)))
                 .andExpect(status().isNotFound());
+
+        ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
+                () -> {memberRepository.findById(memberDTO.getId());}, "No Member found with ID "+memberDTO.getId());
+
+        Assertions.assertEquals("No Member found with ID "+memberDTO.getId(), exceptionThrows.getMessage());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateBadRequest() throws Exception {
 
-        MemberDTO memberDTO = buildDto();
+        MemberDTO memberDTO = buildDto(1l);
 
-        memberDTO.setId(1l);
         memberDTO.setName(null);
 
         mockMvc.perform(put("/members/{id}",1)
@@ -213,8 +219,9 @@ public class MemberControllerTest {
                 .build();
     }
 
-    private MemberDTO buildDto(){
+    private MemberDTO buildDto(Long id){
         return MemberDTO.builder()
+                .id(id)
                 .name("James Potter")
                 .facebookUrl("wwww.facebook/jamespotter.com")
                 .instagramUrl("wwww.instagram/jamespotter.com")
