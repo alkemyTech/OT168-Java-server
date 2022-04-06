@@ -1,34 +1,16 @@
 package com.alkemy.ong.web.controllers;
 
+import static com.alkemy.ong.web.controllers.NewsController.*;
 import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.data.repositories.NewsRepository;
-import static com.alkemy.ong.web.controllers.NewsController.*;
-import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.List;
-import java.util.Optional;
-
-import static java.util.Arrays.asList;
-import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.mockito.Mockito.when;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -41,7 +23,7 @@ public class NewsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    //Es para mapear el objeto? Cómo se usa?
+    //Es para mapear el objeto?
     @Autowired
     ObjectMapper objectMapper;
 
@@ -56,20 +38,19 @@ public class NewsControllerTest {
         NewsDTO newsDTO = toDTO();
         //Construyo dos opciones: con y sin ID
         NewsEntity newsIdFailed = toModel(null);
-        NewsEntity newsIdOk = toModel(1L);
+        NewsEntity newsIdOk = toModel();
 
         //Cuando lo guardo sin id y cuando retorno con id
         when(newsRepository.save(newsIdFailed)).thenReturn(newsIdOk);
         mockMvc.perform(post("/news")
                         .contentType(MediaType.APPLICATION_JSON)
-                        //No entiendo para qué sirve
                         .content(objectMapper.writeValueAsString(newsDTO)))
                 //Lo que espero que devuelva
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.newsId", is(1)))
-                .andExpect(jsonPath("$.name", is("Summer Colony")))
-                .andExpect(jsonPath("$.content", is("Sports and pool for the little ones")))
-                .andExpect(jsonPath("$.image", is("pool")));
+                .andExpect((ResultMatcher) jsonPath("$.newsId", is(1)))
+                .andExpect((ResultMatcher)jsonPath("$.name", is("Summer Colony")))
+                .andExpect((ResultMatcher)jsonPath("$.content", is("Sports and pool for the little ones")))
+                .andExpect((ResultMatcher)jsonPath("$.image", is("pool")));
     }
 
     @Test
@@ -86,16 +67,18 @@ public class NewsControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Test
+/*    @Test
     @WithMockUser(roles = "USER")
     public void getNews() throws Exception{
-        List<NewsEntity> newsList = asList(toModel((1L)), toModel(2L), toModel(3L));
+        List<NewsEntity> newsEntityList = asList(toModel(1L, "Summer Colony", "Sports and pool for the little ones", "pool"),
+        toModel(2L, "Summer Colony", "Sports and pool for the little ones", "pool"),
+                toModel(3L, "Summer Colony", "Sports and pool for the little ones", "pool"));
 
         //El findAll sólo se usa en paginación
-        when(newsRepository.findAll(ArgumentMatchers.eq(false), ArgumentMatchers.any(Pageable.class))).thenReturn(new PageImpl<>(newsList));
+        when(newsRepository.findAll(ArgumentMatchers.eq(false), ArgumentMatchers.any(PageDTO.class))).thenReturn(new PageDTOMapper<>(newsEntityList));
         mockMvc.perform(get("/news?page=0").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("content").isArray());
-    }
+    }*/
 
     @Test
     @WithMockUser(roles = "USER")
@@ -108,40 +91,40 @@ public class NewsControllerTest {
                         .content(objectMapper.writeValueAsString(newsDTO)))
                 .andExpect(status().isOk())
                 //¿hace falta el casteo?
-                .andExpect(jsonPath("$.newsId",is(1)))
-                .andExpect(jsonPath("$.name",is("Summer Colony")))
-                .andExpect(jsonPath("$.content", is("Sports and pool for the little ones")))
-                .andExpect(jsonPath("$.image",is("pool")));
+                .andExpect((ResultMatcher) jsonPath("$.newsId",is(1L)))
+                .andExpect((ResultMatcher) jsonPath("$.name",is("Summer Colony")))
+                .andExpect((ResultMatcher) jsonPath("$.content", is("Sports and pool for the little ones")))
+                .andExpect((ResultMatcher) jsonPath("$.image",is("pool")));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void updateNewsOk() throws Exception{
         NewsDTO newsDTO = toDTO();
-        NewsEntity newsEntity = toModel(5L);
+        NewsEntity newsEntity = toModel(7L);
 
-        when(newsRepository.findById(5L)).thenReturn(Optional.of(newsEntity));
+        when(newsRepository.findById(7L)).thenReturn(Optional.of(newsEntity));
         when(newsRepository.save(newsEntity)).thenReturn(newsEntity);
 
         mockMvc.perform(put("/news/5").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newsDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.newsId",is(5)))
-                .andExpect(jsonPath("$.name",is("Summer Colony")))
-                .andExpect(jsonPath("$.content", is("Sports and pool for the little ones")))
-                .andExpect(jsonPath("$.image",is("pool")));
+                .andExpect((ResultMatcher) jsonPath("$.newsId",is(7L)))
+                .andExpect((ResultMatcher) jsonPath("$.name",is("Summer Colony")))
+                .andExpect((ResultMatcher) jsonPath("$.content", is("Sports and pool for the little ones")))
+                .andExpect((ResultMatcher) jsonPath("$.image",is("pool")));
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN"
     public void updateNewsFailed() throws Exception{
-        NewsDTO newsDTO = NewsDTO.builder().name(null).image(null).build();
-        NewsEntity newsEntity = toModel(5L);
+        NewsDTO newsDTO = NewsDTO.builder().name(null).content(null).image(null).build();
+        NewsEntity newsEntity = toModel(3L);
 
-        when(newsRepository.findById(5L)).thenReturn(Optional.of(newsEntity));
+        when(newsRepository.findById(3L)).thenReturn(Optional.of(newsEntity));
         when(newsRepository.save(newsEntity)).thenReturn(newsEntity);
 
-        mockMvc.perform(put("/news/{newsId}", 5)
+        mockMvc.perform(put("/news/{newsId}", 3)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newsDTO)))
                 .andExpect(status().isBadRequest());
@@ -152,9 +135,9 @@ public class NewsControllerTest {
     public void updateNewsNotFound() throws Exception{
         NewsDTO newsDTO = toDTO();
 
-        when(newsRepository.findById(8L)).thenThrow(new ResourceNotFoundException("News not found"));
+        when(newsRepository.findById(6L)).thenThrow(new ResourceNotFoundException("Non-existent news"));
 
-        mockMvc.perform(put("/news/{newsId}", 8)
+        mockMvc.perform(put("/news/{newsId}", 6)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newsDTO)))
                 .andExpect(status().isNotFound());
@@ -163,19 +146,19 @@ public class NewsControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void deleteNewsOk() throws Exception{
-        NewsEntity newsEntity = toModel(20L);
+        NewsEntity newsEntity = toModel(80L);
         when(newsRepository.findById(newsEntity.getNewsId())).thenReturn(Optional.of(newsEntity));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/news/{id}", 20))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/news/{id}", 80))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void deleteNewsFailed() throws Exception{
-        when(newsRepository.findById(150L)).thenThrow(new ResourceNotFoundException("News not found"));
+        when(newsRepository.findById(90L)).thenThrow(new ResourceNotFoundException("Non-existent news"));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/news/{newsId}", 150))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/news/{newsId}", 90))
                 .andExpect(status().isNotFound());
     }
 
