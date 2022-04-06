@@ -57,5 +57,6 @@ public class DefaultMailGateway implements MailGateway {
         }catch (IOException ex){
             throw new SendgridException("ERROR building mail");
         }
+
     }
 }
