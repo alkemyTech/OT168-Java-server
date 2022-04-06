@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,11 +47,9 @@ public class MemberControllerTest {
     @WithMockUser(roles = "ADMIN")
     void saveSuccess() throws Exception {
 
-        MemberEntity entityRequest = toEntityTest();
-        MemberEntity entityResponse = toEntityTest();
-        MemberDTO memberDTO = toDTOTest();
-
-        entityRequest.setId(null);
+        MemberEntity entityRequest = buildEntity(null);
+        MemberEntity entityResponse = buildEntity(1l);
+        MemberDTO memberDTO = buildDto();
 
         when(memberRepository.save(entityRequest)).thenReturn(entityResponse);
 
@@ -74,15 +73,9 @@ public class MemberControllerTest {
     @WithMockUser(roles = "ADMIN")
     void saveBadRequest() throws Exception {
 
-        MemberEntity entityRequest = toEntityTest();
-        MemberDTO memberDTO = toDTOTest();
-
-        entityRequest.setId(null);
-        entityRequest.setName(null);
+        MemberDTO memberDTO = buildDto();
 
         memberDTO.setName(null);
-
-        when(memberRepository.save(entityRequest)).thenReturn(null);
 
         mockMvc.perform(post("/members")
                         .contentType(APPLICATION_JSON)
@@ -94,7 +87,7 @@ public class MemberControllerTest {
     @WithMockUser(roles = "ADMIN")
     void deleteSuccess() throws Exception {
 
-        MemberEntity entity = toEntityTest();
+        MemberEntity entity = buildEntity(1l);
 
         when(memberRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
 
@@ -116,8 +109,8 @@ public class MemberControllerTest {
     @WithMockUser(roles = "ADMIN")
     void updateSuccess() throws Exception {
 
-        MemberEntity entity = toEntityTest();
-        MemberDTO memberDTO = toDTOTest();
+        MemberEntity entity = buildEntity(1l);
+        MemberDTO memberDTO = buildDto();
 
         memberDTO.setId(1l);
 
@@ -143,7 +136,7 @@ public class MemberControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateNotFound() throws Exception {
-        MemberDTO memberDTO = toDTOTest();
+        MemberDTO memberDTO = buildDto();
 
         when(memberRepository.findById(22l)).thenThrow(new ResourceNotFoundException(22l,"Member"));
 
@@ -159,16 +152,10 @@ public class MemberControllerTest {
     @WithMockUser(roles = "ADMIN")
     void updateBadRequest() throws Exception {
 
-        MemberEntity memberEntity = toEntityTest();
-        MemberDTO memberDTO = toDTOTest();
-
-        memberEntity.setName(null);
+        MemberDTO memberDTO = buildDto();
 
         memberDTO.setId(1l);
         memberDTO.setName(null);
-
-        when(memberRepository.findById(memberEntity.getId())).thenReturn(Optional.of(memberEntity));
-        when(memberRepository.save(memberEntity)).thenReturn(null);
 
         mockMvc.perform(put("/members/{id}",1)
                         .contentType(APPLICATION_JSON)
@@ -179,10 +166,7 @@ public class MemberControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void findAllSuccess() throws Exception {
-        PageModel<MemberEntity> pageModel = new PageModel<>();
-        pageModel.setBody(toListEntity());
-        pageModel.setNextPage("This is the last page");
-        pageModel.setPreviousPage("This is the first page");
+        PageModel<MemberEntity> pageModel = buildPageModel();
 
         when(memberRepository.findAll(PageRequest.of(0,DEFAULT_PAGE_SIZE))).thenReturn(new PageImpl<>(pageModel.getBody()));
 
@@ -205,12 +189,8 @@ public class MemberControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void findAllBadRequest() throws Exception {
-        PageModel<MemberEntity> pageModel = new PageModel<>();
-        pageModel.setBody(toListEntity());
-        pageModel.setNextPage("This is the last page");
-        pageModel.setPreviousPage("This is the first page");
 
-        when(memberRepository.findAll(PageRequest.of(0,DEFAULT_PAGE_SIZE))).thenReturn(new PageImpl<>(pageModel.getBody()));
+        PageModel<MemberEntity> pageModel = buildPageModel();
 
         mockMvc.perform(get("/members?page=")
                         .contentType(APPLICATION_JSON)
@@ -219,9 +199,9 @@ public class MemberControllerTest {
 
     }
 
-    private MemberEntity toEntityTest(){
+    private MemberEntity buildEntity(Long id){
         return MemberEntity.builder()
-                .id(1l)
+                .id(id)
                 .name("James Potter")
                 .facebookUrl("wwww.facebook/jamespotter.com")
                 .instagramUrl("wwww.instagram/jamespotter.com")
@@ -233,7 +213,7 @@ public class MemberControllerTest {
                 .build();
     }
 
-    private MemberDTO toDTOTest(){
+    private MemberDTO buildDto(){
         return MemberDTO.builder()
                 .name("James Potter")
                 .facebookUrl("wwww.facebook/jamespotter.com")
@@ -245,14 +225,13 @@ public class MemberControllerTest {
                 .updatedAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .build();
     }
-
-    private List<MemberEntity> toListEntity() {
-        List<MemberEntity> memberEntityList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            MemberEntity memberEntity = toEntityTest();
-            memberEntity.setId(i + 1l);
-            memberEntityList.add(memberEntity);
-        }
-        return memberEntityList;
+    
+    private PageModel buildPageModel(){
+        return PageModel.builder()
+                .body(Arrays.asList(buildEntity(1l), buildEntity(2l), buildEntity(3l),buildEntity(4l),buildEntity(5l)))
+                .nextPage("This is the last page")
+                .previousPage("This is the first page")
+                .build();
     }
+
 }
