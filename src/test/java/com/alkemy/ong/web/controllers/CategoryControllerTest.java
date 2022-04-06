@@ -1,15 +1,17 @@
 package com.alkemy.ong.web.controllers;
 
 import static org.mockito.Mockito.*;
-
+import static org.hamcrest.Matchers.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.alkemy.ong.data.entities.CategoryEntity;
+import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.repositories.CategoryRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,25 +40,21 @@ public class CategoryControllerTest {
 	@MockBean
 	CategoryRepository categoryRepository;
 
+	@Autowired
 	ObjectMapper objectMapper;
-
-	@BeforeEach
-	void setup() {
-		objectMapper = new ObjectMapper();
-	}
 
 	@Test
 	void getCategoryByIdSuccessTest() throws Exception {
-		CategoryEntity categoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
+		CategoryEntity categoryEntity = toEntityWithId(1L, "RRHH", "category of RRHH", "image.png");
 
 		when(categoryRepository.findById(categoryEntity.getId())).thenReturn(Optional.of(categoryEntity));
 
-		mockMvc.perform(get("/categories/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/categories/1").contentType(APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON))
+				.andExpect(jsonPath("$.id").value(1))
 				.andExpect(jsonPath("$.name").value("RRHH"))
-				.andExpect(jsonPath("$.description").value("category of RRHH"));
-
-		verify(categoryRepository).findById(1L);
+				.andExpect(jsonPath("$.description").value("category of RRHH"))
+				.andExpect(jsonPath("$.image").value("image.png"));
 	}
 
 	@Test
@@ -63,71 +62,67 @@ public class CategoryControllerTest {
 
 		doThrow(ResourceNotFoundException.class).when(categoryRepository).findById(999L);
 
-		mockMvc.perform(get("/categories/999").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/categories/999").contentType(APPLICATION_JSON))
 				.andExpect(status().isNotFound());
-
-		verify(categoryRepository).findById(999L);
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void saveCategorySuccessTest() throws Exception {
-		CategoryEntity categoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
+		CategoryEntity categoryEntity = toEntityWithoutId("RRHH", "category of RRHH", "image.png");
 
 		when(categoryRepository.save(categoryEntity)).thenReturn(categoryEntity);
 
-		mockMvc.perform(post("/categories").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post("/categories").contentType(APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(categoryEntity))).andExpect(status().isCreated())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentType(APPLICATION_JSON))
 				.andExpect(jsonPath("$.name").value("RRHH"))
-				.andExpect(jsonPath("$.description").value("category of RRHH"));
-
-		verify(categoryRepository).save(categoryEntity);
+				.andExpect(jsonPath("$.description").value("category of RRHH"))
+				.andExpect(jsonPath("$.image").value("image.png"));
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void saveCategoryBadRequestTest() throws Exception {
 
-		CategoryEntity categoryEntity = toEntity(null, null, null, null);
+		CategoryEntity categoryEntity = toEntityWithoutId(null, "category of RRHH", "image.png");
 
-		mockMvc.perform(post("/categories").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post("/categories").contentType(APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(categoryEntity))).andExpect(status().isBadRequest());
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void updateCategorySuccessTest() throws Exception {
-		CategoryEntity updateCategoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
+		CategoryEntity updateCategoryEntity = toEntityWithId(1L, "RRHH", "category of RRHH", "image.png");
 
 		when(categoryRepository.findById(updateCategoryEntity.getId())).thenReturn(Optional.of(updateCategoryEntity));
 		when(categoryRepository.save(updateCategoryEntity)).thenReturn(updateCategoryEntity);
 
-		mockMvc.perform(put("/categories/1").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(put("/categories/1").contentType(APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(updateCategoryEntity))).andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentType(APPLICATION_JSON))
 				.andExpect(jsonPath("$.name").value("RRHH"))
-				.andExpect(jsonPath("$.description").value("category of RRHH"));
-
-		verify(categoryRepository).save(updateCategoryEntity);
+				.andExpect(jsonPath("$.description").value("category of RRHH"))
+				.andExpect(jsonPath("$.image").value("image.png"));
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void updateCategoryFailTest() throws Exception {
-		CategoryEntity updateCategoryEntity = toEntity(1L, null, null, null);
+		CategoryEntity updateCategoryEntity = toEntityWithId(1L, null, "category of RRHH", "image.png");
 
 		when(categoryRepository.findById(updateCategoryEntity.getId())).thenReturn(Optional.of(updateCategoryEntity));
 		when(categoryRepository.save(updateCategoryEntity)).thenReturn(updateCategoryEntity);
 
-		mockMvc.perform(put("/categories/1").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(put("/categories/1").contentType(APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(updateCategoryEntity))).andExpect(status().isBadRequest());
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void deleteCategorySuccessTest() throws Exception {
-		CategoryEntity categoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
+		CategoryEntity categoryEntity = toEntityWithId(1L, "RRHH", "category of RRHH", "image.png");
 
 		when(categoryRepository.findById(categoryEntity.getId())).thenReturn(Optional.of(categoryEntity));
 
@@ -144,19 +139,34 @@ public class CategoryControllerTest {
 
 	@Test
 	void listCategoriesPageSuccessTest() throws Exception {
-
-		List<CategoryEntity> categoryList = Arrays.asList(toEntity(1L, "RRHH", "category of RRHH", "image.png"),
-				toEntity(2L, "Test", "category of test", "image.png"),
-				toEntity(3L, "Marketing", "category of marketing", "image.png"));
-
-		when(categoryRepository.findAll(ArgumentMatchers.any(Pageable.class))).thenReturn(new PageImpl<>(categoryList));
-
-		mockMvc.perform(get("/categories").param("page", "0").contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(categoryList))).andExpect(status().isOk())
-				.andExpect(jsonPath("body").isArray()).andExpect(content().contentType("application/json"));
+		PageModel<CategoryEntity> pageModelCategories = buildPageModel();
+		
+		when(categoryRepository.findAll(PageRequest.of(0,DEFAULT_PAGE_SIZE))).thenReturn(new PageImpl<>(pageModelCategories.getBody()));
+		
+		mockMvc.perform(get("/categories").param("page", "0").contentType(APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(pageModelCategories)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("body").isArray())
+				.andExpect(jsonPath("$.body",hasSize(2)))
+				.andExpect(jsonPath("$.body.[0].name",is("RRHH")))
+				.andExpect(jsonPath("$.body.[1].name",is("Test")))
+				.andExpect(jsonPath("$.nextPage",is("This is the last page")))
+                .andExpect(jsonPath("$.previuosPage",is("This is the first page")))
+				.andExpect(content().contentType("application/json"));
+	}
+	
+	@Test
+	@WithMockUser(roles = "USER")
+	void findAllBadRequest() throws Exception {
+		PageModel<CategoryEntity> pageModelCategories = buildPageModel();
+		
+		mockMvc.perform(get("/members?page=")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pageModelCategories)))
+        .andExpect(status().isBadRequest());
 	}
 
-	private CategoryEntity toEntity(Long id, String name, String description, String image) {
+	private CategoryEntity toEntityWithId(Long id, String name, String description, String image) {
 		CategoryEntity categoryEntity = new CategoryEntity();
 		categoryEntity.setId(id);
 		categoryEntity.setName(name);
@@ -165,5 +175,22 @@ public class CategoryControllerTest {
 		categoryEntity.setDeleted(false);
 		return categoryEntity;
 	}
+	
+	private CategoryEntity toEntityWithoutId(String name, String description, String image) {
+		CategoryEntity categoryEntity = new CategoryEntity();
+		categoryEntity.setName(name);
+		categoryEntity.setDescription(description);
+		categoryEntity.setImage(image);
+		categoryEntity.setDeleted(false);
+		return categoryEntity;
+	}
+	
+	private PageModel buildPageModel(){
+        return PageModel.builder()
+                .body(Arrays.asList(toEntityWithId(1l, "RRHH", "category of RRHH", "image.png"), toEntityWithId(2L, "Test", "category of test", "image.png")))
+                .nextPage("This is the last page")
+                .previousPage("This is the first page")
+                .build();
+    }
 
 }
