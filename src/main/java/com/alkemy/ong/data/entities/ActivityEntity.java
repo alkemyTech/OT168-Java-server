@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -44,4 +45,11 @@ public class ActivityEntity {
     @Builder.Default
     private Boolean deleted = Boolean.FALSE;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ActivityEntity)) return false;
+        ActivityEntity that = (ActivityEntity) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getContent(), that.getContent()) && Objects.equals(getImage(), that.getImage());
+    }
 }
