@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -54,4 +55,18 @@ public class UserEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity roleEntity;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserEntity)) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(getId(), that.getId())
+                && Objects.equals(getFirstName(), that.getFirstName())
+                && Objects.equals(getLastName(), that.getLastName())
+                && Objects.equals(getEmail(), that.getEmail())
+                && Objects.equals(getPassword(), that.getPassword())
+                && Objects.equals(getPhoto(), that.getPhoto())
+                && Objects.equals(getRoleEntity(), that.getRoleEntity());
+    }
 }

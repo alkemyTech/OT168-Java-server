@@ -44,7 +44,7 @@ public class UserController {
                 .collect(toList()));
     }
     
-    @DeleteMapping("/users//{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id){
         userService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -58,7 +58,7 @@ public class UserController {
     
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
-        verifyUser(id, token);
+        //verifyUser(id, token);
         return ResponseEntity.ok(toDTO(userService.findById(id)));
     }
 
@@ -100,7 +100,7 @@ public class UserController {
     @Getter
     @Setter
     @Builder
-    private static class UserDTO {
+    public static class UserDTO {
         private Long id;
         private String firstName;
         private String lastName;
