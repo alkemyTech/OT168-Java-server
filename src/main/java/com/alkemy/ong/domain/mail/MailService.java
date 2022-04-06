@@ -15,7 +15,7 @@ public class MailService {
         return mailGateway.sendMail(mailRequest);
     }
 
-    public String sendMailWithTemplate(String to, String body) {
-        return mailGateway.sendMailWithTemplate(to, body);
+    public String sendMailWithTemplate(String to, String subject, String body) {
+        return mailGateway.sendMailWithTemplate(to, subject, body);
     }
 }

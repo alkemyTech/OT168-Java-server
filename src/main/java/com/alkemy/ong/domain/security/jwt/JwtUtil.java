@@ -60,5 +60,4 @@ public class JwtUtil {
     public String extractEmail(String token) {
         return extractClaim((token.replace("Bearer ", "")), Claims::getSubject);
     }
-
 }

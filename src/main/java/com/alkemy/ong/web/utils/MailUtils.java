@@ -2,7 +2,6 @@ package com.alkemy.ong.web.utils;
 
 public class MailUtils {
 
-    public static final String SUBJECT = "%s, Welcome to Somos Más ONG";
     public static final String TEMPLATE = "<!Doctype html>\n" +
                 "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\"\n" +
                 "  xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n" +

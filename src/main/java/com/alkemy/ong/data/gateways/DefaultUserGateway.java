@@ -3,6 +3,7 @@ package com.alkemy.ong.data.gateways;
 import com.alkemy.ong.data.repositories.RoleRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.exceptions.WebRequestException;
+import com.alkemy.ong.domain.security.jwt.JwtUtil;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import com.alkemy.ong.data.entities.UserEntity;
@@ -24,11 +25,14 @@ public class DefaultUserGateway implements UserGateway {
 
 	private final RoleRepository roleRepository;
 
+	private final JwtUtil jwtUtil;
+
 	public DefaultUserGateway(UserRepository userRepository, RoleRepository roleRepository,
-			@Lazy PasswordEncoder passwordEncoder) {
+							  @Lazy PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.jwtUtil = jwtUtil;
 	}
 
 	@Override

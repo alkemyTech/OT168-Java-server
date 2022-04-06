@@ -23,7 +23,7 @@ public class MailController {
 
     @PostMapping("/sendmail")
     public ResponseEntity<String> sendMailWithTemplate(@RequestParam("to") String to, @RequestParam("subject") String subject, @RequestParam("body") String body){
-        String email = mailService.sendMailWithTemplate(to, body);
+        String email = mailService.sendMailWithTemplate(to, subject, body);
         return ResponseEntity.ok("Email successfully sent");
     }
 

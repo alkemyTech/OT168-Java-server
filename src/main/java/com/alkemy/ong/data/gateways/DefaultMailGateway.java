@@ -43,10 +43,10 @@ public class DefaultMailGateway implements MailGateway {
         }
     }
 
-    public String sendMailWithTemplate(String to, String body){
+    public String sendMailWithTemplate(String to, String subject, String body){
         Email emailTo = new Email(to);
         Email email = new Email(System.getenv("SENGRID_EMAIL"), "ONG - Somos Más");
-        Mail mail = new Mail(email, SUBJECT, emailTo, new Content("text/html", TEMPLATE));
+        Mail mail = new Mail(email, subject, emailTo, new Content("text/html", TEMPLATE));
         try {
             Request request = new Request();
             request.setMethod(Method.POST);

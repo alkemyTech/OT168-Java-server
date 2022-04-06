@@ -1,5 +1,6 @@
 package com.alkemy.ong.web.controllers;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +10,6 @@ import javax.validation.constraints.*;
 import com.alkemy.ong.domain.exceptions.WebRequestException;
 import com.alkemy.ong.domain.security.jwt.AunthenticationResponse;
 import com.alkemy.ong.domain.security.jwt.JwtUtil;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -26,10 +26,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
@@ -83,6 +80,12 @@ public class AuthController {
 		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
 	}
 
+	@GetMapping("/me")
+	public ResponseEntity<UserDTO> getAuthenticatedUserDetails(@RequestHeader(value = "Authorization") String authorizationHeader) {
+		String email = jwtUtil.extractEmail(authorizationHeader);
+		UserDTO useDTO = toDTO(userService.findByEmail(email));
+		return ResponseEntity.ok().body(useDTO);
+	}
 
 
 	@Operation(summary = "New user registration")
@@ -97,7 +100,7 @@ public class AuthController {
 	)
 })
 	@PostMapping("/register")
-	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO) throws Exception {
+	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO) {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			validatePassword(registrationDTO.password, registrationDTO.matchingPassword);
@@ -116,10 +119,10 @@ public class AuthController {
 				.firstName(user.getFirstName())
 				.lastName(user.getLastName())
 				.email(user.getEmail())
-				.password(user.getPassword())
 				.photo(user.getPhoto())
 				.build();
 	}
+
 
 	private User toModel(RegistrationDTO user) {
 		return User.builder()
@@ -166,8 +169,6 @@ public class AuthController {
 		private String lastName;
 		@Schema(required = true, example = "juanperez@gmail.com")
 		private String email;
-		@Hidden
-		private String password;
 		@Schema(example = "http://photoExample.com")
 		private String photo;
 	}

@@ -1,10 +1,6 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.domain.exceptions.ForbiddenException;
-import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
-import com.alkemy.ong.domain.exceptions.SendgridException;
-import com.alkemy.ong.domain.exceptions.ServiceUnavailableException;
-import com.alkemy.ong.domain.exceptions.WebRequestException;
+import com.alkemy.ong.domain.exceptions.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,4 +62,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, ex.getMessage(),
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
+
 }
