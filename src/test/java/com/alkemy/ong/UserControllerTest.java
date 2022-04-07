@@ -65,9 +65,10 @@ public class UserControllerTest {
         UserEntity userEntity = buildEntity(1l);
         UserDTO userDTO = buildDTO(1l);
 
+        when(userRepository.save(userEntity)).thenReturn(userEntity);
         when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
 
-        String token = generateToken();
+        String token = generateToken(userEntity);
 
         mockMvc.perform(get("/users/{id}",1l).header("Authorization",token)
                         .contentType(APPLICATION_JSON)
@@ -85,6 +86,12 @@ public class UserControllerTest {
 
     }
 
+    private String generateToken(UserEntity userEntity){
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
+        UserDetails userDetails = new User(userRepository.save(userEntity).getEmail(), "admin", Collections.singletonList(authority));
+        return jwtUtil.generateToken(userDetails);
+    }
+
     @Test
     @WithMockUser(roles = "USER")
     void findByIdNotFound() throws Exception {
@@ -93,7 +100,7 @@ public class UserControllerTest {
 
         when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(55l,"User"));
 
-        String token = generateToken();
+        String token = generateToken(userEntity);
 
         mockMvc.perform(get("/users/{id}",55l)
                         .header("Authorization",token))
@@ -164,7 +171,7 @@ public class UserControllerTest {
     void updateSuccess() throws Exception{
         UserEntity userEntity = buildEntity(1l);
         UserDTO userDTO = buildDTO(1l);
-        when(roleRepository.save(buildRole(1l))).thenReturn(buildRole(1l));
+       // when(roleRepository.save(buildRole(1l))).thenReturn(buildRole(1l));
         when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
         when(userRepository.save(userEntity)).thenReturn(userEntity);
 
@@ -217,11 +224,5 @@ public class UserControllerTest {
                 .createdAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .updatedAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .build();
-    }
-
-    private String generateToken(){
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
-        UserDetails userDetails = new User("james@mail.com", "admin", Collections.singletonList(authority));
-        return jwtUtil.generateToken(userDetails);
     }
 }
