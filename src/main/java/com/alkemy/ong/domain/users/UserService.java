@@ -1,6 +1,6 @@
 package com.alkemy.ong.domain.users;
 
-import com.alkemy.ong.domain.mail.MailGateway;
+import com.alkemy.ong.domain.mail.MailService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,16 +11,16 @@ import static com.alkemy.ong.web.utils.MailUtils.buildTemplate;
 public class UserService {
 	
 	private final UserGateway userGateway;
-    private final MailGateway mailGateway;
+    private final MailService mailService;
 
     private final String SUBJECT = "%s, registration was successful";
     private final String BODY = "<br>Welcome to Somas Mas ONG, now you are part of our family." +
                                 "<br>%s, your credentials are:<br>" +
                                 "Username: %s";
 
-	public UserService(UserGateway userGateway,MailGateway mailGateway) {
+	public UserService(UserGateway userGateway,MailService mailService) {
         this.userGateway = userGateway;
-        this.mailGateway=mailGateway;
+        this.mailService =mailService;
     }
 
     public List<User> findAll(){
@@ -52,6 +52,6 @@ public class UserService {
     private void sendMailWithTemplate(User user){
         String subject = String.format(SUBJECT,user.getFirstName());
         String body = String.format(BODY, user.getFirstName(), user.getEmail());
-        mailGateway.sendMailWithTemplate(user.getEmail(), subject, buildTemplate(body));
+        mailService.sendMailWithTemplate(user.getEmail(), subject, buildTemplate(body));
     }
 }
