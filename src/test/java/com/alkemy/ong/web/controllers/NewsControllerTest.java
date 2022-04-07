@@ -1,181 +1,225 @@
 package com.alkemy.ong.web.controllers;
 
-import static com.alkemy.ong.web.controllers.NewsController.*;
+import com.alkemy.ong.data.pagination.PageModel;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.web.controllers.NewsController.NewsDTO;
 import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.data.repositories.NewsRepository;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.Optional;
+
+import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @SpringBootTest
 @AutoConfigureMockMvc
-public class NewsControllerTest {
+class NewsControllerTest {
 
-    //Generé equals
-    //cambié a public DTO
-
-    //Inyecto el mock
     @Autowired
     private MockMvc mockMvc;
 
-    //Es para mapear el objeto?
     @Autowired
     ObjectMapper objectMapper;
 
     @MockBean
     NewsRepository newsRepository;
 
-    //Pruebo la creación ok y la fallida
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void saveNewsOk() throws Exception{
-        //Construyo el DTO
-        NewsDTO newsDTO = ;
-        //Construyo dos opciones: con y sin ID
-        NewsEntity newsIdFailed = toModel(null);
-        NewsEntity newsIdOk = toModel();
+    private final String url = "/news";
 
-        //Cuando lo guardo sin id y cuando retorno con id
-        when(newsRepository.save(newsIdFailed)).thenReturn(newsIdOk);
-        mockMvc.perform(post("/news")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newsDTO)))
-                //Lo que espero que devuelva
-                .andExpect(status().isCreated())
-                .andExpect((ResultMatcher) jsonPath("$.newsId", is(1)))
-                .andExpect((ResultMatcher)jsonPath("$.name", is("Summer Colony")))
-                .andExpect((ResultMatcher)jsonPath("$.content", is("Sports and pool for the little ones")))
-                .andExpect((ResultMatcher)jsonPath("$.image", is("pool")));
+    @Test
+    void findAll() throws Exception {
+        PageModel<NewsEntity> pageModelNewsEntity = toPage();
+
+        when(newsRepository.findAll(PageRequest.of(0,DEFAULT_PAGE_SIZE))).thenReturn(new PageImpl<>(pageModelNewsEntity.getBody()));
+
+        mockMvc.perform(get("/categories").param("page", "0").contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(pageModelNewsEntity)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("body").isArray())
+                .andExpect(jsonPath("$.body",hasSize(2)))
+                .andExpect(jsonPath("$.body.[0].name",is("RRHH")))
+                .andExpect(jsonPath("$.body.[1].name",is("Test")))
+                .andExpect(jsonPath("$.nextPage",is("This is the last page")))
+                .andExpect(jsonPath("$.previuosPage",is("This is the first page")))
+                .andExpect(content().contentType("application/json"));
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
-    public void saveNewsFailed() throws Exception{
-        NewsDTO newsDTO = toDTO();
-        newsDTO.setName(null);
-        newsDTO.setContent(null);
-        newsDTO.setImage(null);
-
-        mockMvc.perform(post("/news")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newsDTO)))
-                .andExpect(status().isBadRequest());
-    }
-
-/*    @Test
-    @WithMockUser(roles = "USER")
-    public void getNews() throws Exception{
-        List<NewsEntity> newsEntityList = asList(toModel(1L, "Summer Colony", "Sports and pool for the little ones", "pool"),
-        toModel(2L, "Summer Colony", "Sports and pool for the little ones", "pool"),
-                toModel(3L, "Summer Colony", "Sports and pool for the little ones", "pool"));
-
-        //El findAll sólo se usa en paginación
-        when(newsRepository.findAll(ArgumentMatchers.eq(false), ArgumentMatchers.any(PageDTO.class))).thenReturn(new PageDTOMapper<>(newsEntityList));
-        mockMvc.perform(get("/news?page=0").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andExpect(jsonPath("content").isArray());
-    }*/
-
-    @Test
-    @WithMockUser(roles = "USER")
-    public void getNewsById() throws Exception{
-        NewsDTO newsDTO = toDTO();
-        NewsEntity newsEntity = toModel(1L);
-
+    void findById() throws Exception {
+        NewsEntity newsEntity = toModel(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        NewsDTO newsDTO = toDTO(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
         when(newsRepository.findById(1L)).thenReturn(Optional.of(newsEntity));
-        mockMvc.perform(get("/news/1").contentType(MediaType.APPLICATION_JSON)
+
+        mockMvc.perform(post(url + "/1")
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newsDTO)))
                 .andExpect(status().isOk())
-                //¿hace falta el casteo?
-                .andExpect((ResultMatcher) jsonPath("$.newsId",is(1L)))
-                .andExpect((ResultMatcher) jsonPath("$.name",is("Summer Colony")))
-                .andExpect((ResultMatcher) jsonPath("$.content", is("Sports and pool for the little ones")))
-                .andExpect((ResultMatcher) jsonPath("$.image",is("pool")));
+                .andExpect(jsonPath("$.newsId", is (1)))
+                .andExpect(jsonPath("$.name", is ("Summer Colony")))
+                .andExpect(jsonPath("$.content", is ("Swimming pool for the little ones")))
+                .andExpect(jsonPath("$.image", is ("https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg")));
+    }
+
+    @Test
+    void getComments() throws Exception {
+        NewsEntity newsEntity = toModel(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        NewsDTO newsDTO = toDTO(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        when(newsRepository.findById(1L)).thenReturn(Optional.of(newsEntity));
+
+        mockMvc.perform(post(url + "/1")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newsDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.newsId", is (1)))
+                .andExpect(jsonPath("$.name", is ("Summer Colony")))
+                .andExpect(jsonPath("$.content", is ("Swimming pool for the little ones")))
+                .andExpect(jsonPath("$.image", is ("https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg")));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void updateNewsOk() throws Exception{
-        NewsDTO newsDTO = toDTO();
-        NewsEntity newsEntity = toModel(7L);
+    void saveNews() throws Exception {
+        NewsEntity newsEntity = toModel(null, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        NewsEntity newsEntity1 = toModel(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg" );
+        NewsDTO newsDTO = toDTO(null, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        when(newsRepository.save(newsEntity)).thenReturn(newsEntity1);
 
-        when(newsRepository.findById(7L)).thenReturn(Optional.of(newsEntity));
-        when(newsRepository.save(newsEntity)).thenReturn(newsEntity);
-
-        mockMvc.perform(put("/news/5").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(url)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newsDTO)))
-                .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$.newsId",is(7L)))
-                .andExpect((ResultMatcher) jsonPath("$.name",is("Summer Colony")))
-                .andExpect((ResultMatcher) jsonPath("$.content", is("Sports and pool for the little ones")))
-                .andExpect((ResultMatcher) jsonPath("$.image",is("pool")));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.newsId", is (1)))
+                .andExpect(jsonPath("$.name", is ("Summer Colony")))
+                .andExpect(jsonPath("$.content", is ("Swimming pool for the little ones")))
+                .andExpect(jsonPath("$.image", is ("https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg")));
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN"
-    public void updateNewsFailed() throws Exception{
-        NewsDTO newsDTO = NewsDTO.builder().name(null).content(null).image(null).build();
-        NewsEntity newsEntity = toModel(3L);
+    @WithMockUser(roles = "ADMIN")
+    void saveNewsBadRequest() throws Exception {
+        NewsEntity newsEntity = toModel(null, "", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        NewsEntity newsEntity1 = toModel(1L, "", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        NewsDTO newsDTO = toDTO(null,"", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        when(newsRepository.save(newsEntity)).thenReturn(newsEntity1);
 
-        when(newsRepository.findById(3L)).thenReturn(Optional.of(newsEntity));
-        when(newsRepository.save(newsEntity)).thenReturn(newsEntity);
-
-        mockMvc.perform(put("/news/{newsId}", 3)
-                        .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(url)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newsDTO)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void updateNewsNotFound() throws Exception{
-        NewsDTO newsDTO = toDTO();
+    void updateNews() throws Exception{
+        NewsEntity newsEntity = toModel(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        NewsDTO newsDTO = toDTO(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        when(newsRepository.findById(1L)).thenReturn(Optional.of(newsEntity));
+        when(newsRepository.save(newsEntity)).thenReturn(newsEntity);
 
-        when(newsRepository.findById(6L)).thenThrow(new ResourceNotFoundException("Non-existent news"));
+        mockMvc.perform(put(url + "/1")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newsDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.newsId", is (1)))
+                .andExpect(jsonPath("$.name", is ("Summer Colony")))
+                .andExpect(jsonPath("$.content", is ("Swimming pool for the little ones")))
+                .andExpect(jsonPath("$.image", is ("https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg")));
+    }
 
-        mockMvc.perform(put("/news/{newsId}", 6)
-                        .contentType(MediaType.APPLICATION_JSON)
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void updateNewsNotFound() throws Exception {
+        when(newsRepository.findById(5L)).thenThrow(new ResourceNotFoundException("The ID doesn't exist."));
+        NewsDTO newsDTO = toDTO(5L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        mockMvc.perform(put(url + "/5")
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newsDTO)))
                 .andExpect(status().isNotFound());
+     }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void updateNewsBadRequest() throws Exception {
+        NewsEntity newsEntity = toModel(1L, "", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        NewsDTO newsDTO = toDTO(1L, "", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        when(newsRepository.findById(1L)).thenReturn(Optional.of(newsEntity));
+        when(newsRepository.save(newsEntity)).thenReturn(newsEntity);
+
+        mockMvc.perform(put(url + "/1")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newsDTO)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void deleteNewsOk() throws Exception{
-        NewsEntity newsEntity = toModel(80L);
+    void updateNewsBadId() throws Exception {
+        NewsDTO newsDTO = toDTO(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+        mockMvc.perform(put(url + "/2")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newsDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void deleteNewsOk() throws Exception {
+        NewsEntity newsEntity = toModel(1L, "", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg");
+
         when(newsRepository.findById(newsEntity.getNewsId())).thenReturn(Optional.of(newsEntity));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/news/{id}", 80))
-                .andExpect(status().isNoContent());
+        mockMvc.perform(delete("/news/1")).andExpect(status().isNoContent());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void deleteNewsFailed() throws Exception{
-        when(newsRepository.findById(90L)).thenThrow(new ResourceNotFoundException("Non-existent news"));
+    void deleteNewsNotFound() throws Exception {
+        doThrow(ResourceNotFoundException.class).when(newsRepository).deleteById(789L);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/news/{newsId}", 90))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(delete("/categories/789")).andExpect(status().isNotFound());
     }
 
-    private NewsEntity toModel (Long newsId){
+    private NewsEntity toModel(Long newsId, String name, String content, String image){
         return NewsEntity.builder()
                 .newsId(newsId)
-                .name("Summer Colony")
-                .content("Sports and pool for the little ones")
-                .image("pool")
+                .name(name)
+                .content(content)
+                .image(image)
                 .build();
     }
 
-    private NewsDTO toDTO() {
+    private NewsDTO toDTO(Long newsId, String name, String content, String image){
         return NewsDTO.builder()
-                .name("Summer Colony")
-                .content("Sports and pool for the little ones")
-                .image("pool")
+                .newsId(newsId)
+                .name(name)
+                .content(content)
+                .image(image)
+                .build();
+    }
+
+    private PageModel toPage(){
+        return PageModel.builder()
+                .body(Arrays.asList(toModel(1l, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg"), toModel(2L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg")))
+                .nextPage("This is the last page")
+                .previousPage("This is the first page")
                 .build();
     }
 }
