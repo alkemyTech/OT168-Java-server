@@ -1,10 +1,11 @@
 package com.alkemy.ong.domain.users;
 
 import com.alkemy.ong.domain.mail.MailGateway;
-import com.alkemy.ong.domain.mail.MailRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.alkemy.ong.web.utils.MailUtils.buildTemplate;
 
 @Service
 public class UserService {
@@ -13,10 +14,9 @@ public class UserService {
     private final MailGateway mailGateway;
 
     private final String SUBJECT = "%s, registration was successful";
-    private final String BODY = "Welcome to Somas Mas ONG, now you are part of our family." +
-                                "\n%s, your credentials are:" +
-                                "\nUsername: %s"+
-                                "\nPassword: %s";
+    private final String BODY = "<br>Welcome to Somas Mas ONG, now you are part of our family." +
+                                "<br>%s, your credentials are:<br>" +
+                                "Username: %s";
 
 	public UserService(UserGateway userGateway,MailGateway mailGateway) {
         this.userGateway = userGateway;
@@ -51,20 +51,7 @@ public class UserService {
 
     private void sendMailWithTemplate(User user){
         String subject = String.format(SUBJECT,user.getFirstName());
-        mailGateway.sendMailWithTemplate(user.getEmail(), subject, BODY);
+        String body = String.format(BODY, user.getFirstName(), user.getEmail());
+        mailGateway.sendMailWithTemplate(user.getEmail(), subject, buildTemplate(body));
     }
-
-    private void sendMailWithoutTemplate(User user){
-        String subject = String.format(SUBJECT,user.getFirstName());
-        mailGateway.sendMail(builMail(user));
-    }
-
-    private MailRequest builMail(User user){
-        return MailRequest.builder()
-                .body(String.format(BODY, user.getFirstName(),user.getEmail(),user.getPassword()))
-                .subject(String.format(SUBJECT,user.getFirstName()))
-                .to(user.getEmail())
-                .build();
-    }
-
 }
