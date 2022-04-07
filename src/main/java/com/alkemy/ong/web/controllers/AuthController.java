@@ -102,17 +102,20 @@ public class AuthController {
 	@PostMapping("/register")
 	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO) {
 		Map<String, Object> response = new HashMap<>();
+		Authentication auth;
+
+		validatePassword(registrationDTO.password, registrationDTO.matchingPassword);
+		UserDTO user = toDTO(userService.register(toModel(registrationDTO)));
 		try {
-			validatePassword(registrationDTO.password, registrationDTO.matchingPassword);
-			UserDTO user = toDTO(userService.register(toModel(registrationDTO)));
+			auth = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(registrationDTO.email, registrationDTO.password)
+			);
+			SecurityContextHolder.getContext().setAuthentication(auth);
 		} catch (Exception ex) {
 			response.put("Error", ex.getMessage());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
-		Authentication auth = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(registrationDTO.email, registrationDTO.password)
-		);
-		SecurityContextHolder.getContext().setAuthentication(auth);
+
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(registrationDTO.email);
 		final String jwt = jwtUtil.generateToken(userDetails);
 		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
