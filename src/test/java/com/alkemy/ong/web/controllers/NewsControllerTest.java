@@ -85,23 +85,6 @@ class NewsControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void getComments() throws Exception {
-        NewsEntity newsEntity = buildModel(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg", "news");
-        NewsDTO newsDTO = buildDTO(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg", "news");
-        when(newsRepository.findById(1L)).thenReturn(Optional.of(newsEntity));
-
-        mockMvc.perform(get(url + "/1")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newsDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.newsId", is (1)))
-                .andExpect(jsonPath("$.name", is ("Summer Colony")))
-                .andExpect(jsonPath("$.content", is ("Swimming pool for the little ones")))
-                .andExpect(jsonPath("$.image", is ("https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg")));
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
     void saveNews() throws Exception {
         NewsEntity newsEntity = buildModel(null, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg", "news");
         NewsEntity newsEntity1 = buildModel(1L, "Summer Colony", "Swimming pool for the little ones", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg", "news" );
@@ -122,10 +105,7 @@ class NewsControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void saveNewsBadRequest() throws Exception {
-        NewsEntity newsEntity = buildModel(null, "", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg", "news");
-        NewsEntity newsEntity1 = buildModel(1L, "", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg", "news");
         NewsDTO newsDTO = buildDTO(null,"", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg", "news");
-        when(newsRepository.save(newsEntity)).thenReturn(newsEntity1);
 
         mockMvc.perform(post(url)
                         .contentType(APPLICATION_JSON)
@@ -166,10 +146,7 @@ class NewsControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateNewsBadRequest() throws Exception {
-        NewsEntity newsEntity = buildModel(1L, "", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg", "news");
         NewsDTO newsDTO = buildDTO(1L, "", "", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Olympic_Pool_Munich_1972.jpg", "news");
-        when(newsRepository.findById(1L)).thenReturn(Optional.of(newsEntity));
-        when(newsRepository.save(newsEntity)).thenReturn(newsEntity);
 
         mockMvc.perform(put(url + "/1")
                         .contentType(APPLICATION_JSON)
