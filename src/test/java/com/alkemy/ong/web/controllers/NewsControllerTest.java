@@ -35,7 +35,7 @@ public class NewsControllerTest {
     @WithMockUser(roles = "ADMIN")
     public void saveNewsOk() throws Exception{
         //Construyo el DTO
-        NewsDTO newsDTO = toDTO();
+        NewsDTO newsDTO = ;
         //Construyo dos opciones: con y sin ID
         NewsEntity newsIdFailed = toModel(null);
         NewsEntity newsIdOk = toModel();
