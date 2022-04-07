@@ -105,12 +105,17 @@ public class AuthController {
 		try {
 			validatePassword(registrationDTO.password, registrationDTO.matchingPassword);
 			UserDTO user = toDTO(userService.register(toModel(registrationDTO)));
-			response.put("User", user);
 		} catch (Exception ex) {
 			response.put("Error", ex.getMessage());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
+		Authentication auth = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(registrationDTO.email, registrationDTO.password)
+		);
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(registrationDTO.email);
+		final String jwt = jwtUtil.generateToken(userDetails);
+		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
 	}
 	
 	private UserDTO toDTO(User user) {
