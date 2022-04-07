@@ -13,7 +13,9 @@ public class UserService {
     private final MailGateway mailGateway;
 
     private final String SUBJECT = "%s, registration was successful";
-    private final String BODY = " \nWelcome to Somas Mas ONG, now you are part of our family.";
+    private final String BODY = " $s, welcome to Somas Mas ONG, now you are part of our family." +
+                                "\nUsername: %s"+
+                                "\nPassword: %s";
 
 	public UserService(UserGateway userGateway,MailGateway mailGateway) {
         this.userGateway = userGateway;
@@ -58,7 +60,7 @@ public class UserService {
 
     private MailRequest builMail(User user){
         return MailRequest.builder()
-                .body(BODY)
+                .body(String.format(BODY, user.getFirstName(),user.getEmail(),user.getPassword()))
                 .subject(String.format(SUBJECT,user.getFirstName()))
                 .to(user.getEmail())
                 .build();
