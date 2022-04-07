@@ -24,7 +24,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
-
 @Tag(name = "members")
 @RestController
 @RequestMapping
@@ -92,7 +91,6 @@ public class MemberController {
                 .status(HttpStatus.CREATED)
                 .body(toDTO(memberService.save(toModel(memberDTO))));
     }
-
 
     @Operation(description = "Remove a member from the system", operationId = "delete", summary = "Change member status to inactive")
     @ApiResponses(
@@ -193,7 +191,7 @@ public class MemberController {
     @Setter
     @Builder
     @Valid
-    private static class MemberDTO {
+    public static class MemberDTO {
 
         @Schema(example = "1", required = true)
         private Long id;
@@ -225,7 +223,7 @@ public class MemberController {
 
         @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-03-29 18:58:56")
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime updatedAt;;
+        private LocalDateTime updatedAt;
     }
 
 }
