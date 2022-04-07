@@ -50,13 +50,13 @@ class NewsControllerTest {
 
         when(newsRepository.findAll(PageRequest.of(0,DEFAULT_PAGE_SIZE))).thenReturn(new PageImpl<>(pageModelNewsEntity.getBody()));
 
-        mockMvc.perform(get("/categories").param("page", "0").contentType(APPLICATION_JSON)
+        mockMvc.perform(get("/news").param("page", "0").contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pageModelNewsEntity)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("body").isArray())
                 .andExpect(jsonPath("$.body",hasSize(2)))
-                .andExpect(jsonPath("$.body.[0].name",is("RRHH")))
-                .andExpect(jsonPath("$.body.[1].name",is("Test")))
+                .andExpect(jsonPath("$.body.[0].name",is("Summer Colony")))
+                .andExpect(jsonPath("$.body.[1].name",is("Summer Colony")))
                 .andExpect(jsonPath("$.nextPage",is("This is the last page")))
                 .andExpect(jsonPath("$.previuosPage",is("This is the first page")))
                 .andExpect(content().contentType("application/json"));
@@ -194,7 +194,7 @@ class NewsControllerTest {
     void deleteNewsNotFound() throws Exception {
         doThrow(ResourceNotFoundException.class).when(newsRepository).deleteById(789L);
 
-        mockMvc.perform(delete("/categories/789")).andExpect(status().isNotFound());
+        mockMvc.perform(delete("/news/789")).andExpect(status().isNotFound());
     }
 
     private NewsEntity toModel(Long newsId, String name, String content, String image){
