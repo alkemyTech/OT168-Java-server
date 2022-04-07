@@ -9,18 +9,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -45,7 +42,7 @@ public class CategoryControllerTest {
 
 	@Test
 	void getCategoryByIdSuccessTest() throws Exception {
-		CategoryEntity categoryEntity = toEntityWithId(1L, "RRHH", "category of RRHH", "image.png");
+		CategoryEntity categoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
 
 		when(categoryRepository.findById(categoryEntity.getId())).thenReturn(Optional.of(categoryEntity));
 
@@ -69,13 +66,16 @@ public class CategoryControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void saveCategorySuccessTest() throws Exception {
-		CategoryEntity categoryEntity = toEntityWithoutId("RRHH", "category of RRHH", "image.png");
+		CategoryEntity categoryEntityWithoutId = toEntity(null, "Test", "category of test", "image.png");
+		CategoryEntity categoryEntityWithId = toEntity(1L, "RRHH", "category of RRHH", "image.png");
 
-		when(categoryRepository.save(categoryEntity)).thenReturn(categoryEntity);
+		when(categoryRepository.save(categoryEntityWithId)).thenReturn(categoryEntityWithId);
 
 		mockMvc.perform(post("/categories").contentType(APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(categoryEntity))).andExpect(status().isCreated())
+				.content(objectMapper.writeValueAsString(categoryEntityWithId)))
+				.andExpect(status().isCreated())
 				.andExpect(content().contentType(APPLICATION_JSON))
+				.andExpect(jsonPath("$.id").value(1))
 				.andExpect(jsonPath("$.name").value("RRHH"))
 				.andExpect(jsonPath("$.description").value("category of RRHH"))
 				.andExpect(jsonPath("$.image").value("image.png"));
@@ -85,7 +85,7 @@ public class CategoryControllerTest {
 	@WithMockUser(roles = "ADMIN")
 	void saveCategoryBadRequestTest() throws Exception {
 
-		CategoryEntity categoryEntity = toEntityWithoutId(null, "category of RRHH", "image.png");
+		CategoryEntity categoryEntity = toEntity(null, null, "category of RRHH", "image.png");
 
 		mockMvc.perform(post("/categories").contentType(APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(categoryEntity))).andExpect(status().isBadRequest());
@@ -94,7 +94,7 @@ public class CategoryControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void updateCategorySuccessTest() throws Exception {
-		CategoryEntity updateCategoryEntity = toEntityWithId(1L, "RRHH", "category of RRHH", "image.png");
+		CategoryEntity updateCategoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
 
 		when(categoryRepository.findById(updateCategoryEntity.getId())).thenReturn(Optional.of(updateCategoryEntity));
 		when(categoryRepository.save(updateCategoryEntity)).thenReturn(updateCategoryEntity);
@@ -110,7 +110,7 @@ public class CategoryControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void updateCategoryFailTest() throws Exception {
-		CategoryEntity updateCategoryEntity = toEntityWithId(1L, null, "category of RRHH", "image.png");
+		CategoryEntity updateCategoryEntity = toEntity(1L, null, "category of RRHH", "image.png");
 
 		when(categoryRepository.findById(updateCategoryEntity.getId())).thenReturn(Optional.of(updateCategoryEntity));
 		when(categoryRepository.save(updateCategoryEntity)).thenReturn(updateCategoryEntity);
@@ -122,9 +122,10 @@ public class CategoryControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void deleteCategorySuccessTest() throws Exception {
-		CategoryEntity categoryEntity = toEntityWithId(1L, "RRHH", "category of RRHH", "image.png");
+		CategoryEntity categoryEntity = toEntity(1L, "RRHH", "category of RRHH", "image.png");
 
 		when(categoryRepository.findById(categoryEntity.getId())).thenReturn(Optional.of(categoryEntity));
+		doNothing().when(categoryRepository).deleteById(categoryEntity.getId());
 
 		mockMvc.perform(delete("/categories/1")).andExpect(status().isNoContent());
 	}
@@ -166,7 +167,7 @@ public class CategoryControllerTest {
         .andExpect(status().isBadRequest());
 	}
 
-	private CategoryEntity toEntityWithId(Long id, String name, String description, String image) {
+	private CategoryEntity toEntity(Long id, String name, String description, String image) {
 		CategoryEntity categoryEntity = new CategoryEntity();
 		categoryEntity.setId(id);
 		categoryEntity.setName(name);
@@ -176,18 +177,9 @@ public class CategoryControllerTest {
 		return categoryEntity;
 	}
 	
-	private CategoryEntity toEntityWithoutId(String name, String description, String image) {
-		CategoryEntity categoryEntity = new CategoryEntity();
-		categoryEntity.setName(name);
-		categoryEntity.setDescription(description);
-		categoryEntity.setImage(image);
-		categoryEntity.setDeleted(false);
-		return categoryEntity;
-	}
-	
 	private PageModel buildPageModel(){
         return PageModel.builder()
-                .body(Arrays.asList(toEntityWithId(1l, "RRHH", "category of RRHH", "image.png"), toEntityWithId(2L, "Test", "category of test", "image.png")))
+                .body(Arrays.asList(toEntity(1L, "RRHH", "category of RRHH", "image.png"), toEntity(2L, "Test", "category of test", "image.png")))
                 .nextPage("This is the last page")
                 .previousPage("This is the first page")
                 .build();
