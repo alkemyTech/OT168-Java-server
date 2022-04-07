@@ -64,6 +64,6 @@ public class NewsEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NewsEntity that = (NewsEntity) o;
-        return Objects.equals(newsId, that.newsId) && Objects.equals(name, that.name) && Objects.equals(content, that.content) && Objects.equals(image, that.image) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(deleted, that.deleted) && Objects.equals(type, that.type) && Objects.equals(comments, that.comments);
+        return Objects.equals(newsId, that.newsId) && Objects.equals(name, that.name) && Objects.equals(content, that.content) && Objects.equals(image, that.image) && Objects.equals(type, that.type) && Objects.equals(comments, that.comments);
     }
 }
