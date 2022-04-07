@@ -13,7 +13,8 @@ public class UserService {
     private final MailGateway mailGateway;
 
     private final String SUBJECT = "%s, registration was successful";
-    private final String BODY = " $s, welcome to Somas Mas ONG, now you are part of our family." +
+    private final String BODY = "Welcome to Somas Mas ONG, now you are part of our family." +
+                                "\n%s, your credentials are:" +
                                 "\nUsername: %s"+
                                 "\nPassword: %s";
 
