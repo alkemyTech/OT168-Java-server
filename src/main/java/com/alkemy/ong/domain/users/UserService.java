@@ -15,8 +15,8 @@ public class UserService {
 
     private final String SUBJECT = "%s, registration was successful";
     private final String BODY = "<br>Welcome to Somas Mas ONG, now you are part of our family." +
-                                "<br>%s, your credentials are:<br>" +
-                                "Username: %s";
+                                "<br>%s, your Username is:<br>%s";
+
 
 	public UserService(UserGateway userGateway,MailService mailService) {
         this.userGateway = userGateway;
