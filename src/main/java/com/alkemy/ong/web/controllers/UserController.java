@@ -58,7 +58,7 @@ public class UserController {
     
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
-        //verifyUser(id, token);
+        verifyUser(id, token);
         return ResponseEntity.ok(toDTO(userService.findById(id)));
     }
 

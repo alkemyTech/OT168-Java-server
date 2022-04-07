@@ -39,7 +39,7 @@ public class DefaultUserGateway implements UserGateway {
 	@Override
 	public User findById(Long id) {
 		return toModel(
-				userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist.")));
+				userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id,"User")));
 	}
 
 	@Override
