@@ -29,8 +29,10 @@ public class UserService {
     }
 
     public User register(User user) {
+        User userRegistered = userGateway.register(user);
         sendMailWithTemplate(user);
-        return userGateway.register(user); }
+        return userRegistered;
+    }
 
     public User update (User user){
         return userGateway.update(user);
