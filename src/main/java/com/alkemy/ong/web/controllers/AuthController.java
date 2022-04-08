@@ -4,6 +4,7 @@ package com.alkemy.ong.web.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -64,19 +65,7 @@ public class AuthController {
 	})
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception{
-		Authentication authentication;
-		Map<String, Object> response = new HashMap<>();
-		try {
-			authentication = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		} catch (BadCredentialsException e) {
-			response.put("messaje", "ok: false");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-		}
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getEmail());
-		final String jwt = jwtUtil.generateToken(userDetails);
+		String jwt =login(loginDTO.email,loginDTO.password);
 		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
 	}
 
@@ -100,27 +89,29 @@ public class AuthController {
 	)
 })
 	@PostMapping("/register")
-	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO) {
-		Map<String, Object> response = new HashMap<>();
-		Authentication auth;
-
+	public ResponseEntity register(@Valid @RequestBody RegistrationDTO registrationDTO,HttpServletResponse response ) {
 		validatePassword(registrationDTO.password, registrationDTO.matchingPassword);
 		UserDTO user = toDTO(userService.register(toModel(registrationDTO)));
-		try {
-			auth = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(registrationDTO.email, registrationDTO.password)
-			);
-			SecurityContextHolder.getContext().setAuthentication(auth);
-		} catch (Exception ex) {
-			response.put("Error", ex.getMessage());
-			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		}
-
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(registrationDTO.email);
-		final String jwt = jwtUtil.generateToken(userDetails);
-		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
+		String jwt = login(registrationDTO.email, registrationDTO.password);
+		response.addHeader("Authorization", jwt);
+		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
-	
+
+	private String login(String email, String password){
+		Authentication authentication;
+		try {
+			authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(email, password));
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		} catch (BadCredentialsException e) {
+			throw  new BadCredentialsException(e.getMessage());
+		}
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+		final String jwt = jwtUtil.generateToken(userDetails);
+		return jwt;
+	}
+
 	private UserDTO toDTO(User user) {
 		return UserDTO.builder()
 				.id(user.getId())
