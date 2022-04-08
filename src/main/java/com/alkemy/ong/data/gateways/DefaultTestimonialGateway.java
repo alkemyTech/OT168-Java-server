@@ -29,12 +29,13 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
         return toModel(testimonialRepository.save(toEntity(testimonial)));
     }
 
+
     public Testimonial update(Long id, Testimonial testimonial) {
         TestimonialEntity entity = testimonialRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("The ID doesn't exist."));
         entity.setName(testimonial.getName());
         entity.setContent(testimonial.getContent());
         entity.setImage(testimonial.getImage());
-        entity.setUpdatedAt(LocalDateTime.now());
+       //entity.setUpdatedAt(LocalDateTime.now());
         return toModel(testimonialRepository.save(entity));
     }
 
@@ -48,25 +49,27 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
                 .findAll(PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE)),"/testimonials?page="), Testimonial.class);
     }
 
+    //TODO: Borrar lineas comentadas si el rework funciona!
     private static Testimonial toModel(TestimonialEntity testimonialEntity) {
         return Testimonial.builder()
                 .id(testimonialEntity.getId())
                 .name(testimonialEntity.getName())
                 .image(testimonialEntity.getImage())
                 .content(testimonialEntity.getContent())
-                .createdAt(testimonialEntity.getCreatedAt())
-                .updatedAt(testimonialEntity.getUpdatedAt())
+                //.createdAt(testimonialEntity.getCreatedAt())
+                //.updatedAt(testimonialEntity.getUpdatedAt())
                 .build();
     }
 
+    //TODO: Borrar lineas comentadas si el rework funciona!
     private TestimonialEntity toEntity(Testimonial testimonialModel) {
         return TestimonialEntity.builder()
                 .id(testimonialModel.getId())
                 .name(testimonialModel.getName())
                 .image(testimonialModel.getImage())
                 .content(testimonialModel.getContent())
-                .createdAt(testimonialModel.getCreatedAt())
-                .updatedAt(testimonialModel.getUpdatedAt())
+                //.createdAt(testimonialModel.getCreatedAt())
+                //.updatedAt(testimonialModel.getUpdatedAt())
                 .build();
     }
 }

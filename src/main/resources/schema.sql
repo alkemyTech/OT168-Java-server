@@ -123,7 +123,7 @@ name VARCHAR (255) NOT NULL,
 image VARCHAR (255),
 content VARCHAR (255),
 created_at TIMESTAMP DEFAULT NOW(),
-updated_at TIMESTAMP,
+updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 deleted BIT(1) DEFAULT 0
 );
 

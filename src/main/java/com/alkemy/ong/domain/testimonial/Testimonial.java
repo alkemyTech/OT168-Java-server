@@ -18,9 +18,9 @@ public class Testimonial {
 
     private String content;
 
-    private LocalDateTime createdAt;
+    //private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    //private LocalDateTime updatedAt;
 
-    private Boolean deleted;
+    //private Boolean deleted;
 }
