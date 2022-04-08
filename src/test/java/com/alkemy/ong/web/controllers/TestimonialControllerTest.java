@@ -5,7 +5,6 @@ import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.repositories.TestimonialRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -68,7 +67,6 @@ public class TestimonialControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void createTestimonialBadRequest() throws Exception{
-        TestimonialEntity testimonial = createTestimonialEntity(null, null, "http://amazon3.jpg", "Test content");
         TestimonialDTO testimonialDTO = createTestimonialDTO(null, null, "http://amazon3.jpg", "Test content");
 
         mockMvc.perform(post(URL)
@@ -118,7 +116,6 @@ public class TestimonialControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateTestimonialBadRequest() throws Exception{
-        TestimonialEntity testimonialUpdated = createTestimonialEntity(1L, "Testimonial", "http://amazon3.jpg", null);
         TestimonialDTO testimonialDTO = createTestimonialDTO(1L, "Testimonial", "http://amazon3.jpg", null);
 
         mockMvc.perform(put(URL + "/1")
@@ -150,7 +147,7 @@ public class TestimonialControllerTest {
     void deleteTestimonialSuccess() throws Exception{
         TestimonialEntity testimonial = createTestimonialEntity(1L, "Testimonial", "http://amazon3.jpg", "Test content");
         when(testimonialRepository.findById(1L)).thenReturn(Optional.of(testimonial));
-        doNothing().when(testimonialRepository).deleteById(1l);
+        doNothing().when(testimonialRepository).deleteById(1L);
 
         mockMvc.perform(delete(URL+"/1"))
                 .andExpect(status().isNoContent());
