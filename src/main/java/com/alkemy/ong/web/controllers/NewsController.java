@@ -101,7 +101,7 @@ public class NewsController {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class NewsDTO {
+    public static class NewsDTO {
 
         @ApiModelProperty(value = "ID", required = true)
         private Long newsId;
