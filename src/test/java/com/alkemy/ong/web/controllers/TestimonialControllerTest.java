@@ -22,7 +22,9 @@ import java.util.Optional;
 import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 import static com.alkemy.ong.web.controllers.TestimonialController.*;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,7 +44,7 @@ public class TestimonialControllerTest {
     @MockBean
     TestimonialRepository testimonialRepository;
 
-    private final String url = "/testimonials";
+    private final String URL = "/testimonials";
 
 
     @Test
@@ -53,7 +55,7 @@ public class TestimonialControllerTest {
     TestimonialDTO testimonialDTO = createTestimonialDTO(null, "Testimonial", "http://amazon3.jpg", "Test content");
     when(testimonialRepository.save(testimonial)).thenReturn(testimonialSaved);
 
-    mockMvc.perform(post(url)
+    mockMvc.perform(post(URL)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testimonialDTO)))
             .andExpect(status().isCreated())
@@ -64,23 +66,21 @@ public class TestimonialControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     void createTestimonialBadRequest() throws Exception{
-        TestimonialEntity testimonial = createTestimonialEntity(null, "", "http://amazon3.jpg", "Test content");
-        TestimonialEntity testimonialSaved = createTestimonialEntity(1L, "", "http://amazon3.jpg", "Test content");
-        TestimonialDTO testimonialDTO = createTestimonialDTO(null, "", "http://amazon3.jpg", "Test content");
-        when(testimonialRepository.save(testimonial)).thenReturn(testimonialSaved);
+        TestimonialEntity testimonial = createTestimonialEntity(null, null, "http://amazon3.jpg", "Test content");
+        TestimonialDTO testimonialDTO = createTestimonialDTO(null, null, "http://amazon3.jpg", "Test content");
 
-        mockMvc.perform(post(url)
+        mockMvc.perform(post(URL)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testimonialDTO)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    void createTestimonialUser() throws Exception {
-        mockMvc.perform(post(url))
+    void createTestimonialUnauthorizedUser() throws Exception {
+        mockMvc.perform(post(URL))
                 .andExpect(status().isForbidden());
     }
 
@@ -92,7 +92,7 @@ public class TestimonialControllerTest {
         when(testimonialRepository.findById(1L)).thenReturn(Optional.of(testimonialUpdated));
         when(testimonialRepository.save(testimonialUpdated)).thenReturn(testimonialUpdated);
 
-        mockMvc.perform(put(url + "/1")
+        mockMvc.perform(put(URL + "/1")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testimonialDTO)))
                 .andExpect(status().isOk())
@@ -108,7 +108,7 @@ public class TestimonialControllerTest {
         when(testimonialRepository.findById(3L)).thenThrow(new ResourceNotFoundException(3L, "Testimonial"));
         TestimonialDTO testimonialDTO = createTestimonialDTO(3L, "Testimonial", "http://amazon3.jpg", "Test content");
 
-        mockMvc.perform(put(url + "/3")
+        mockMvc.perform(put(URL + "/3")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testimonialDTO)))
                 .andExpect(status().isNotFound());
@@ -120,10 +120,8 @@ public class TestimonialControllerTest {
     void updateTestimonialBadRequest() throws Exception{
         TestimonialEntity testimonialUpdated = createTestimonialEntity(1L, "Testimonial", "http://amazon3.jpg", null);
         TestimonialDTO testimonialDTO = createTestimonialDTO(1L, "Testimonial", "http://amazon3.jpg", null);
-        when(testimonialRepository.findById(1L)).thenReturn(Optional.of(testimonialUpdated));
-        when(testimonialRepository.save(testimonialUpdated)).thenReturn(testimonialUpdated);
 
-        mockMvc.perform(put(url + "/1")
+        mockMvc.perform(put(URL + "/1")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testimonialDTO)))
                 .andExpect(status().isBadRequest());
@@ -134,7 +132,7 @@ public class TestimonialControllerTest {
     void updateTestimonialBadId() throws Exception{
         TestimonialDTO testimonialDTO = createTestimonialDTO(1L, "Testimonial", "http://amazon3.jpg", "Test content");
 
-        mockMvc.perform(put(url + "/5")
+        mockMvc.perform(put(URL + "/5")
                     .contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(testimonialDTO)))
                 .andExpect(status().isBadRequest());
@@ -142,8 +140,8 @@ public class TestimonialControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    void updateTestimonialUser() throws Exception{
-        mockMvc.perform(put(url + "/1"))
+    void updateTestimonialUnauthorizedUser() throws Exception{
+        mockMvc.perform(put(URL + "/1"))
                 .andExpect(status().isForbidden());
     }
 
@@ -152,8 +150,9 @@ public class TestimonialControllerTest {
     void deleteTestimonialSuccess() throws Exception{
         TestimonialEntity testimonial = createTestimonialEntity(1L, "Testimonial", "http://amazon3.jpg", "Test content");
         when(testimonialRepository.findById(1L)).thenReturn(Optional.of(testimonial));
+        doNothing().when(testimonialRepository).deleteById(1l);
 
-        mockMvc.perform(delete(url+"/1"))
+        mockMvc.perform(delete(URL+"/1"))
                 .andExpect(status().isNoContent());
     }
 
@@ -162,19 +161,19 @@ public class TestimonialControllerTest {
     void deleteTestimonialNotFound() throws Exception{
         when(testimonialRepository.findById(3L)).thenThrow(new ResourceNotFoundException(3L, "Testimonial"));
 
-        mockMvc.perform(delete(url+"/3"))
+        mockMvc.perform(delete(URL+"/3"))
                 .andExpect(status().isNotFound());
 
         ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
                 () -> {testimonialRepository.findById(3L);}, "No Testimonial found with ID 3");
 
-        Assertions.assertEquals("No Testimonial found with ID 3", exceptionThrows.getMessage());
+        assertEquals("No Testimonial found with ID 3", exceptionThrows.getMessage());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    void deleteTestimonialUser() throws Exception{
-        mockMvc.perform(delete(url + "/1"))
+    void deleteTestimonialUnauthorizedUser() throws Exception{
+        mockMvc.perform(delete(URL + "/1"))
                 .andExpect(status().isForbidden());
     }
 
@@ -185,7 +184,7 @@ public class TestimonialControllerTest {
 
         when(testimonialRepository.findAll(PageRequest.of(0,DEFAULT_PAGE_SIZE))).thenReturn(new PageImpl<>(pageModel.getBody()));
 
-        mockMvc.perform(get(url+"?page={page}",0)
+        mockMvc.perform(get(URL+"?page={page}",0)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pageModel)))
                 .andExpect(jsonPath("body").isArray())
@@ -205,7 +204,7 @@ public class TestimonialControllerTest {
     void findAllTestimonialsBadRequest() throws Exception{
         PageModel<TestimonialEntity> pageModel = buildPageModel();
 
-        mockMvc.perform(get(url+"?page=",0)
+        mockMvc.perform(get(URL+"?page=",0)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(pageModel)))
                 .andExpect(status().isBadRequest());
