@@ -1,7 +1,6 @@
 package com.alkemy.ong.domain.testimonial;
 
 import lombok.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -11,16 +10,7 @@ import java.time.LocalDateTime;
 public class Testimonial {
 
     private Long id;
-
     private String name;
-
     private String image;
-
     private String content;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    private Boolean deleted;
 }

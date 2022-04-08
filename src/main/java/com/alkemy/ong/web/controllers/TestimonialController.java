@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static com.alkemy.ong.web.utils.WebUtils.*;
@@ -59,8 +58,6 @@ public class TestimonialController {
                 .name(testimonialDTO.getName())
                 .image(testimonialDTO.getImage())
                 .content(testimonialDTO.getContent())
-                .createdAt(testimonialDTO.getCreatedAt())
-                .updatedAt(testimonialDTO.getUpdatedAt())
                 .build();
     }
 
@@ -70,8 +67,6 @@ public class TestimonialController {
                 .name(testimonial.getName())
                 .image(testimonial.getImage())
                 .content(testimonial.getContent())
-                .createdAt(testimonial.getCreatedAt())
-                .updatedAt(testimonial.getUpdatedAt())
                 .build();
     }
 
@@ -84,7 +79,7 @@ public class TestimonialController {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class TestimonialDTO {
+    public static class TestimonialDTO {
         private Long id;
 
         @NotNull(message = "Field 'name' is required.")
@@ -95,10 +90,6 @@ public class TestimonialController {
 
         @NotNull(message = "Field 'content' is required.")
         private String content;
-
-        private LocalDateTime createdAt;
-
-        private LocalDateTime updatedAt;
 
         private String type = "testimonial";
     }
