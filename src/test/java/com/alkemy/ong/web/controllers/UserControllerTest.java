@@ -221,7 +221,7 @@ public class UserControllerTest {
                 .build();
     }
 
-    private UserEntity buildEntity(Long id,String role){
+    private UserEntity buildEntity(Long id,String roleName){
         return UserEntity.builder()
                 .id(id)
                 .firstName("James")
@@ -231,22 +231,22 @@ public class UserControllerTest {
                 .photo("james.jpg")
                 .createdAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .updatedAt(LocalDateTime.of(2022,03,29,18,58,56,555))
-                .roleEntity(buildRole(1l,role))
+                .roleEntity(buildRole(1l,roleName))
                 .build();
     }
 
-    private RoleEntity buildRole(Long id, String role){
+    private RoleEntity buildRole(Long id, String roleName){
         return RoleEntity.builder()
                 .id(id)
-                .name(role)
+                .name(roleName)
                 .description("Normal user of the system")
                 .createdAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .updatedAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .build();
     }
 
-    private String buildToken(UserEntity userEntity, String role ){
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+role);
+    private String buildToken(UserEntity userEntity, String roleName ){
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+roleName);
         UserDetails userDetails = new User(userRepository.save(userEntity).getEmail(), "12345678", Collections.singletonList(authority));
         return jwtUtil.generateToken(userDetails);
     }
