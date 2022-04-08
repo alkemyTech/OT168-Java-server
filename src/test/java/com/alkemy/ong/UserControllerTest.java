@@ -19,12 +19,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.*;
-
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -34,7 +32,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,20 +58,18 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void findByIdSuccess() throws Exception {
-
-        UserEntity userEntity = buildEntity(1l);
+        UserEntity userEntity = buildEntity(1l,"USER");
         UserDTO userDTO = buildDTO(1l);
 
         when(userRepository.save(userEntity)).thenReturn(userEntity);
         when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
+        when(userRepository.findByEmail(userEntity.getEmail())).thenReturn(Optional.of(userEntity));
 
-        String token = generateToken(userEntity);
+        String token = buildToken(userEntity,"USER");
 
         mockMvc.perform(get("/users/{id}",1l).header("Authorization",token)
                         .contentType(APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(userDTO))
-                        .with(csrf())
-                        .with(SecurityMockMvcRequestPostProcessors.user("james@gmail.com")))
+                        .content(mapper.writeValueAsString(userDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id",is(1)))
                 .andExpect(jsonPath("$.firstName",is("James")))
@@ -83,43 +78,31 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.createdAt",is("2022-03-29 18:58:56")))
                 .andExpect(jsonPath("$.updatedAt",is("2022-03-29 18:58:56")))
                 .andExpect(jsonPath("$.roleId",is(1)));
-
-    }
-
-    private String generateToken(UserEntity userEntity){
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
-        UserDetails userDetails = new User(userRepository.save(userEntity).getEmail(), "admin", Collections.singletonList(authority));
-        return jwtUtil.generateToken(userDetails);
     }
 
     @Test
     @WithMockUser(roles = "USER")
     void findByIdNotFound() throws Exception {
-
-        UserEntity userEntity = buildEntity(55l);
+        UserEntity userEntity = buildEntity(55l,"USER");
 
         when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(55l,"User"));
+        when(userRepository.save(userEntity)).thenReturn(userEntity);
 
-        String token = generateToken(userEntity);
+        String token = buildToken(userEntity,"USER");
 
-        mockMvc.perform(get("/users/{id}",55l)
-                        .header("Authorization",token))
+        mockMvc.perform(get("/users/{id}",55l).header("Authorization",token))
                 .andExpect(status().isNotFound());
 
         ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
                 () -> {userRepository.findById(userEntity.getId());}, "No User found with ID "+userEntity.getId());
 
         Assertions.assertEquals("No User found with ID 55", exceptionThrows.getMessage());
-
     }
-
-
 
     @Test
     @WithMockUser(roles = "USER")
     void findAllSuccess() throws Exception {
-
-        List<UserEntity> userEntities = asList(buildEntity(1l), buildEntity(2l), buildEntity(3l),buildEntity(4l),buildEntity(5l));
+        List<UserEntity> userEntities = asList(buildEntity(1l,"USER"), buildEntity(2l,"USER"), buildEntity(3l,"USER"),buildEntity(4l,"USER"),buildEntity(5l,"USER"));
         List<UserDTO> userDTOS = asList(buildDTO(1l), buildDTO(2l), buildDTO(3l),buildDTO(4l),buildDTO(5l));
 
         when(userRepository.findAll()).thenReturn(userEntities);
@@ -134,14 +117,13 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.[2].id",is(3)))
                 .andExpect(jsonPath("$.[3].id",is(4)))
                 .andExpect(jsonPath("$.[4].id",is(5)));
-
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void deleteSuccess() throws Exception {
 
-        UserEntity userEntity = buildEntity(1l);
+        UserEntity userEntity = buildEntity(1l,"ADMIN");
 
         when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
 
@@ -153,27 +135,29 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void deleteNotFound() throws Exception {
-
-        UserEntity userEntity = buildEntity(22l);
-        when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(userEntity.getId(),"Member"));
+        UserEntity userEntity = buildEntity(22l,"ADMIN");
+        when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(userEntity.getId(),"User"));
 
         mockMvc.perform(delete("/users/{id}",1l))
                 .andExpect(status().isNotFound());
 
         ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
-                () -> {userRepository.findById(userEntity.getId());}, "No Member found with ID "+ userEntity.getId());
+                () -> {userRepository.findById(userEntity.getId());}, "No User found with ID "+ userEntity.getId());
 
-        Assertions.assertEquals("No Member found with ID "+userEntity.getId(), exceptionThrows.getMessage());
-
+        Assertions.assertEquals("No User found with ID "+userEntity.getId(), exceptionThrows.getMessage());
     }
+
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateSuccess() throws Exception{
-        UserEntity userEntity = buildEntity(1l);
+        UserEntity userEntity = buildEntity(1l,"ADMIN");
         UserDTO userDTO = buildDTO(1l);
-       // when(roleRepository.save(buildRole(1l))).thenReturn(buildRole(1l));
+        RoleEntity roleEntity = buildRole(1l,"ADMIN");
+
         when(userRepository.findById(userEntity.getId())).thenReturn(Optional.of(userEntity));
         when(userRepository.save(userEntity)).thenReturn(userEntity);
+
+        when(roleRepository.findById(roleEntity.getId())).thenReturn(Optional.of(roleEntity));
 
         mockMvc.perform(put("/users/{id}",1)
                     .contentType(APPLICATION_JSON)
@@ -185,7 +169,30 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email",is("james@gmail.com")))
                 .andExpect(jsonPath("$.photo",is("james.jpg")))
                 .andExpect(jsonPath("$.createdAt",is("2022-03-29 18:58:56")))
-                .andExpect(jsonPath("$.updatedAt",is("2022-03-29 18:58:56")));
+                .andExpect(jsonPath("$.updatedAt",is("2022-03-29 18:58:56")))
+                .andExpect(jsonPath("$.roleId",is(1)));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void updateNotFound() throws Exception{
+        UserEntity userEntity = buildEntity(55l,"ADMIN");
+        UserDTO userDTO = buildDTO(55l);
+        RoleEntity roleEntity = buildRole(1l,"ADMIN");
+
+        when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(userEntity.getId(),"User"));
+
+        when(roleRepository.findById(roleEntity.getId())).thenReturn(Optional.of(roleEntity));
+
+        mockMvc.perform(put("/users/{id}",55)
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(userDTO)))
+                .andExpect(status().isNotFound());
+
+        ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
+                () -> {userRepository.findById(userEntity.getId());}, "No User found with ID "+ userEntity.getId());
+
+        Assertions.assertEquals("No User found with ID "+userEntity.getId(), exceptionThrows.getMessage());
     }
 
     private UserDTO buildDTO(Long id) {
@@ -202,7 +209,7 @@ public class UserControllerTest {
                 .build();
     }
 
-    private UserEntity buildEntity(Long id){
+    private UserEntity buildEntity(Long id,String role){
         return UserEntity.builder()
                 .id(id)
                 .firstName("James")
@@ -212,17 +219,23 @@ public class UserControllerTest {
                 .photo("james.jpg")
                 .createdAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .updatedAt(LocalDateTime.of(2022,03,29,18,58,56,555))
-                .roleEntity(buildRole(1l))
+                .roleEntity(buildRole(1l,role))
                 .build();
     }
 
-    private RoleEntity buildRole(Long id){
+    private RoleEntity buildRole(Long id, String role){
         return RoleEntity.builder()
                 .id(id)
-                .name("USER")
+                .name(role)
                 .description("Normal user of the system")
                 .createdAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .updatedAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .build();
+    }
+
+    private String buildToken(UserEntity userEntity, String role ){
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+role);
+        UserDetails userDetails = new User(userRepository.save(userEntity).getEmail(), "12345678", Collections.singletonList(authority));
+        return jwtUtil.generateToken(userDetails);
     }
 }

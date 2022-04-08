@@ -65,7 +65,6 @@ public class UserEntity {
                 && Objects.equals(getFirstName(), that.getFirstName())
                 && Objects.equals(getLastName(), that.getLastName())
                 && Objects.equals(getEmail(), that.getEmail())
-                && Objects.equals(getPassword(), that.getPassword())
                 && Objects.equals(getPhoto(), that.getPhoto())
                 && Objects.equals(getRoleEntity(), that.getRoleEntity());
     }
