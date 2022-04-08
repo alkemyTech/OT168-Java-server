@@ -7,6 +7,7 @@ import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.security.jwt.JwtUtil;
 import com.alkemy.ong.web.controllers.UserController.UserDTO;
+import com.amazonaws.services.pinpoint.model.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -193,6 +194,17 @@ public class UserControllerTest {
                 () -> {userRepository.findById(userEntity.getId());}, "No User found with ID "+ userEntity.getId());
 
         Assertions.assertEquals("No User found with ID "+userEntity.getId(), exceptionThrows.getMessage());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void updateBadRequest() throws Exception{
+        UserDTO userDTO = buildDTO(1l);
+        
+        mockMvc.perform(put("/users/{id}",55)
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(userDTO)))
+                .andExpect(status().isBadRequest());
     }
 
     private UserDTO buildDTO(Long id) {
