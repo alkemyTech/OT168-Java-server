@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.alkemy.ong.web.utils.MailUtils.*;
-
 @Component
 public class DefaultMailGateway implements MailGateway {
 
@@ -43,10 +41,10 @@ public class DefaultMailGateway implements MailGateway {
         }
     }
 
-    public String sendMailWithTemplate(String to, String subject, String body){
+    public String sendMailWithTemplate(String to, String subject, String template){
         Email emailTo = new Email(to);
         Email email = new Email(System.getenv("SENGRID_EMAIL"), "ONG - Somos Más");
-        Mail mail = new Mail(email, subject, emailTo, new Content("text/html", TEMPLATE));
+        Mail mail = new Mail(email, subject, emailTo, new Content("text/html", template));
         try {
             Request request = new Request();
             request.setMethod(Method.POST);

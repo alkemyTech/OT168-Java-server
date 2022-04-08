@@ -2,7 +2,8 @@ package com.alkemy.ong.web.utils;
 
 public class MailUtils {
 
-    public static final String TEMPLATE = "<!Doctype html>\n" +
+    public static String buildTemplate(String body){
+        return "<!Doctype html>\n" +
                 "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\"\n" +
                 "  xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n" +
                 "\n" +
@@ -304,7 +305,8 @@ public class MailUtils {
                 "                        <p style=\"text-align: center;\"><span\n" +
                 "                            style=\"font-size: 24px;\"><strong>ONG - Somos Más \uD83D\uDE4C</strong></span></p>\n" +
                 "                        <p style=\"text-align: center;\">&nbsp;</p>\n" +
-                "                        <p style=\"text-align: center;\"><span style=\"font-size: 16px;\">Te damos la bienvenida. <br> ¡Gracias por registrarte!</span></p>\n" +
+                "                        <p style=\"text-align: center;\"><span style=\"font-size: 16px;\">"+body+"</span></p>\n" +
+                "                        <p style=\"text-align: center;\"><span style=\"font-size: 16px;\"><br> ¡Thank you for registering!</span></p>\n" +
                 "                      </div>\n" +
                 "\n" +
                 "                    </td>\n" +
@@ -414,4 +416,5 @@ public class MailUtils {
                 "\n" +
                 "</html>";
     }
+}
 
