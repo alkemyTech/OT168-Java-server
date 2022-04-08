@@ -6,6 +6,7 @@ import com.alkemy.ong.domain.slides.SlidesService;
 import com.alkemy.ong.web.utils.WebUtils;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,12 @@ public class SlidesController {
         return ResponseEntity.ok(slidesDto);
     }
 
+    @PostMapping
+    public ResponseEntity create(@RequestBody SlidesDto slides) throws Exception {
+        SlidesDto slidesDto = toFullDto(slidesService.createSlides(toModel(slides)));
+        return new ResponseEntity<>(slidesDto, HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         slidesService.deleteSlideById(id);
@@ -63,7 +70,7 @@ public class SlidesController {
                 .imageUrl(slides.getImageUrl())
                 .text(slides.getText())
                 .order(slides.getOrder())
-                .organization(slides.getOrganization())
+                .idOrganization(slides.getIdOrganization())
                 .build();
     }
 
@@ -73,7 +80,7 @@ public class SlidesController {
                 .imageUrl(slidesDto.getImageUrl())
                 .text(slidesDto.getText())
                 .order(slidesDto.getOrder())
-                .organization(slidesDto.getOrganization())
+                .idOrganization(slidesDto.getIdOrganization())
                 .build();
     }
 
@@ -91,6 +98,6 @@ public class SlidesController {
         private String imageUrl;
         private String text;
         private Integer order;
-        private Organization organization;
+        private Long idOrganization;
     }
 }

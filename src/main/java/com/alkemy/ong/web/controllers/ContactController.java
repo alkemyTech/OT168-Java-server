@@ -66,7 +66,7 @@ public class ContactController {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class ContactDTO{
+    public static class ContactDTO{
         private Long id;
         @NotEmpty(message = "Name can't be empty")
         private String name;
