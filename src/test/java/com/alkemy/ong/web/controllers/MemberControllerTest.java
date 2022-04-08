@@ -1,4 +1,4 @@
-package com.alkemy.ong;
+package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.pagination.PageModel;
