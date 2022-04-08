@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static com.alkemy.ong.web.utils.WebUtils.*;
@@ -53,26 +52,21 @@ public class TestimonialController {
                 body(pageDTOMapper.toPageDTO(testimonialService.findAll(numberPage), TestimonialDTO.class));
     }
 
-    //TODO: Borrar lineas comentadas si el rework funciona!
     private Testimonial toModel(TestimonialDTO testimonialDTO) {
         return Testimonial.builder()
                 .id(testimonialDTO.getId())
                 .name(testimonialDTO.getName())
                 .image(testimonialDTO.getImage())
                 .content(testimonialDTO.getContent())
-                //.createdAt(testimonialDTO.getCreatedAt())
-                //.updatedAt(testimonialDTO.getUpdatedAt())
                 .build();
     }
-    //TODO: Borrar lineas comentadas si el rework funciona!
+
     private TestimonialDTO toDto(Testimonial testimonial) {
         return TestimonialDTO.builder()
                 .id(testimonial.getId())
                 .name(testimonial.getName())
                 .image(testimonial.getImage())
                 .content(testimonial.getContent())
-                //.createdAt(testimonial.getCreatedAt())
-                //.updatedAt(testimonial.getUpdatedAt())
                 .build();
     }
 
@@ -80,7 +74,6 @@ public class TestimonialController {
         return testimonialList.stream().map(this::toDto).collect(toList());
     }
 
-    //TODO: Borrar lineas comentadas si el rework funciona!
     @Getter
     @Setter
     @Builder
@@ -97,10 +90,6 @@ public class TestimonialController {
 
         @NotNull(message = "Field 'content' is required.")
         private String content;
-
-        //private LocalDateTime createdAt;
-
-        //private LocalDateTime updatedAt;
 
         private String type = "testimonial";
     }
