@@ -2,6 +2,7 @@ package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.contacts.Contact;
 import com.alkemy.ong.domain.contacts.ContactService;
+import com.alkemy.ong.domain.mail.MailService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,11 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/contacts")
 public class ContactController {
     private final ContactService contactService;
+    private final MailService mailService;
 
-    public ContactController(ContactService contactService){
+    public ContactController(ContactService contactService, MailService mailService){
         this.contactService = contactService;
+        this.mailService = mailService;
     }
 
     @GetMapping()
@@ -34,7 +37,11 @@ public class ContactController {
 
     @PostMapping
     public ResponseEntity<ContactDTO> saveContact(@Valid @RequestBody ContactDTO contactDTO){
-        contactDTO = toDTO(contactService.saveContact(toModel(contactDTO)));
+    	String to = contactDTO.getEmail();
+        String subject = "Your contact details have been added!";
+        String body = contactDTO.getMessage();
+        mailService.sendMailWithTemplate(to, subject, body);
+        contactDTO = toDTO(contactService.saveContact(toModel(contactDTO)));        
         return ResponseEntity.created(create("contacts/" + contactDTO.getId())).body(contactDTO);
     }
 

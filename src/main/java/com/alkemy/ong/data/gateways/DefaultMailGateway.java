@@ -3,6 +3,7 @@ package com.alkemy.ong.data.gateways;
 import com.alkemy.ong.domain.exceptions.SendgridException;
 import com.alkemy.ong.domain.mail.MailGateway;
 import com.alkemy.ong.domain.mail.MailRequest;
+import com.alkemy.ong.web.utils.MailUtils;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -41,10 +42,11 @@ public class DefaultMailGateway implements MailGateway {
         }
     }
 
-    public String sendMailWithTemplate(String to, String subject, String template){
+    public String sendMailWithTemplate(String to, String subject, String body){
         Email emailTo = new Email(to);
         Email email = new Email(System.getenv("SENGRID_EMAIL"), "ONG - Somos Más");
-        Mail mail = new Mail(email, subject, emailTo, new Content("text/html", template));
+        Mail mail = new Mail(email, subject, emailTo, new Content("text/html", MailUtils.buildTemplate(body)));
+        mail.personalization.get(0).addSubstitution("%body%", body);
         try {
             Request request = new Request();
             request.setMethod(Method.POST);
