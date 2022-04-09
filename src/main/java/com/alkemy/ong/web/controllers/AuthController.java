@@ -152,20 +152,6 @@ public class AuthController {
 		@Schema(example = "passwordExample")
 		@NotEmpty(message = "The password field is required.")
 		private String password;
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (!(o instanceof LoginDTO)) return false;
-			LoginDTO loginDTO = (LoginDTO) o;
-			return Objects.equals(getEmail(), loginDTO.getEmail())
-					&& Objects.equals(getPassword(), loginDTO.getPassword());
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(getEmail(), getPassword());
-		}
 	}
 
 	@Getter
@@ -174,7 +160,7 @@ public class AuthController {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Schema(description = "User attributes")
-	private static class UserDTO {
+	public static class UserDTO {
 		@Schema(required = true, example = "1")
 		private Long id;
 		@Schema(required = true, example = "Juan")
