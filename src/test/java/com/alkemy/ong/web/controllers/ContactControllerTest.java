@@ -4,21 +4,20 @@ import com.alkemy.ong.data.entities.ContactEntity;
 import com.alkemy.ong.data.repositories.ContactRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.Arrays;
 import java.util.List;
 import static com.alkemy.ong.web.controllers.ContactController.ContactDTO;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,7 +37,7 @@ class ContactControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    private final String url = "/contacts";
+    private final String URL = "/contacts";
 
     @Test
     @WithMockUser(roles = "ADMIN")
@@ -48,7 +47,7 @@ class ContactControllerTest {
                 createContact(2L, "Ignacio Rodriguez", "11334565", "ignacior@gmail.com", "MessageExample2" ));
         when(contactRepository.findAll()).thenReturn(contacts);
 
-        mockMvc.perform(get(url).contentType(APPLICATION_JSON))
+        mockMvc.perform(get(URL).contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id").value(1L))
@@ -66,7 +65,7 @@ class ContactControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void getAllContactsUser() throws Exception {
-        mockMvc.perform(get(url).contentType(APPLICATION_JSON))
+        mockMvc.perform(get(URL).contentType(APPLICATION_JSON))
                 .andExpect(status().isForbidden());
     }
 
@@ -78,7 +77,7 @@ class ContactControllerTest {
         ContactEntity contactSaved = createContact(1L, "Maria Gonzalez", "341232456", "mariagonzalez@gmail.com", "MessageExample3" );
         when(contactRepository.save(contact)).thenReturn(contactSaved);
 
-        mockMvc.perform(post(url)
+        mockMvc.perform(post(URL)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(contactDTO)))
                 .andExpect(status().isCreated())
@@ -91,15 +90,25 @@ class ContactControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void saveContactBadRequest() throws Exception {
-        ContactEntity contact = createContact(null, "", "341232456", "", "MessageExample3" );
-        ContactEntity contactSaved = createContact(1L, "", "341232456", "", "MessageExample3" );
-        ContactDTO contactDTO = createContactDTO("", "341232456", "", "MessageExample3");
-        when(contactRepository.save(contact)).thenReturn(contactSaved);
+        ContactDTO contactDTO = createContactDTO("", "341232456", "juan@gmail.com", "MessageExample3");
 
-        mockMvc.perform(post(url)
+        mockMvc.perform(post(URL)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(contactDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertEquals("[\"Name can't be empty\"]", result.getResponse().getContentAsString()));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void saveContactBadRequestInvalidEmail() throws Exception {
+        ContactDTO contactDTO = createContactDTO("Juan", "341232456", "juan", "MessageExample3");
+
+        mockMvc.perform(post(URL)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(contactDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertEquals("[\"Invalid email\"]", result.getResponse().getContentAsString()));
     }
 
     private ContactEntity createContact(Long id, String name, String phone, String email, String message){

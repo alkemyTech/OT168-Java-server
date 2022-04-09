@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 
 import static com.alkemy.ong.web.controllers.ActivityController.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,7 +37,7 @@ class ActivityControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    private final String url = "/activities";
+    private final String URL = "/activities";
 
     @Test
     @WithMockUser(roles = "ADMIN")
@@ -46,7 +47,7 @@ class ActivityControllerTest {
         ActivityDTO activityDTO = createActivityDTO(null, "nameExample", "ContentExample", "http://example.com/img.jpg");
         when(activityRepository.save(activity)).thenReturn(activitySaved);
 
-        mockMvc.perform(post(url)
+        mockMvc.perform(post(URL)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDTO)))
                 .andExpect(status().isCreated())
@@ -59,21 +60,19 @@ class ActivityControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void saveActivityBadRequest() throws Exception {
-        ActivityEntity activity = createActivity(null, "", "", "http://example.com/img.jpg");
-        ActivityEntity activitySaved = createActivity(1L, "", "", "http://example.com/img.jpg");
-        ActivityDTO activityDTO = createActivityDTO(null,"", "", "http://example.com/img.jpg");
-        when(activityRepository.save(activity)).thenReturn(activitySaved);
+        ActivityDTO activityDTO = createActivityDTO(null,"", "ContentExample", "http://example.com/img.jpg");
 
-        mockMvc.perform(post(url)
+        mockMvc.perform(post(URL)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertEquals("[\"Name can't be empty\"]", result.getResponse().getContentAsString()));
     }
 
     @Test
     @WithMockUser(roles = "USER")
     void saveActivityUser() throws Exception {
-        mockMvc.perform(post(url))
+        mockMvc.perform(post(URL))
                 .andExpect(status().isForbidden());
     }
 
@@ -85,7 +84,7 @@ class ActivityControllerTest {
         when(activityRepository.findById(1L)).thenReturn(Optional.of(activityUpdated));
         when(activityRepository.save(activityUpdated)).thenReturn(activityUpdated);
 
-        mockMvc.perform(put(url + "/1")
+        mockMvc.perform(put(URL + "/1")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDTO)))
                 .andExpect(status().isOk())
@@ -100,41 +99,40 @@ class ActivityControllerTest {
     void updateActivityNotFound() throws Exception {
         when(activityRepository.findById(5L)).thenThrow(new ResourceNotFoundException("The ID doesn't exist."));
         ActivityDTO activityDTO = createActivityDTO(5L, "nameExampleU", "ContentExample", "http://example.com/img.jpg");
-        mockMvc.perform(put(url + "/5")
+        mockMvc.perform(put(URL + "/5")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDTO)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertEquals("The ID doesn't exist.", result.getResolvedException().getMessage()));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateActivityBadRequest() throws Exception {
-        ActivityEntity activityUpdated = createActivity(1L, "", "", "http://example.com/img.jpg");
-        ActivityDTO activityDTO = createActivityDTO(1L, "", "", "http://example.com/img.jpg");
-        when(activityRepository.findById(1L)).thenReturn(Optional.of(activityUpdated));
-        when(activityRepository.save(activityUpdated)).thenReturn(activityUpdated);
-
-        mockMvc.perform(put(url + "/1")
+        ActivityDTO activityDTO = createActivityDTO(1L, "NameExample", "", "http://example.com/img.jpg");
+        mockMvc.perform(put(URL + "/1")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertEquals("[\"Content can't be empty\"]", result.getResponse().getContentAsString()));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void updateActivityBadID() throws Exception {
         ActivityDTO activityDTO = createActivityDTO(1L, "nameExampleU", "ContentExample", "http://example.com/img.jpg");
-        mockMvc.perform(put(url + "/2")
+        mockMvc.perform(put(URL + "/2")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertEquals("PathId does not match with RequestBody ID.", result.getResolvedException().getMessage()));
     }
 
 
     @Test
     @WithMockUser(roles = "USER")
     void updateActivityUser() throws Exception {
-        mockMvc.perform(put(url + "/1"))
+        mockMvc.perform(put(URL + "/1"))
                 .andExpect(status().isForbidden());
     }
 
