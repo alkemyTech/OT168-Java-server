@@ -51,39 +51,33 @@ public class AuthControllerTest {
     @MockBean
     AuthenticationManager authenticationManager;
 
-    @Autowired
+    @MockBean
     JwtUtil jwtUtil;
 
     @Autowired
     ObjectMapper mapper;
 
     @Test
-    @WithMockUser(roles = "USER")
     void loginSuccess() throws Exception {
 
         LoginDTO loginDTO = buildLoginDTO();
         Authentication authenticationTest = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
 
+        String token = buildToken(loginDTO.getEmail(),"User");
+
         when(userDetailsService.loadUserByUsername(loginDTO.getEmail())).thenReturn(buildUserDetails("USER",loginDTO.getEmail()));
         when(authenticationManager.authenticate(authenticationTest)).thenReturn(authenticationTest);
-
-        String token = buildToken(loginDTO.getEmail(), "USER");
+        when(jwtUtil.generateToken(buildUserDetails("USER",loginDTO.getEmail()))).thenReturn(token);
 
         mockMvc.perform(post("/auth/login")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(loginDTO)))
                 .andExpect(status().isOk())
-                //.andExpect(jsonPath("$.jwt",is(buildToken(loginDTO.getEmail(), "USER"))));
                 .andExpect(jsonPath("$.jwt",is(token)));
-
     }
-/*
-	public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception{
-		String jwt =login(loginDTO.email,loginDTO.password);
-		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
- */
-    private RegistrationDTO buildDTO(Long id) {
+
+    private RegistrationDTO buildRegistrationDTO(Long id) {
         return null;
     }
 
