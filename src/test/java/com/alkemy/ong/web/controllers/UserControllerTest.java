@@ -82,14 +82,15 @@ public class UserControllerTest {
     void findByIdNotFound() throws Exception {
         UserEntity userEntity = buildEntity(55l,"USER");
 
-        when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(55l,"User"));
+        when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(userEntity.getId(),"User"));
+        when(userRepository.findByEmail(userEntity.getEmail())).thenReturn(Optional.of(userEntity));
         when(userRepository.save(userEntity)).thenReturn(userEntity);
 
         String token = buildToken(userEntity,"USER");
 
-        mockMvc.perform(get("/users/{id}",55l).header("Authorization",token))
+        mockMvc.perform(get("/users/{id}",55).header("Authorization",token))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("User not found"));
+                .andExpect(content().string("No User found with ID 55"));
     }
 
     @Test
@@ -131,9 +132,9 @@ public class UserControllerTest {
         UserEntity userEntity = buildEntity(22l,"ADMIN");
         when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(userEntity.getId(),"User"));
 
-        mockMvc.perform(delete("/users/{id}",1l))
+        mockMvc.perform(delete("/users/{id}",22))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("User not found"));
+                .andExpect(content().string("No User found with ID 22"));
     }
 
     @Test

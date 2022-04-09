@@ -77,7 +77,7 @@ public class DefaultUserGateway implements UserGateway {
 	@Override
 	public void deleteById(Long id) {
 		UserEntity userEntity = userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+				.orElseThrow(() -> new ResourceNotFoundException(id,"User"));
 		userEntity.setDeleted(true);
 		userRepository.save(userEntity);
 	}
