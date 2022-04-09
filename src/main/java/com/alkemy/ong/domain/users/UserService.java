@@ -15,7 +15,8 @@ public class UserService {
 
     private final String SUBJECT = "%s, registration was successful";
     private final String BODY = "<br>Welcome to Somas Mas ONG, now you are part of our family." +
-                                "<br>%s, your Username is:<br>%s";
+                                "<br>%s, your Username is:<br>%s"+
+                                "<br><br><b>¡Thank you for registering!</b><br>";
 
 
 	public UserService(UserGateway userGateway,MailService mailService) {
@@ -52,6 +53,6 @@ public class UserService {
     private void sendMailWithTemplate(User user){
         String subject = String.format(SUBJECT,user.getFirstName());
         String body = String.format(BODY, user.getFirstName(), user.getEmail());
-        mailService.sendMailWithTemplate(user.getEmail(), subject, buildTemplate(body));
+        mailService.sendMailWithTemplate(user.getEmail(), subject, body);
     }
 }

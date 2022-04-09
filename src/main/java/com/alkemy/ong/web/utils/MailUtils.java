@@ -305,9 +305,7 @@ public class MailUtils {
                 "                        <p style=\"text-align: center;\"><span\n" +
                 "                            style=\"font-size: 24px;\"><strong>ONG - Somos Más \uD83D\uDE4C</strong></span></p>\n" +
                 "                        <p style=\"text-align: center;\">&nbsp;</p>\n" +
-                "                        <p style=\"text-align: center;\"><span style=\"font-size: 16px;\"><b>Message: </b></span></p>" +
                 "                        <p style=\"text-align: center;\"><span style=\"font-size: 16px;\">%body%</span></p>\n" +
-                "                        <p style=\"text-align: center;\"><span style=\"font-size: 16px;\"><br> ¡Thank you for registering!</span></p>\n" +
                 "                      </div>\n" +
                 "\n" +
                 "                    </td>\n" +
