@@ -39,7 +39,7 @@ public class ContactController {
     public ResponseEntity<ContactDTO> saveContact(@Valid @RequestBody ContactDTO contactDTO){
     	String to = contactDTO.getEmail();
         String subject = "Your contact details have been added!";
-        String body = contactDTO.getMessage();
+        String body = "<br><strong>Message:</strong><br>"+contactDTO.getMessage();
         mailService.sendMailWithTemplate(to, subject, body);
         contactDTO = toDTO(contactService.saveContact(toModel(contactDTO)));        
         return ResponseEntity.created(create("contacts/" + contactDTO.getId())).body(contactDTO);
