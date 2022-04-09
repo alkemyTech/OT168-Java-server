@@ -41,6 +41,8 @@ import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,6 +56,12 @@ public class AuthControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper mapper;
+
+    @Autowired
+    JwtUtil jwtUtil;
+
     @MockBean
     UserRepository userRepository;
 
@@ -61,34 +69,29 @@ public class AuthControllerTest {
     UserDetailsService userDetailsService;
 
     @MockBean
+    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
+
+    @MockBean
     AuthenticationManager authenticationManager;
 
     @MockBean
-    JwtUtil jwtUtil;
-
-    @MockBean
     RoleRepository roleRepository;
-
-    @Autowired
-    ObjectMapper mapper;
 
     @Test
     void loginSuccess() throws Exception {
 
         LoginDTO loginDTO = buildLoginDTO();
-        Authentication authenticationTest = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+        usernamePasswordAuthenticationToken.setDetails(loginDTO);
 
-        String token = buildToken(loginDTO.getEmail(),"USER");
-
-        when(authenticationManager.authenticate(authenticationTest)).thenReturn(authenticationTest);
-        when(jwtUtil.generateToken(buildUserDetails("USER",loginDTO.getEmail()))).thenReturn(token);
+        when(userDetailsService.loadUserByUsername(loginDTO.getEmail())).thenReturn(buildUserDetails("USER",loginDTO.getEmail()));
+        when(usernamePasswordAuthenticationToken.isAuthenticated()).thenReturn(true);
+        when(authenticationManager.authenticate(any())).thenReturn(any());
 
         mockMvc.perform(post("/auth/login")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(loginDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.jwt",is(token)));
+                .andExpect(jsonPath("jwt",is(buildToken(loginDTO.getEmail(),"USER"))));
     }
 
     @Test
@@ -101,12 +104,8 @@ public class AuthControllerTest {
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(loginDTO)))
-                .andExpect(status().isNotFound());
-
-        ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
-                () -> {userDetailsService.loadUserByUsername(loginDTO.getEmail());}, "User not found");
-
-        Assertions.assertEquals("User not found", exceptionThrows.getMessage());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("User not found"));
     }
 
     @Test
@@ -114,18 +113,16 @@ public class AuthControllerTest {
         UserEntity entityRequest = builUserdEntity(null,"USER");
         UserEntity entityResponse = builUserdEntity(1l,"USER");
         RoleEntity roleEntity = buildRole(2l,"USER");
-        UserDTO userDTO = buildUserDTO(1l);
         RegistrationDTO registrationDTO = buildRegistrationDTO();
-        Authentication authenticationTest = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(registrationDTO.getEmail(), registrationDTO.getPassword()));
 
-        String token = buildToken(registrationDTO.getEmail(),"USER");
 
         when(userRepository.save(entityRequest)).thenReturn(entityResponse);
         when(userRepository.findByEmail(entityRequest.getEmail())).thenReturn(Optional.empty());
         when(roleRepository.findById(roleEntity.getId())).thenReturn(Optional.of(roleEntity));
-        when(authenticationManager.authenticate(authenticationTest)).thenReturn(authenticationTest);
-        when(jwtUtil.generateToken(buildUserDetails("USER",userDTO.getEmail()))).thenReturn(token);
+        when(userDetailsService.loadUserByUsername(registrationDTO.getEmail())).thenReturn(buildUserDetails("USER",registrationDTO.getEmail()));
+        when(usernamePasswordAuthenticationToken.isAuthenticated()).thenReturn(true);
+        when(authenticationManager.authenticate(any())).thenReturn(any());
+
 
         mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -135,8 +132,7 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.firstName",is("James")))
                 .andExpect(jsonPath("$.lastName",is("Potter")))
                 .andExpect(jsonPath("$.email",is("james@gmail.com")))
-                .andExpect(jsonPath("$.photo",is("james.jpg")))
-                .andExpect(header().string("Authorization",token));
+                .andExpect(jsonPath("$.photo",is("james.jpg")));
     }
 
     @Test
@@ -184,28 +180,22 @@ public class AuthControllerTest {
     void meSuccess() throws Exception {
         UserDTO userDTO = buildUserDTO(1l);
         UserEntity userEntity = builUserdEntity(1l,"USER");
-        RoleEntity roleEntity = buildRole(2l,"USER");
-        Authentication authenticationTest = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDTO.getEmail(), "12345678"));
 
         String token = buildToken(userDTO.getEmail(),"USER");
 
-        when(authenticationManager.authenticate(authenticationTest)).thenReturn(authenticationTest);
         when(userRepository.findByEmail(userDTO.getEmail())).thenReturn(Optional.of(userEntity));
-        when(jwtUtil.extractEmail(token)).thenReturn(userDTO.getEmail());
-        when(jwtUtil.generateToken(buildUserDetails("User",userDTO.getEmail()))).thenReturn(token);
+        when(usernamePasswordAuthenticationToken.isAuthenticated()).thenReturn(true);
 
         mockMvc.perform(get("/auth/me").header("Authorization",token)
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk());
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(userDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id",is(1)))
+                .andExpect(jsonPath("$.firstName",is("James")))
+                .andExpect(jsonPath("$.lastName",is("Potter")))
+                .andExpect(jsonPath("$.email",is("james@gmail.com")))
+                .andExpect(jsonPath("$.photo",is("james.jpg")));
     }
-
-    /*	public ResponseEntity<UserDTO> getAuthenticatedUserDetails(@RequestHeader(value = "Authorization") String authorizationHeader) {
-		String email = jwtUtil.extractEmail(authorizationHeader);
-		UserDTO useDTO = toDTO(userService.findByEmail(email));
-		return ResponseEntity.ok().body(useDTO);
-	}
-	*/
 
     private RegistrationDTO buildRegistrationDTO() {
         return RegistrationDTO.builder()
