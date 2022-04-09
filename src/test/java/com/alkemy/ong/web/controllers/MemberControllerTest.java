@@ -6,7 +6,6 @@ import com.alkemy.ong.data.repositories.MemberRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.web.controllers.MemberController.MemberDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,12 +22,10 @@ import java.util.Optional;
 
 import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -80,7 +77,8 @@ public class MemberControllerTest {
         mockMvc.perform(post("/members")
                         .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(memberDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0]",is("Name field cannot be empty or be null.")));
     }
 
     @Test
@@ -102,12 +100,8 @@ public class MemberControllerTest {
         when(memberRepository.findById(22l)).thenThrow(new ResourceNotFoundException(22l,"Member"));
 
         mockMvc.perform(delete("/members/{id}",22))
-                .andExpect(status().isNotFound());
-
-        ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
-                () -> {memberRepository.findById(22l);}, "No Member found with ID 22");
-
-        Assertions.assertEquals("No Member found with ID 22", exceptionThrows.getMessage());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No Member found with ID 22"));
     }
 
     @Test
@@ -147,12 +141,8 @@ public class MemberControllerTest {
         mockMvc.perform(put("/members/{id}",22)
                         .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(memberDTO)))
-                .andExpect(status().isNotFound());
-
-        ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
-                () -> {memberRepository.findById(memberDTO.getId());}, "No Member found with ID "+memberDTO.getId());
-
-        Assertions.assertEquals("No Member found with ID "+memberDTO.getId(), exceptionThrows.getMessage());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No Member found with ID 22"));
     }
 
     @Test
@@ -166,7 +156,8 @@ public class MemberControllerTest {
         mockMvc.perform(put("/members/{id}",1)
                         .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(memberDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0]",is("Name field cannot be empty or be null.")));
     }
 
     @Test
