@@ -7,7 +7,6 @@ import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.security.jwt.JwtUtil;
 import com.alkemy.ong.web.controllers.UserController.UserDTO;
-import com.amazonaws.services.pinpoint.model.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

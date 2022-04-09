@@ -3,6 +3,7 @@ package com.alkemy.ong.web.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -143,14 +144,28 @@ public class AuthController {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Schema(description = "Attributes required to login")
-	private static class LoginDTO {
+	public static class LoginDTO {
 		@Schema(required = true, example = "juanperez@gmail.com")
 		@Email(message = "This field must be an email")
 		@NotEmpty(message = "The email field is required.")
 		private String email;
 		@Schema(example = "passwordExample")
 		@NotEmpty(message = "The password field is required.")
-		private String password;	
+		private String password;
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (!(o instanceof LoginDTO)) return false;
+			LoginDTO loginDTO = (LoginDTO) o;
+			return Objects.equals(getEmail(), loginDTO.getEmail())
+					&& Objects.equals(getPassword(), loginDTO.getPassword());
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(getEmail(), getPassword());
+		}
 	}
 
 	@Getter
@@ -178,7 +193,7 @@ public class AuthController {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Schema(description = "User attributes to register")
-	private static class RegistrationDTO {
+	public static class RegistrationDTO {
 
 		@NotEmpty(message = "The 'name' field is required.")
 		@Schema(required = true, example = "Juan")
