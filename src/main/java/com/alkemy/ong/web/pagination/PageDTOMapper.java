@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class PageDTOMapper<T,S>{
@@ -17,17 +20,14 @@ public class PageDTOMapper<T,S>{
 
     public PageDTO<T> toPageDTO(PageModel<S> pageModel, Class<T> DTOClass){
         PageDTO<T> pageDTO = new PageDTO<>();
-        List<T> bodyDTO = new ArrayList<>();
 
+        List<T> bodyDTO = pageModel.getBody()
+                .stream()
+                .map(m->toDTO(m,DTOClass))
+                .collect(toList());
+        pageDTO.setBody(bodyDTO);
         pageDTO.setPreviuosPage(pageModel.getPreviousPage());
         pageDTO.setNextPage(pageModel.getNextPage());
-
-        for(S model : pageModel.getBody()){
-            T DTO = toDTO(model,DTOClass);
-            bodyDTO.add(DTO);
-        }
-
-        pageDTO.setBody(bodyDTO);
 
         return pageDTO;
     }
