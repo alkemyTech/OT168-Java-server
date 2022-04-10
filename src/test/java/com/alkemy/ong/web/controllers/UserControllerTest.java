@@ -7,9 +7,7 @@ import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.security.jwt.JwtUtil;
 import com.alkemy.ong.web.controllers.UserController.UserDTO;
-import com.amazonaws.services.pinpoint.model.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,12 +28,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -86,18 +82,15 @@ public class UserControllerTest {
     void findByIdNotFound() throws Exception {
         UserEntity userEntity = buildEntity(55l,"USER");
 
-        when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(55l,"User"));
+        when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(userEntity.getId(),"User"));
+        when(userRepository.findByEmail(userEntity.getEmail())).thenReturn(Optional.of(userEntity));
         when(userRepository.save(userEntity)).thenReturn(userEntity);
 
         String token = buildToken(userEntity,"USER");
 
-        mockMvc.perform(get("/users/{id}",55l).header("Authorization",token))
-                .andExpect(status().isNotFound());
-
-        ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
-                () -> {userRepository.findById(userEntity.getId());}, "No User found with ID "+userEntity.getId());
-
-        Assertions.assertEquals("No User found with ID 55", exceptionThrows.getMessage());
+        mockMvc.perform(get("/users/{id}",55).header("Authorization",token))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No User found with ID 55"));
     }
 
     @Test
@@ -139,13 +132,9 @@ public class UserControllerTest {
         UserEntity userEntity = buildEntity(22l,"ADMIN");
         when(userRepository.findById(userEntity.getId())).thenThrow(new ResourceNotFoundException(userEntity.getId(),"User"));
 
-        mockMvc.perform(delete("/users/{id}",1l))
-                .andExpect(status().isNotFound());
-
-        ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
-                () -> {userRepository.findById(userEntity.getId());}, "No User found with ID "+ userEntity.getId());
-
-        Assertions.assertEquals("No User found with ID "+userEntity.getId(), exceptionThrows.getMessage());
+        mockMvc.perform(delete("/users/{id}",22))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No User found with ID 22"));
     }
 
     @Test
@@ -188,12 +177,8 @@ public class UserControllerTest {
         mockMvc.perform(put("/users/{id}",55)
                         .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(userDTO)))
-                .andExpect(status().isNotFound());
-
-        ResourceNotFoundException exceptionThrows = assertThrows(ResourceNotFoundException.class,
-                () -> {userRepository.findById(userEntity.getId());}, "No User found with ID "+ userEntity.getId());
-
-        Assertions.assertEquals("No User found with ID "+userEntity.getId(), exceptionThrows.getMessage());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No User found with ID 55"));
     }
 
     @Test
@@ -204,7 +189,8 @@ public class UserControllerTest {
         mockMvc.perform(put("/users/{id}",55)
                         .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(userDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("PathId does not match with RequestBody ID."));
     }
 
     private UserDTO buildDTO(Long id) {

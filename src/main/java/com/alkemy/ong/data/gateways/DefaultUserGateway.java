@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.data.entities.RoleEntity;
 import com.alkemy.ong.data.repositories.RoleRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.exceptions.WebRequestException;
@@ -76,23 +77,34 @@ public class DefaultUserGateway implements UserGateway {
 	@Override
 	public void deleteById(Long id) {
 		UserEntity userEntity = userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+				.orElseThrow(() -> new ResourceNotFoundException(id,"User"));
 		userEntity.setDeleted(true);
 		userRepository.save(userEntity);
 	}
 
 	private User toModel(UserEntity userEntity) {
-		return User.builder().id(userEntity.getId()).firstName(userEntity.getFirstName())
-				.lastName(userEntity.getLastName()).email(userEntity.getEmail()).password(userEntity.getPassword())
-				.photo(userEntity.getPhoto()).createdAt(userEntity.getCreatedAt()).updatedAt(userEntity.getUpdatedAt())
-				.roleId(userEntity.getRoleEntity().getId()).build();
+		return User.builder()
+				.id(userEntity.getId())
+				.firstName(userEntity.getFirstName())
+				.lastName(userEntity.getLastName())
+				.email(userEntity.getEmail())
+				.password(userEntity.getPassword())
+				.photo(userEntity.getPhoto())
+				.createdAt(userEntity.getCreatedAt())
+				.updatedAt(userEntity.getUpdatedAt())
+				.roleId(userEntity.getRoleEntity().getId())
+				.build();
 	}
 
 	private UserEntity toEntity(User userModel) {
-		return UserEntity.builder().id(userModel.getId()).firstName(userModel.getFirstName())
-				.lastName(userModel.getLastName()).email(userModel.getEmail())
+		return UserEntity.builder()
+				.id(userModel.getId())
+				.firstName(userModel.getFirstName())
+				.lastName(userModel.getLastName())
+				.email(userModel.getEmail())
 				.password(passwordEncoder.encode(userModel.getPassword()))
-				.roleEntity(roleRepository.findById(userModel.getRoleId()).get()).photo(userModel.getPhoto())
+				.roleEntity(roleRepository.findById(userModel.getRoleId()).get())
+				.photo(userModel.getPhoto())
 				.createdAt(userModel.getCreatedAt()).build();
 	}
 
