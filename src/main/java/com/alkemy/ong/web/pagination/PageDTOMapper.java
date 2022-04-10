@@ -25,8 +25,8 @@ public class PageDTOMapper<T,S>{
                 .stream()
                 .map(m->toDTO(m,DTOClass))
                 .collect(toList());
-        pageDTO.setBody(bodyDTO);
 
+        pageDTO.setBody(bodyDTO);
         pageDTO.setPreviuosPage(pageModel.getPreviousPage());
         pageDTO.setNextPage(pageModel.getNextPage());
 
