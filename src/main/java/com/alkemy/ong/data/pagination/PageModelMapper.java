@@ -20,7 +20,7 @@ public class PageModelMapper<T, S> {
 
     public PageModel<T> toPageModel(PageModel<S> pageEntity,Class<T> modelClass){
         PageModel<T> pageModel = new PageModel<T>();
-        
+
         List<T> bodyModel = pageEntity.getBody()
                 .stream()
                 .map(e->toModel(e,modelClass))
