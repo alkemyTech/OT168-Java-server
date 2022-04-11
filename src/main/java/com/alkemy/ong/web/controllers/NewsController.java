@@ -7,6 +7,7 @@ import com.alkemy.ong.web.pagination.PageDTO;
 import com.alkemy.ong.web.pagination.PageDTOMapper;
 import com.alkemy.ong.web.utils.WebUtils;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -103,24 +104,31 @@ public class NewsController {
     @NoArgsConstructor
     public static class NewsDTO {
 
-        @ApiModelProperty(value = "ID", required = true)
+        @Schema(example = "1", required = true)
         private Long newsId;
-        @ApiModelProperty(value = "Name", required = true)
+
+        @Schema(example = "Guía sobre ciberacoso sexual a niños", required = true)
         @NotEmpty(message = "The name field cannot be empty.")
         private String name;
-        @ApiModelProperty(value = "Content", required = true)
+
+        @Schema(example = "Para construir una cultura preventiva acerca del delito de acoso a niños a través de medios digitales.", required = true)
         @NotEmpty(message = "The content field cannot be empty.")
         private String content;
-        @ApiModelProperty(value = "Image", required = true)
+
+        @Schema(example = "https://www.laopinion.com.co/sites/default/files/2022-04/ciberacoso1.jpg", required = true)
         @NotEmpty(message = "The image field cannot be empty.")
         private String image;
-        @ApiModelProperty(value = "Creation Date", required = true)
+
+        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-05 00:15:48", required = true)
         private LocalDateTime createdAt;
-        @ApiModelProperty(value = "Modification Date", required = true)
+
+        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-05 00:15:48", required = true)
         private LocalDateTime updatedAt;
-        @ApiModelProperty(value = "Type", required = true)
+
+        @Schema(example = "Type", required = true)
         private String type = "news";
-        @ApiModelProperty(value = "Comments", required = true)
+
+        @Schema(example = "Comments", required = true)
         private List<CommentEntity> comments = new ArrayList<>();
     }
 }
