@@ -4,6 +4,7 @@ import com.alkemy.ong.domain.contacts.Contact;
 import com.alkemy.ong.domain.contacts.ContactService;
 import com.alkemy.ong.domain.mail.MailService;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 import static java.net.URI.create;
 import static java.util.stream.Collectors.toList;
 
+@Tag(name = "5. Contacts")
 @RestController
 @RequestMapping("/contacts")
 public class ContactController {

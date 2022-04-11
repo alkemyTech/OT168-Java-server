@@ -1,10 +1,5 @@
 package com.alkemy.ong.web.controllers;
 
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -35,7 +30,7 @@ import com.alkemy.ong.domain.users.UserService;
 
 import lombok.*;
 
-@Tag(name = "Authentication")
+@Tag(name = "1. Authentication")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -70,6 +65,7 @@ public class AuthController {
 		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
 	}
 
+	@Operation(summary = "Personal information of the user")
 	@GetMapping("/me")
 	public ResponseEntity<UserDTO> getAuthenticatedUserDetails(@RequestHeader(value = "Authorization") String authorizationHeader) {
 		String email = jwtUtil.extractEmail(authorizationHeader);

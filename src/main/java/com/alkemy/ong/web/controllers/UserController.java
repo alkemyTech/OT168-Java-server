@@ -6,6 +6,7 @@ import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@Tag(name = "4. Users")
 @RestController
 @RequestMapping("/users")
 public class UserController {

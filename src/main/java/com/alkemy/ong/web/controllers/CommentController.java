@@ -1,18 +1,14 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentService;
-import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
-import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
-import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,7 +21,8 @@ import static java.util.stream.Collectors.toList;
 
 import static com.alkemy.ong.web.utils.WebUtils.*;
 
-@Controller
+@Tag(name = "3. Comments")
+@RestController
 @RequestMapping("/comments")
 public class CommentController {
 

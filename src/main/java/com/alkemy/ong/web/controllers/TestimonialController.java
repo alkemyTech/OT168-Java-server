@@ -4,8 +4,8 @@ import com.alkemy.ong.domain.testimonial.Testimonial;
 import com.alkemy.ong.domain.testimonial.TestimonialService;
 import com.alkemy.ong.web.pagination.PageDTO;
 import com.alkemy.ong.web.pagination.PageDTOMapper;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static com.alkemy.ong.web.utils.WebUtils.*;
 
+@Tag(name = "7. Testimonials")
 @RestController
 @RequestMapping("/testimonials")
 public class TestimonialController {
