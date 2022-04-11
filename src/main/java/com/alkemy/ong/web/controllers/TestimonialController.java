@@ -5,6 +5,7 @@ import com.alkemy.ong.domain.testimonial.TestimonialService;
 import com.alkemy.ong.web.pagination.PageDTO;
 import com.alkemy.ong.web.pagination.PageDTOMapper;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,17 +81,22 @@ public class TestimonialController {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class TestimonialDTO {
+
+        @Schema(example = "1", required = true)
         private Long id;
 
+        @Schema(example = "Testimonio", required = true)
         @NotNull(message = "Field 'name' is required.")
         private String name;
 
-        @ApiModelProperty(value = "Image")
+        @Schema(example = "testimonio.jpg", required = true)
         private String image;
 
+        @Schema(example = "Compartimos las historias y los testimonios.", required = true)
         @NotNull(message = "Field 'content' is required.")
         private String content;
 
+        @Schema(example = "testimonial", required = true)
         private String type = "testimonial";
     }
 }

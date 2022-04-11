@@ -4,6 +4,7 @@ import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.domain.organization.Organization;
 import com.alkemy.ong.domain.organization.OrganizationService;
 import com.alkemy.ong.web.utils.WebUtils;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
@@ -92,7 +93,9 @@ public class OrganizationController {
     @Data
     @Builder
     public static class OrganizationDTO{
+        @Schema(example = "1", required = true)
         private Long idOrganization;
+
         private String name;
         private String image;
         private Long phone;
@@ -109,14 +112,31 @@ public class OrganizationController {
     @Data
     @Builder
     public static class OrganizationSimpleDTO{
+
+        @Schema(example = "1", required = true)
         private Long idOrganization;
+
+        @Schema(example = "Somos más", required = true)
         private String name;
+
+        @Schema(example = "organization.jpg", required = true)
         private String image;
+
+        @Schema(example = "2222-2222", required = true)
         private Long phone;
+
+        @Schema(example = "Balcarce 50", required = true)
         private String address;
+
+        @Schema(example = "www.facebook.com", required = true)
         private String facebookUrl;
+
+        @Schema(example = "www.linkedin.com", required = true)
         private String linkedinUrl;
+
+        @Schema(example = "www.instagram.com", required = true)
         private String instagramUrl;
+
         private List<SlidesEntity> slidesEntityList;
     }
 }

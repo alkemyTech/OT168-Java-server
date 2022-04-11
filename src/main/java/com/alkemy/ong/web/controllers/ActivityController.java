@@ -4,6 +4,7 @@ import com.alkemy.ong.domain.activities.Activity;
 import com.alkemy.ong.domain.activities.ActivityService;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,14 +64,26 @@ public class ActivityController {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ActivityDTO {
+
+        @Schema(example = "1", required = true)
         private Long id;
+
+        @Schema(example = "Colonia de Vacaciones", required = true)
         @NotEmpty(message = "Name can't be empty")
         private String name;
+
+        @Schema(example = "Pileta de natación para los más chicos.", required = true)
         @NotEmpty(message = "Content can't be empty")
         private String content;
+
+        @Schema(example = "pileta.jpg", required = true)
         private String image;
+
+        @Schema(example = "2022-04-05 00:15:48", required = true)
         @JsonFormat(pattern="dd-MM-yyyy hh:mm")
         private LocalDateTime createdAt;
+
+        @Schema(example = "2022-04-05 00:15:48", required = true)
         @JsonFormat(pattern="dd-MM-yyyy hh:mm")
         private LocalDateTime updatedAt;
     }
