@@ -50,11 +50,10 @@ public class AuthController {
 	@Operation(summary = "Login with email and password")
 	@ApiResponses( value = {
 			@ApiResponse(responseCode = "200", description = "User logged in successfully", content = { @Content( schema = @Schema(implementation = LoginDTO.class))}),
-			@ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = LoginDTO.class),
+			@ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = String.class),
 					examples = @ExampleObject(value = "User not found"))}),
-			@ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = LoginDTO.class),
-					examples = @ExampleObject(value = "\"The email field is required.\" Or \"The password field is required.\" Or \"This field must be an email\" Or \"ok: false\"\n" +
-							"}")
+			@ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = String.class),
+					examples = @ExampleObject(value = "\"The email field is required.\" Or \"The password field is required.\" Or \"This field must be an email\" Or \"ok: false\"")
 					)
 				}
 			)
@@ -77,7 +76,7 @@ public class AuthController {
 	@Operation(summary = "New user registration")
 	@ApiResponses( value = {
 			@ApiResponse(responseCode = "201", description = "User created successfully",  content = { @Content( schema = @Schema(implementation = UserDTO.class))}),
-			@ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = RegistrationDTO.class),
+			@ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = String.class),
 					examples = @ExampleObject(value = "\"The 'last name' field is required.\" Or \"The 'last name' field is required.\" Or \"The 'email' field is required.\" " +
 									"Or \"Password must be at least 8 characters long.\" Or \"This field must be an email.\" Or \"The passwords don't match.\" " +
 									"Or \"Email already exists.\"")
@@ -141,7 +140,7 @@ public class AuthController {
 	@NoArgsConstructor
 	@Schema(description = "Attributes required to login")
 	public static class LoginDTO {
-		@Schema(required = true, example = "juanperez@gmail.com")
+		@Schema(example = "juanperez@gmail.com")
 		@Email(message = "This field must be an email")
 		@NotEmpty(message = "The email field is required.")
 		private String email;
@@ -157,7 +156,7 @@ public class AuthController {
 	@NoArgsConstructor
 	@Schema(description = "User attributes")
 	public static class UserDTO {
-		@Schema(required = true, example = "1")
+		@Schema(example = "1")
 		private Long id;
 		@Schema(required = true, example = "Juan")
 		private String firstName;

@@ -6,6 +6,13 @@ import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 
@@ -37,6 +44,8 @@ public class UserController {
         this.jwtUtil = jwtUtil;
     }
 
+    @Operation(summary = "Show a list of users registered")
+    @ApiResponses( value = {@ApiResponse(responseCode = "200", description = "Show a list of users registered")})
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         return ResponseEntity.ok()
@@ -45,21 +54,42 @@ public class UserController {
                 .map(this::toDTO)
                 .collect(toList()));
     }
-    
+
+    @Operation(summary = "Delete a user")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "204", description = "User deleted successfully", content = { @Content( schema = @Schema(implementation = UserDTO.class))}),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "User not found"))}),
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@Parameter(example = "1")@PathVariable Long id){
         userService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Operation(summary = "Update a user")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully", content = { @Content( schema = @Schema(implementation = UserDTO.class))}),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "User not found"))}),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "\"The email field is required.\" Or \"The password field is required.\" Or \"This field must be an email\"")
+            )})
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id){
+    public ResponseEntity<UserDTO> update(@Parameter(example = "1")@Valid @RequestBody UserDTO userDTO, @PathVariable Long id){
         WebUtils.validateDtoIdWithBodyId(id,userDTO.getId());
         return ResponseEntity.ok().body(toDTO(userService.update(toModel(userDTO))));
     }
-    
+
+    @Operation(summary = "Find a user by ID")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "200", description = "Show details of the user", content = { @Content( schema = @Schema(implementation = UserDTO.class))}),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "User not found"))}),
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<UserDTO> findById(@Parameter(example = "1")@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
         verifyUser(id, token);
         return ResponseEntity.ok(toDTO(userService.findById(id)));
     }
@@ -102,17 +132,25 @@ public class UserController {
     @Getter
     @Setter
     @Builder
+    @Schema(description = "User attributes")
     public static class UserDTO {
+        @Schema(example = "1")
         private Long id;
+        @Schema(required = true, example = "Juan")
         private String firstName;
+        @Schema(required = true, example = "Perez")
         private String lastName;
+        @Schema(required = true, example = "juanperez@gmail.com")
         private String email;
+        @Schema(required = true, example = "passwordExample")
         private String password;
+        @Schema(example = "http://photoExample.com")
         private String photo;
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime createdAt;
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime updatedAt;
+        @Schema(example = "USER")
         private Long roleId;
     }
 }

@@ -6,7 +6,13 @@ import com.alkemy.ong.domain.news.NewsService;
 import com.alkemy.ong.web.pagination.PageDTO;
 import com.alkemy.ong.web.pagination.PageDTOMapper;
 import com.alkemy.ong.web.utils.WebUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -35,6 +41,8 @@ public class NewsController {
         this.pageDTOMapper = pageMapper;
     }
 
+    @Operation(summary = "Show a list of news, using pagination")
+    @ApiResponses( value = {@ApiResponse(responseCode = "200", description = "Show a list of news")})
     @GetMapping
     public ResponseEntity<PageDTO<NewsDTO>> findAll(@RequestParam("page") int numberPage) {
         WebUtils.validatePageNumber(numberPage);
@@ -43,31 +51,65 @@ public class NewsController {
                         .toPageDTO(newsService.findAll(numberPage), NewsDTO.class));
     }
 
+    @Operation(summary = "Find a news by ID")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "200", description = "Show details of the news", content = { @Content( schema = @Schema(implementation = NewsDTO.class))}),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "News not found"))}),
+    })
     @GetMapping("/{newsId}")
-    public ResponseEntity<NewsDTO> findById(@PathVariable("newsId") Long newsId) {
+    public ResponseEntity<NewsDTO> findById(@Parameter(example = "1")@PathVariable("newsId") Long newsId) {
         News news = newsService.findById(newsId);
         return ResponseEntity.ok(toDTO(news));
     }
 
+    @Operation(summary = "Show a list of comments by news ID")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "200", description = "Show details of the news", content = { @Content( schema = @Schema(implementation = NewsDTO.class))}),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "News not found"))}),
+    })
     @GetMapping("/posts/{id}/comments")
-    public ResponseEntity<NewsDTO> getComments(@PathVariable ("id") Long id) {
+    public ResponseEntity<NewsDTO> getComments(@Parameter(example = "1")@PathVariable ("id") Long id) {
         News news = newsService.findById(id);
         return ResponseEntity.ok(toDTO(news));
     }
 
+    @Operation(summary = "Create a news")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "201", description = "News created successfully",  content = { @Content( schema = @Schema(implementation = NewsDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "\"The name field cannot be empty.\" Or \"The content field cannot be empty.\" Or \"The image field cannot be empty.\"")
+            )})
+    })
     @PostMapping
     public ResponseEntity<NewsDTO> saveNews(@Valid @RequestBody NewsDTO newsDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(newsService.saveNews(toModel(newsDTO))));
     }
 
+    @Operation(summary = "Update a news")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "200", description = "News updated successfully",  content = { @Content( schema = @Schema(implementation = NewsDTO.class))}),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "News not found"))}),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "\"The name field cannot be empty.\" Or \"The content field cannot be empty.\" Or \"The image field cannot be empty.\"")
+            )})
+    })
     @PutMapping("/{newsId}")
-    public ResponseEntity<NewsDTO> updateNews(@PathVariable Long newsId, @Valid @RequestBody NewsDTO newsDTO) {
+    public ResponseEntity<NewsDTO> updateNews(@Parameter(example = "1")@PathVariable Long newsId, @Valid @RequestBody NewsDTO newsDTO) {
         validateDtoIdWithBodyId(newsId, newsDTO.getNewsId());
         return ResponseEntity.ok(toDTO(newsService.updateNews(newsId, toModel(newsDTO))));
     }
 
+    @Operation(summary = "Delete a news")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "204", description = "News deleted successfully", content = { @Content( schema = @Schema(implementation = NewsDTO.class))}),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = String.class),
+                    examples = @ExampleObject(value = "News not found"))}),
+    })
     @DeleteMapping("/{newsId}")
-    public ResponseEntity<Void> deleteNews(@PathVariable Long newsId) {
+    public ResponseEntity<Void> deleteNews(@Parameter(example = "1") @PathVariable Long newsId) {
         newsService.deleteNews(newsId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -103,9 +145,10 @@ public class NewsController {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Schema(description = "News attributes")
     public static class NewsDTO {
 
-        @Schema(example = "1", required = true)
+        @Schema(example = "1")
         private Long newsId;
 
         @Schema(example = "Guía sobre ciberacoso sexual a niños", required = true)
@@ -120,16 +163,16 @@ public class NewsController {
         @NotEmpty(message = "The image field cannot be empty.")
         private String image;
 
-        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-05 00:15:48", required = true)
+        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-05 00:15:48")
         private LocalDateTime createdAt;
 
-        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-05 00:15:48", required = true)
+        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-05 00:15:48")
         private LocalDateTime updatedAt;
 
-        @Schema(example = "news", required = true)
+        @Schema(example = "news")
         private String type = "news";
 
-        @Schema(example = "Comments", required = true)
+        @Schema(example = "Comments")
         private List<CommentEntity> comments = new ArrayList<>();
     }
 }
