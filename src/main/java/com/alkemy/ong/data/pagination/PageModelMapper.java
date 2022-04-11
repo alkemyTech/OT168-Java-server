@@ -3,8 +3,9 @@ package com.alkemy.ong.data.pagination;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class PageModelMapper<T, S> {
@@ -17,17 +18,16 @@ public class PageModelMapper<T, S> {
 
     public PageModel<T> toPageModel(PageModel<S> pageEntity,Class<T> modelClass){
         PageModel<T> pageModel = new PageModel<T>();
-        List<T> bodyModel = new ArrayList<>();
+
+        List<T> bodyModel = pageEntity.getBody()
+                .stream()
+                .map(e->toModel(e,modelClass))
+                .collect(toList());
 
         pageModel.setNextPage(pageEntity.getNextPage());
         pageModel.setPreviousPage(pageEntity.getPreviousPage());
-
-        for(S entity : pageEntity.getBody()){
-            T model = toModel(entity,modelClass);
-            bodyModel.add(model);
-        }
-
         pageModel.setBody(bodyModel);
+
         return pageModel;
     }
 
