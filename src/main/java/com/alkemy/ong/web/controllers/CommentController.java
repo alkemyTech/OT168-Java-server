@@ -8,6 +8,7 @@ import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,15 +93,27 @@ public class CommentController {
     @AllArgsConstructor
     @NoArgsConstructor
     private static class CommentDTO {
+
+        @Schema(example = "1", required = true)
         private Long id;
+
+        @Schema(example = "Felicitaciones", required = true)
         @NotEmpty(message = "Body can't be empty")
         private String body;
+
+        @Schema(example = "4", required = true)
         @NotNull(message = "User can't be null")
         private Long user;
+
+        @Schema(example = "1", required = true)
         @NotNull(message = "News can't be null")
         private Long newsId;
+
+        @Schema(example = "2022-04-05 00:15:48", required = true)
         @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
         private LocalDateTime createdAt;
+
+        @Schema(example = "2022-04-05 00:15:48", required = true)
         @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
         private LocalDateTime updatedAt;
     }

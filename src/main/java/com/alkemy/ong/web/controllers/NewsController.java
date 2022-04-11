@@ -125,7 +125,7 @@ public class NewsController {
         @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-05 00:15:48", required = true)
         private LocalDateTime updatedAt;
 
-        @Schema(example = "Type", required = true)
+        @Schema(example = "news", required = true)
         private String type = "news";
 
         @Schema(example = "Comments", required = true)
