@@ -96,27 +96,16 @@ public class OrganizationController {
         @Schema(example = "1", required = true)
         private Long idOrganization;
 
-        @Schema(example = "Somos más", required = true)
         private String name;
-
-        @Schema(example = "organization.jpg", required = true)
         private String image;
-
-        @Schema(example = "2222-2222", required = true)
         private Long phone;
-
-        @Schema(example = "Balcarce 50", required = true)
         private String address;
-
-        @Schema(example = "www.facebook.com", required = true)
+        private String email;
+        private String aboutUsText;
+        private String welcomeText;
         private String facebookUrl;
-
-        @Schema(example = "www.linkedin.com", required = true)
         private String linkedinUrl;
-
-        @Schema(example = "www.instagram.com", required = true)
         private String instagramUrl;
-
         private List<SlidesEntity> slidesEntityList;
     }
 
