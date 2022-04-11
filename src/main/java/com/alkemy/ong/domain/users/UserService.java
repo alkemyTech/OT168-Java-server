@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.alkemy.ong.web.utils.MailUtils.buildTemplate;
-
 @Service
 public class UserService {
 	
