@@ -140,11 +140,11 @@ public class AuthController {
 	@NoArgsConstructor
 	@Schema(description = "Attributes required to login")
 	public static class LoginDTO {
-		@Schema(example = "juanperez@gmail.com")
+		@Schema(example = "newtesting920@gmail.com")
 		@Email(message = "This field must be an email")
 		@NotEmpty(message = "The email field is required.")
 		private String email;
-		@Schema(example = "passwordExample")
+		@Schema(example = "12345678")
 		@NotEmpty(message = "The password field is required.")
 		private String password;
 	}
@@ -162,7 +162,7 @@ public class AuthController {
 		private String firstName;
 		@Schema(required = true, example = "Perez")
 		private String lastName;
-		@Schema(required = true, example = "juanperez@gmail.com")
+		@Schema(required = true, example = "newtesting920@gmail.com")
 		private String email;
 		@Schema(example = "http://photoExample.com")
 		private String photo;
@@ -184,13 +184,13 @@ public class AuthController {
 		private String lastName;
 		@Email(message = "This field must be an email.")
 		@NotEmpty(message = "The 'email' field is required.")
-		@Schema(required = true, example = "juanperez@gmail.com")
+		@Schema(required = true, example = "newtesting920@gmail.com")
 		private String email;
 		@NotEmpty(message = "The 'password' field is required.")
 		@Size(min = 8, message = "Password must be at least 8 characters long.")
-		@Schema(required = true, example = "passwordExample")
+		@Schema(required = true, example = "12345678")
 		private String password;
-		@Schema(required = true, example = "passwordExample")
+		@Schema(required = true, example = "12345678")
 		private String matchingPassword;
 		@Schema(example = "http://photoExample.com")
 		private String photo;

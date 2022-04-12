@@ -44,7 +44,7 @@ public class NewsController {
     @Operation(summary = "Show a list of news, using pagination")
     @ApiResponses( value = {@ApiResponse(responseCode = "200", description = "Show a list of news")})
     @GetMapping
-    public ResponseEntity<PageDTO<NewsDTO>> findAll(@RequestParam("page") int numberPage) {
+    public ResponseEntity<PageDTO<NewsDTO>> findAll(@Parameter(description = "Page number you want to view",example = "0")@RequestParam("page") int numberPage) {
         WebUtils.validatePageNumber(numberPage);
         return ResponseEntity.ok()
                 .body(pageDTOMapper
