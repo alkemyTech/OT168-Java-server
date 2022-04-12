@@ -24,7 +24,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
-@Tag(name = "8. Members")
+@Tag(name = "3. Members")
 @RestController
 @RequestMapping
 public class MemberController {

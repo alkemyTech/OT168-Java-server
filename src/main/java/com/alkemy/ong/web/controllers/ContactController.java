@@ -18,7 +18,7 @@ import java.util.List;
 import static java.net.URI.create;
 import static java.util.stream.Collectors.toList;
 
-@Tag(name = "5. Contacts")
+@Tag(name = "8. Contacts")
 @RestController
 @RequestMapping("/contacts")
 public class ContactController {

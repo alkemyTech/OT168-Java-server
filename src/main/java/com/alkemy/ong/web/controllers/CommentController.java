@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.toList;
 
 import static com.alkemy.ong.web.utils.WebUtils.*;
 
-@Tag(name = "3. Comments")
+@Tag(name = "5. Comments")
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
