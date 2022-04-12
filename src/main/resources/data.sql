@@ -132,3 +132,11 @@ INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted
 INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (6,'Ojalá el Estado les diera el financiamiento necesario', '1', '4', '0');
 INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (7,'Gracias por esta acción solidaria para los que no tienen de comer', '1', '5', '0');
 INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (8,'Gracias por este aporte a la salud sexual femennina', '9', '7', '0');
+
+INSERT INTO `alkemy_ong`.`members` (`id`,`name`, `facebookurl`, `instagramurl`, `linkedinurl`, `image`, `description`, `deleted`)
+ VALUES
+(1,'Jose', 'www.faceJose.com', 'www.instaJose.com', 'www.linkJose', 'jose.jpg', 'Desc Jose', 0);
+
+INSERT INTO `alkemy_ong`.`members` (`id`,`name`, `facebookurl`, `instagramurl`, `linkedinurl`, `image`, `description`, `deleted`)
+ VALUES
+(2,'Camila', 'www.faceCami.com', 'www.instaCami.com', 'www.linkCami', 'cami.jpg', 'Desc de Camila', 0);
