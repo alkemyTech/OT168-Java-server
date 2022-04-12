@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.users;
 
+import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.domain.mail.MailService;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,10 @@ public class UserService {
     
     public void deleteById(Long id) {
         userGateway.deleteById(id);
+    }
+
+    public PageModel<User> findAll(int pageNumber){
+        return userGateway.findAll(pageNumber);
     }
 
     private void sendMailWithTemplate(User user){

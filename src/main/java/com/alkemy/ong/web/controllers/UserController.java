@@ -4,6 +4,8 @@ import com.alkemy.ong.domain.exceptions.ForbiddenException;
 import com.alkemy.ong.domain.security.jwt.JwtUtil;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
+import com.alkemy.ong.web.pagination.PageDTO;
+import com.alkemy.ong.web.pagination.PageDTOMapper;
 import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,10 +40,12 @@ public class UserController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final PageDTOMapper<UserDTO,User> pageDTOMapper;
 
-    public UserController(UserService userService, JwtUtil jwtUtil) {
+    public UserController(UserService userService, JwtUtil jwtUtil,PageDTOMapper<UserDTO,User> pageDTOMapper) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        this.pageDTOMapper=pageDTOMapper;
     }
 
     @Operation(summary = "Show a list of users registered")
@@ -92,6 +96,13 @@ public class UserController {
     public ResponseEntity<UserDTO> findById(@Parameter(example = "1")@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
         verifyUser(id, token);
         return ResponseEntity.ok(toDTO(userService.findById(id)));
+    }
+
+    @GetMapping
+    public ResponseEntity<PageDTO<UserDTO>> findAll(@Parameter(description = "Page number you want to view",example = "0")@RequestParam("page") int pageNumber) {
+        WebUtils.validatePageNumber(pageNumber);
+        return ResponseEntity.ok()
+                .body(pageDTOMapper.toPageDTO(userService.findAll(pageNumber),UserDTO.class));
     }
 
     private void verifyUser(Long id, String token){

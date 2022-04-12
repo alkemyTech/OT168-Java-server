@@ -1,7 +1,10 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.RoleEntity;
+import com.alkemy.ong.data.pagination.PageModel;
+import com.alkemy.ong.data.pagination.PageModelMapper;
 import com.alkemy.ong.data.repositories.RoleRepository;
+import com.alkemy.ong.data.utils.PaginationUtils;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.exceptions.WebRequestException;
 import com.alkemy.ong.domain.security.jwt.JwtUtil;
@@ -10,30 +13,34 @@ import com.alkemy.ong.domain.users.UserGateway;
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
+import static com.alkemy.ong.data.utils.PaginationUtils.setPagesNumbers;
 import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultUserGateway implements UserGateway {
 
 	private final UserRepository userRepository;
-
 	private final PasswordEncoder passwordEncoder;
-
 	private final RoleRepository roleRepository;
-
 	private final JwtUtil jwtUtil;
+	private final PageModelMapper<User,UserEntity> pageMapper;
 
 	public DefaultUserGateway(UserRepository userRepository, RoleRepository roleRepository,
-							  @Lazy PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+							  @Lazy PasswordEncoder passwordEncoder, JwtUtil jwtUtil,
+							  PageModelMapper<User,UserEntity> pageMapper) {
+
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtUtil = jwtUtil;
+		this.pageMapper=pageMapper;
 	}
 
 	@Override
@@ -80,6 +87,12 @@ public class DefaultUserGateway implements UserGateway {
 				.orElseThrow(() -> new ResourceNotFoundException(id,"User"));
 		userEntity.setDeleted(true);
 		userRepository.save(userEntity);
+	}
+
+	@Override
+	public PageModel<User> findAll(int pageNumber) {
+		return pageMapper.toPageModel(setPagesNumbers(userRepository
+				.findAll(PageRequest.of(pageNumber,DEFAULT_PAGE_SIZE)),"/users?page="),User.class);
 	}
 
 	private User toModel(UserEntity userEntity) {
