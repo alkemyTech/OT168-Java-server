@@ -48,17 +48,6 @@ public class UserController {
         this.pageDTOMapper=pageDTOMapper;
     }
 
-   /* @Operation(summary = "Show a list of users registered")
-    @ApiResponses( value = {@ApiResponse(responseCode = "200", description = "Show a list of users registered")})
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
-        return ResponseEntity.ok()
-                .body(userService.findAll()
-                .stream()
-                .map(this::toDTO)
-                .collect(toList()));
-    }*/
-
     @Operation(summary = "Delete a user")
     @ApiResponses( value = {
             @ApiResponse(responseCode = "204", description = "User deleted successfully", content = { @Content( schema = @Schema(implementation = UserDTO.class))}),
@@ -113,7 +102,7 @@ public class UserController {
                             }
                     )
             })
-    @GetMapping
+    @GetMapping(params = "page")
     public ResponseEntity<PageDTO<UserDTO>> findAll(@Parameter(description = "Page number you want to view",example = "0")@RequestParam("page") int pageNumber) {
         WebUtils.validatePageNumber(pageNumber);
         return ResponseEntity.ok()

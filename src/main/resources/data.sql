@@ -116,19 +116,19 @@ INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `passw
 VALUES
 (20, 'Matias', 'Montoto', 'mumo@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'mumo.jpg', NOW(), NOW(), 0, 2);
 
-INSERT INTO `alkemy_ong`.`news` (`name`, `content`, `image`, `deleted`,`type`) VALUES ('Médicos Sin Fronteras cumple 50 años', 'La historia de los 13 jóvenes que crearon una ONG gigante.', 'medicos.jpg', '0','news');
-INSERT INTO `alkemy_ong`.`news` (`name`, `content`, `image`, `deleted`,`type`) VALUES ('Embajada de Uruguay organizó una feria solidaria', 'Se trató de la exposición y venta de productos elaborados por distintas organizaciones.', 'embajada.jpg', '0','news');
-INSERT INTO `alkemy_ong`.`news` (`name`, `content`, `image`, `deleted`,`type`) VALUES ('Proyecto "Libros Solidarios"', 'La Fundación Pequeños Puentes que busca padrinos y madrinas para proyectos literarios.', 'libros.jpg', '0','news');
-INSERT INTO `alkemy_ong`.`news` (`name`, `content`, `image`, `deleted`,`type`) VALUES ('ONG logró captar financiamiento en el mercado', 'Sumatoria logró colocar un bono social de forma exitosa.', 'sumatoria.jpg', '0','news');
-INSERT INTO `alkemy_ong`.`news` (`name`, `content`, `image`, `deleted`,`type`) VALUES ('El Banco de Alimentos en la pandemia', 'La organización sin fines de lucro registró una suba de donaciones del 66%.', 'banco.jpg', '0','news');
-INSERT INTO `alkemy_ong`.`news` (`name`, `content`, `image`, `deleted`,`type`) VALUES ('La ONG que empodera a jóvenes sudafricanos', 'Cuenta con cinco campeonatos anuales por provincia.', 'sudafrica.jpg', '0','news');
-INSERT INTO `alkemy_ong`.`news` (`name`, `content`, `image`, `deleted`,`type`) VALUES ('Campaña de salud de ONG', 'La campaña permite acceder a consultas y estudios ginecológicos gratuitos.', 'salud.jpg', '0','news');
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (1,'Médicos Sin Fronteras cumple 50 años', 'La historia de los 13 jóvenes que crearon una ONG gigante.', 'medicos.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (2,'Embajada de Uruguay organizó una feria solidaria', 'Se trató de la exposición y venta de productos elaborados por distintas organizaciones.', 'embajada.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (3,'Proyecto "Libros Solidarios"', 'La Fundación Pequeños Puentes que busca padrinos y madrinas para proyectos literarios.', 'libros.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (4,'ONG logró captar financiamiento en el mercado', 'Sumatoria logró colocar un bono social de forma exitosa.', 'sumatoria.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (5,'El Banco de Alimentos en la pandemia', 'La organización sin fines de lucro registró una suba de donaciones del 66%.', 'banco.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (6,'La ONG que empodera a jóvenes sudafricanos', 'Cuenta con cinco campeonatos anuales por provincia.', 'sudafrica.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (7,'Campaña de salud de ONG', 'La campaña permite acceder a consultas y estudios ginecológicos gratuitos.', 'salud.jpg', '0',"news");
 
-INSERT INTO `alkemy_ong`.`comments` (`body`, `user_id`, `news_id`, `deleted`) VALUES ('Felicitaciones a los médicos integrantes', '3', '1', '0');
-INSERT INTO `alkemy_ong`.`comments` (`body`, `user_id`, `news_id`, `deleted`) VALUES ('Hermosa feria y productos riquísimos', '8', '2', '0');
-INSERT INTO `alkemy_ong`.`comments` (`body`, `user_id`, `news_id`, `deleted`) VALUES ('¿Dónde puedo donar libros de mis hijos?', '2', '3', '0');
-INSERT INTO `alkemy_ong`.`comments` (`body`, `user_id`, `news_id`, `deleted`) VALUES ('Los precios de los productos fueron bajísimos', '7', '2', '0');
-INSERT INTO `alkemy_ong`.`comments` (`body`, `user_id`, `news_id`, `deleted`) VALUES ('He colaborado toda mi vida con los doctores y lo voy a seguir haciendo', '4', '1', '0');
-INSERT INTO `alkemy_ong`.`comments` (`body`, `user_id`, `news_id`, `deleted`) VALUES ('Ojalá el Estado les diera el financiamiento necesario', '1', '4', '0');
-INSERT INTO `alkemy_ong`.`comments` (`body`, `user_id`, `news_id`, `deleted`) VALUES ('Gracias por esta acción solidaria para los que no tienen de comer', '1', '5', '0');
-INSERT INTO `alkemy_ong`.`comments` (`body`, `user_id`, `news_id`, `deleted`) VALUES ('Gracias por este aporte a la salud sexual femennina', '9', '7', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (1,'Felicitaciones a los médicos integrantes', '3', '1', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (2,'Hermosa feria y productos riquísimos', '8', '2', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (3,'¿Dónde puedo donar libros de mis hijos?', '2', '3', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (4,'Los precios de los productos fueron bajísimos', '7', '2', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (5,'He colaborado toda mi vida con los doctores y lo voy a seguir haciendo', '4', '1', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (6,'Ojalá el Estado les diera el financiamiento necesario', '1', '4', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (7,'Gracias por esta acción solidaria para los que no tienen de comer', '1', '5', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (8,'Gracias por este aporte a la salud sexual femennina', '9', '7', '0');

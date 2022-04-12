@@ -56,7 +56,7 @@ public class NewsEntity {
     private String type;
 
     @OneToMany(mappedBy = "newsEntity")
-    @JsonIgnore
+    @JsonIgnoreProperties(value = "newsEntity")
     private List<CommentEntity> comments = new ArrayList<>();
 
     @Override
