@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "9. Organitations")
+@Tag(name = "9. Organizations")
 @RestController
 @RequestMapping("/organizations")
 public class OrganizationController {
