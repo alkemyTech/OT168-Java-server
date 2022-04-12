@@ -48,7 +48,7 @@ public class UserController {
         this.pageDTOMapper=pageDTOMapper;
     }
 
-    @Operation(summary = "Show a list of users registered")
+   /* @Operation(summary = "Show a list of users registered")
     @ApiResponses( value = {@ApiResponse(responseCode = "200", description = "Show a list of users registered")})
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
@@ -57,7 +57,7 @@ public class UserController {
                 .stream()
                 .map(this::toDTO)
                 .collect(toList()));
-    }
+    }*/
 
     @Operation(summary = "Delete a user")
     @ApiResponses( value = {
@@ -97,7 +97,22 @@ public class UserController {
         verifyUser(id, token);
         return ResponseEntity.ok(toDTO(userService.findById(id)));
     }
-
+    @Operation(description = "Show a list of active users in the system, using pagination", operationId = "findAll", summary = "Show a list of the users actives")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Show list of active users in the system."),
+                    @ApiResponse(
+                            responseCode = "400", description = "BAD REQUEST",
+                            content = { @Content(schema = @Schema(implementation = String.class),
+                                            examples = @ExampleObject(
+                                                    name = "Message of error",
+                                                    summary = "400 from the server directly.",
+                                                    value = "The page does not exist"
+                                            )
+                                    )
+                            }
+                    )
+            })
     @GetMapping
     public ResponseEntity<PageDTO<UserDTO>> findAll(@Parameter(description = "Page number you want to view",example = "0")@RequestParam("page") int pageNumber) {
         WebUtils.validatePageNumber(pageNumber);
