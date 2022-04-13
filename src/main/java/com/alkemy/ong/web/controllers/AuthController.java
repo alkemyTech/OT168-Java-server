@@ -140,7 +140,7 @@ public class AuthController {
 	@NoArgsConstructor
 	@Schema(description = "Attributes required to login")
 	public static class LoginDTO {
-		@Schema(example = "newtesting920@gmail.com")
+		@Schema(example = "admin@gmail.com")
 		@Email(message = "This field must be an email")
 		@NotEmpty(message = "The email field is required.")
 		private String email;
