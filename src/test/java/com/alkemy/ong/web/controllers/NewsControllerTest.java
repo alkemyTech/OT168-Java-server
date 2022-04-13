@@ -4,6 +4,7 @@ import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.web.controllers.NewsController.NewsDTO;
+import com.alkemy.ong.web.controllers.CommentController.*;
 import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.data.repositories.NewsRepository;
 
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class NewsControllerTest {
-/*
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -196,7 +197,7 @@ class NewsControllerTest {
     }
 
     private NewsDTO buildDTO(Long newsId, String name, String content, String image, String type){
-        List<CommentEntity> comments = Collections.emptyList();
+        List<CommentDTO> comments = Collections.emptyList();
         return NewsDTO.builder()
                 .newsId(newsId)
                 .name(name)
@@ -214,5 +215,5 @@ class NewsControllerTest {
                 .nextPage("This is the last page")
                 .previousPage("This is the first page")
                 .build();
-    }*/
+    }
 }
