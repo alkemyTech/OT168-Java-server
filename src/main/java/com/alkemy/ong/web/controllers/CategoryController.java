@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
 
 import lombok.*;
 
-@Tag(name = "Categories")
+@Tag(name = "6. Categories")
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {

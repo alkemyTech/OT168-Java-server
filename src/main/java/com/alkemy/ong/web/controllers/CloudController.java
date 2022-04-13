@@ -1,13 +1,15 @@
 package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.cloud.CloudService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "Cloud")
+@Tag(name = "5. Cloud")
 @RestController
 @RequestMapping("/storage/")
 public class CloudController {
@@ -18,12 +20,14 @@ public class CloudController {
         this.amazonService = amazonService;
     }
 
-    @PostMapping("/uploadFile")
-    public ResponseEntity<String> uploadFile(@RequestPart(value = "file") MultipartFile file) {
+    @Operation(summary = "Upload a file to the cloud")
+    @PostMapping(value = "/uploadFile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE} )
+    public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file) {
         String url = amazonService.uploadFile(file);
         return ResponseEntity.ok().body(url);
     }
 
+    @Operation(summary = "Delete a file that is in the cloud")
     @DeleteMapping("/deleteFile")
     public ResponseEntity<Void> deleteFile(@RequestPart(value = "url") String fileUrl) {
         amazonService.deleteFile(fileUrl);

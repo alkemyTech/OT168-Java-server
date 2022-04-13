@@ -29,9 +29,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Tag(name = "4. Users")
 @RestController
@@ -157,7 +154,7 @@ public class UserController {
         private String lastName;
         @Schema(required = true, example = "juanperez@gmail.com")
         private String email;
-        @Schema(required = true, example = "passwordExample")
+        @Schema(required = true, example = "12345678")
         private String password;
         @Schema(example = "http://photoExample.com")
         private String photo;
