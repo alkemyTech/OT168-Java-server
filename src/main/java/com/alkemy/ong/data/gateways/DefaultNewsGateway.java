@@ -74,20 +74,16 @@ public class DefaultNewsGateway implements NewsGateway {
     }
 
     private NewsEntity toEntity(News news) {
-        List<CommentEntity> commentEntityList = new ArrayList<>();
-
-        for(Comment commentModel : news.getComments()){
-            CommentEntity entity = toCommentEntity(commentModel);
-            commentEntityList.add(entity);
-        }
-
         return NewsEntity.builder()
                 .newsId(news.getNewsId())
                 .name(news.getName())
                 .content(news.getContent())
                 .image(news.getImage())
                 .type(news.getType())
-                .comments(commentEntityList)
+                .comments(news.getComments()
+                        .stream()
+                        .map(this::toCommentEntity)
+                        .collect(toList()))
                 .build();
     }
 

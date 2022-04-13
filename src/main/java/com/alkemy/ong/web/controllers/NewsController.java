@@ -27,8 +27,10 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.alkemy.ong.web.utils.WebUtils.validateDtoIdWithBodyId;
+import static java.util.stream.Collectors.toList;
 
 @Tag(name = "2. News")
 @RestController
@@ -117,38 +119,31 @@ public class NewsController {
     }
 
     private News toModel(NewsDTO newsDTO) {
-        List<Comment> commentList = new ArrayList<>();
-
-        for(CommentDTO dto : newsDTO.getComments()){
-            Comment commentModel = toCommentModel(dto);
-            commentList.add(commentModel);
-        }
-
         return News.builder()
                 .newsId(newsDTO.getNewsId())
                 .name(newsDTO.getName())
                 .content(newsDTO.getContent())
                 .image(newsDTO.getImage())
                 .type(newsDTO.getType())
-                .comments(commentList)
+                .comments(newsDTO.getComments()
+                        .stream()
+                        .map(this::toCommentModel)
+                        .collect(toList()))
                 .build();
     }
 
     private NewsDTO toDTO(News news) {
-        List<CommentDTO> commentList = new ArrayList<>();
-
-        for(Comment model : news.getComments()){
-            CommentDTO commentDTO = toCommentDTO(model);
-            commentList.add(commentDTO);
-        }
-
+        news.getComments().stream().map(this::toCommentDTO).collect(toList());
         return NewsDTO.builder()
                 .newsId(news.getNewsId())
                 .name(news.getName())
                 .content(news.getContent())
                 .image(news.getImage())
                 .type(news.getType())
-                .comments(commentList)
+                .comments(news.getComments()
+                        .stream()
+                        .map(this::toCommentDTO)
+                        .collect(toList()))
                 .build();
     }
 
