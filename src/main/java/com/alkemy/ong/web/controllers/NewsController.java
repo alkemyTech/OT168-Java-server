@@ -1,6 +1,5 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
@@ -24,10 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.alkemy.ong.web.utils.WebUtils.validateDtoIdWithBodyId;
 import static java.util.stream.Collectors.toList;

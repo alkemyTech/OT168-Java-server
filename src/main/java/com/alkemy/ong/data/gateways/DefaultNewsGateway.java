@@ -4,7 +4,6 @@ import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.pagination.PageModelMapper;
-import com.alkemy.ong.data.repositories.CommentRepository;
 import com.alkemy.ong.data.repositories.NewsRepository;
 import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.data.utils.PaginationUtils;
@@ -15,9 +14,6 @@ import com.alkemy.ong.domain.news.NewsGateway;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 import static java.util.stream.Collectors.toList;
