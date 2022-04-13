@@ -152,7 +152,7 @@ public class UserController {
         private String firstName;
         @Schema(required = true, example = "Perez")
         private String lastName;
-        @Schema(required = true, example = "juanperez@gmail.com")
+        @Schema(required = true, example = "admin@gmail.com")
         private String email;
         @Schema(required = true, example = "12345678")
         private String password;

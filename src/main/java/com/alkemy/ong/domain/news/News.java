@@ -1,6 +1,7 @@
 package com.alkemy.ong.domain.news;
 
 import com.alkemy.ong.data.entities.CommentEntity;
+import com.alkemy.ong.domain.comments.Comment;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,8 +20,6 @@ public class News {
     private String name;
     private String content;
     private String image;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private String type;
-    private List<CommentEntity> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 }

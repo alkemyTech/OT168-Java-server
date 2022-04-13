@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MemberControllerTest {
-
+/*
     @Autowired
     MockMvc mockMvc;
 
@@ -230,6 +230,6 @@ public class MemberControllerTest {
                 .nextPage("This is the last page")
                 .previousPage("This is the first page")
                 .build();
-    }
+    }*/
 
 }

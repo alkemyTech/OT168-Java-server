@@ -46,11 +46,6 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(commentService.saveComment(toModel(commentDTO))));
     }
 
-    private CommentSlimDTO toSlimDTO(Comment comment) {
-        CommentSlimDTO newCommentSlimDTO = CommentSlimDTO.builder().body(comment.getBody()).build();
-        return newCommentSlimDTO;
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO) {
         validateDtoIdWithBodyId(id, commentDTO.getId());
@@ -68,8 +63,6 @@ public class CommentController {
                 .body(commentDTO.getBody())
                 .userId(commentDTO.getUser())
                 .newsId(commentDTO.getNewsId())
-                .createdAt(commentDTO.getCreatedAt())
-                .updatedAt(commentDTO.getUpdatedAt())
                 .build();
     }
 
@@ -79,9 +72,11 @@ public class CommentController {
                 .body(comment.getBody())
                 .user(comment.getUserId())
                 .newsId(comment.getNewsId())
-                .createdAt(comment.getCreatedAt())
-                .updatedAt(comment.getUpdatedAt())
                 .build();
+    }
+
+    private CommentSlimDTO toSlimDTO(Comment comment) {
+        return CommentSlimDTO.builder().body(comment.getBody()).build();
     }
 
     @Getter
@@ -89,7 +84,7 @@ public class CommentController {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class CommentDTO {
+    public static class CommentDTO {
 
         @Schema(example = "1", required = true)
         private Long id;
@@ -105,14 +100,6 @@ public class CommentController {
         @Schema(example = "1", required = true)
         @NotNull(message = "News can't be null")
         private Long newsId;
-
-        @Schema(example = "2022-04-05 00:15:48", required = true)
-        @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
-        private LocalDateTime createdAt;
-
-        @Schema(example = "2022-04-05 00:15:48", required = true)
-        @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
-        private LocalDateTime updatedAt;
     }
 
     @Getter

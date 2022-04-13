@@ -1,9 +1,11 @@
 package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.data.entities.CommentEntity;
+import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
 import com.alkemy.ong.web.pagination.PageDTO;
+import com.alkemy.ong.web.controllers.CommentController.*;
 import com.alkemy.ong.web.pagination.PageDTOMapper;
 import com.alkemy.ong.web.utils.WebUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -115,28 +117,55 @@ public class NewsController {
     }
 
     private News toModel(NewsDTO newsDTO) {
+        List<Comment> commentList = new ArrayList<>();
+
+        for(CommentDTO dto : newsDTO.getComments()){
+            Comment commentModel = toCommentModel(dto);
+            commentList.add(commentModel);
+        }
+
         return News.builder()
                 .newsId(newsDTO.getNewsId())
                 .name(newsDTO.getName())
                 .content(newsDTO.getContent())
                 .image(newsDTO.getImage())
-                .createdAt(newsDTO.getCreatedAt())
-                .updatedAt(newsDTO.getUpdatedAt())
                 .type(newsDTO.getType())
-                .comments((newsDTO.getComments()))
+                .comments(commentList)
                 .build();
     }
 
     private NewsDTO toDTO(News news) {
+        List<CommentDTO> commentList = new ArrayList<>();
+
+        for(Comment model : news.getComments()){
+            CommentDTO commentDTO = toCommentDTO(model);
+            commentList.add(commentDTO);
+        }
+
         return NewsDTO.builder()
                 .newsId(news.getNewsId())
                 .name(news.getName())
                 .content(news.getContent())
                 .image(news.getImage())
-                .createdAt(news.getCreatedAt())
-                .updatedAt(news.getUpdatedAt())
                 .type(news.getType())
-                .comments(news.getComments())
+                .comments(commentList)
+                .build();
+    }
+
+    private CommentDTO toCommentDTO(Comment comment) {
+        return CommentDTO.builder()
+                .id(comment.getId())
+                .body(comment.getBody())
+                .user(comment.getUserId())
+                .newsId(comment.getNewsId())
+                .build();
+    }
+
+    private Comment toCommentModel(CommentDTO commentDTO) {
+        return Comment.builder()
+                .body(commentDTO.getBody())
+                .userId(commentDTO.getUser())
+                .newsId(commentDTO.getNewsId())
                 .build();
     }
 
@@ -163,16 +192,10 @@ public class NewsController {
         @NotEmpty(message = "The image field cannot be empty.")
         private String image;
 
-        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-05 00:15:48")
-        private LocalDateTime createdAt;
-
-        @Schema(pattern = "yyyy-MM-dd HH:mm:ss", example = "2022-04-05 00:15:48")
-        private LocalDateTime updatedAt;
-
         @Schema(example = "news")
         private String type = "news";
 
         @Schema(example = "Comments")
-        private List<CommentEntity> comments = new ArrayList<>();
+        private List<CommentDTO> comments = new ArrayList<>();
     }
 }
