@@ -5,7 +5,6 @@ import com.alkemy.ong.domain.members.MemberService;
 import com.alkemy.ong.web.pagination.PageDTOMapper;
 import com.alkemy.ong.web.pagination.PageDTO;
 import com.alkemy.ong.web.utils.WebUtils;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDateTime;
 
 @Tag(name = "3. Members")
 @RestController
@@ -189,7 +187,7 @@ public class MemberController {
     @Valid
     public static class MemberDTO {
 
-        @Schema(example = "1", required = true)
+        @Schema(hidden = true)
         private Long id;
 
         @Schema(example = "Jose Perez", required = true)

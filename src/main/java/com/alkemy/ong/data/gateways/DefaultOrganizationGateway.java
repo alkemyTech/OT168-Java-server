@@ -1,7 +1,6 @@
 package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.OrganizationEntity;
-import com.alkemy.ong.data.entities.SlidesEntity;
 import com.alkemy.ong.data.repositories.OrganizationRepository;
 import com.alkemy.ong.data.repositories.SlidesRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;

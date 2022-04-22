@@ -1,10 +1,10 @@
 CREATE DATABASE IF NOT EXISTS `alkemy_ong`;
 USE `alkemy_ong`;
 
-DROP TABLE IF EXISTS `alkemy_ong`.`roles`;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `alkemy_ong`.`roles`
-(
+CREATE TABLE IF NOT EXISTS `alkemy_ong`.`roles`;
+/*!50503 ET character_set_client = utf8mb4 */;
+         CREATE TABLE `alkemy_ong`.`roles`
+         (S
     `id`          BIGINT(255) NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(20) NOT NULL,
     `description` VARCHAR(50) DEFAULT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE `alkemy_ong`.`roles`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
-DROP TABLE IF EXISTS `alkemy_ong`.`users`;
+CREATE TABLE IF NOT EXISTS `alkemy_ong`.`users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alkemy_ong`.`users`
 (
@@ -35,7 +35,7 @@ CREATE TABLE `alkemy_ong`.`users`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
-DROP TABLE IF EXISTS `alkemy_ong`.`members`;
+CREATE TABLE IF NOT EXISTS `alkemy_ong`.`members`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alkemy_ong`.`members`
 (
@@ -53,7 +53,7 @@ CREATE TABLE `alkemy_ong`.`members`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
-CREATE TABLE alkemy_ong.news
+CREATE TABLE IF NOT EXISTS alkemy_ong.news
 (
     news_id    BIGINT(255)  NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(50)  NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE if NOT EXISTS slides (
     id_slides BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     image_url VARCHAR(256) NOT NULL,
     text VARCHAR(256),
-    slide_order INT NOT NULL, -- 'order' is a keyword in mySQL
+    slide_order INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted BIT(1) DEFAULT 0,

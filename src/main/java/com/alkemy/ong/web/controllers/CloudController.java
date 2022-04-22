@@ -30,7 +30,7 @@ public class CloudController {
 
     @Operation(summary = "Delete a file that is in the cloud")
     @DeleteMapping("/deleteFile")
-    public ResponseEntity<Void> deleteFile(@RequestPart(value = "url") String fileUrl) {
+    public ResponseEntity<Void> deleteFile(@RequestParam(value = "url") String fileUrl) {
         amazonService.deleteFile(fileUrl);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
