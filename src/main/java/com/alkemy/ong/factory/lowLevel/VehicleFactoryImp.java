@@ -22,7 +22,7 @@ public class VehicleFactoryImp implements VehicleFactory {
         mapTypes.put(VehicleTypes.CAR, new Car());
     }
 
-    public static Vehicle newVehicle(VehicleTypes type) {
+    private static Vehicle newVehicle(VehicleTypes type) {
         return mapTypes.get(type);
     }
 }
