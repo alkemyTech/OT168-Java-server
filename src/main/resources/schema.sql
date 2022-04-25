@@ -1,10 +1,7 @@
 CREATE DATABASE IF NOT EXISTS `alkemy_ong`;
 USE `alkemy_ong`;
 
-CREATE TABLE IF NOT EXISTS `alkemy_ong`.`roles`;
-/*!50503 ET character_set_client = utf8mb4 */;
-         CREATE TABLE `alkemy_ong`.`roles`
-         (S
+CREATE TABLE IF NOT EXISTS `alkemy_ong`.`roles`(
     `id`          BIGINT(255) NOT NULL AUTO_INCREMENT,
     `name`        VARCHAR(20) NOT NULL,
     `description` VARCHAR(50) DEFAULT NULL,
@@ -15,10 +12,7 @@ CREATE TABLE IF NOT EXISTS `alkemy_ong`.`roles`;
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
-CREATE TABLE IF NOT EXISTS `alkemy_ong`.`users`;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `alkemy_ong`.`users`
-(
+CREATE TABLE IF NOT EXISTS `alkemy_ong`.`users`(
     `id`        BIGINT(255)        NOT NULL AUTO_INCREMENT,
     `firstName` VARCHAR(50)        NOT NULL,
     `lastName`  VARCHAR(50)        NOT NULL,
@@ -35,9 +29,7 @@ CREATE TABLE `alkemy_ong`.`users`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
-CREATE TABLE IF NOT EXISTS `alkemy_ong`.`members`;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `alkemy_ong`.`members`
+CREATE TABLE IF NOT EXISTS `alkemy_ong`.`members`
 (
     `id`           BIGINT(255)  NOT NULL AUTO_INCREMENT,
     `name`         VARCHAR(50) NOT NULL,
