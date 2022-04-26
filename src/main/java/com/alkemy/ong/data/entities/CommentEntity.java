@@ -1,6 +1,5 @@
 package com.alkemy.ong.data.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;

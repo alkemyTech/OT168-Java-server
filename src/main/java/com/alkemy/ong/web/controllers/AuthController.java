@@ -1,10 +1,5 @@
 package com.alkemy.ong.web.controllers;
 
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -35,7 +30,7 @@ import com.alkemy.ong.domain.users.UserService;
 
 import lombok.*;
 
-@Tag(name = "Authentication")
+@Tag(name = "1. Authentication")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -55,11 +50,10 @@ public class AuthController {
 	@Operation(summary = "Login with email and password")
 	@ApiResponses( value = {
 			@ApiResponse(responseCode = "200", description = "User logged in successfully", content = { @Content( schema = @Schema(implementation = LoginDTO.class))}),
-			@ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = LoginDTO.class),
+			@ApiResponse(responseCode = "404", description = "NOT FOUND", content = { @Content( schema = @Schema(implementation = String.class),
 					examples = @ExampleObject(value = "User not found"))}),
-			@ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = LoginDTO.class),
-					examples = @ExampleObject(value = "\"The email field is required.\" Or \"The password field is required.\" Or \"This field must be an email\" Or \"ok: false\"\n" +
-							"}")
+			@ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = String.class),
+					examples = @ExampleObject(value = "\"The email field is required.\" Or \"The password field is required.\" Or \"This field must be an email\" Or \"ok: false\"")
 					)
 				}
 			)
@@ -70,6 +64,7 @@ public class AuthController {
 		return ResponseEntity.ok().body(new AunthenticationResponse(jwt));
 	}
 
+	@Operation(summary = "Personal information of the user")
 	@GetMapping("/me")
 	public ResponseEntity<UserDTO> getAuthenticatedUserDetails(@RequestHeader(value = "Authorization") String authorizationHeader) {
 		String email = jwtUtil.extractEmail(authorizationHeader);
@@ -81,7 +76,7 @@ public class AuthController {
 	@Operation(summary = "New user registration")
 	@ApiResponses( value = {
 			@ApiResponse(responseCode = "201", description = "User created successfully",  content = { @Content( schema = @Schema(implementation = UserDTO.class))}),
-			@ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = RegistrationDTO.class),
+			@ApiResponse(responseCode = "400", description = "BAD REQUEST", content = { @Content( schema = @Schema(implementation = String.class),
 					examples = @ExampleObject(value = "\"The 'last name' field is required.\" Or \"The 'last name' field is required.\" Or \"The 'email' field is required.\" " +
 									"Or \"Password must be at least 8 characters long.\" Or \"This field must be an email.\" Or \"The passwords don't match.\" " +
 									"Or \"Email already exists.\"")
@@ -145,11 +140,11 @@ public class AuthController {
 	@NoArgsConstructor
 	@Schema(description = "Attributes required to login")
 	public static class LoginDTO {
-		@Schema(required = true, example = "juanperez@gmail.com")
+		@Schema(example = "admin@gmail.com")
 		@Email(message = "This field must be an email")
 		@NotEmpty(message = "The email field is required.")
 		private String email;
-		@Schema(example = "passwordExample")
+		@Schema(example = "12345678")
 		@NotEmpty(message = "The password field is required.")
 		private String password;
 	}
@@ -161,13 +156,13 @@ public class AuthController {
 	@NoArgsConstructor
 	@Schema(description = "User attributes")
 	public static class UserDTO {
-		@Schema(required = true, example = "1")
+		@Schema(example = "1")
 		private Long id;
 		@Schema(required = true, example = "Juan")
 		private String firstName;
 		@Schema(required = true, example = "Perez")
 		private String lastName;
-		@Schema(required = true, example = "juanperez@gmail.com")
+		@Schema(required = true, example = "newtesting920@gmail.com")
 		private String email;
 		@Schema(example = "http://photoExample.com")
 		private String photo;
@@ -189,13 +184,13 @@ public class AuthController {
 		private String lastName;
 		@Email(message = "This field must be an email.")
 		@NotEmpty(message = "The 'email' field is required.")
-		@Schema(required = true, example = "juanperez@gmail.com")
+		@Schema(required = true, example = "newtesting920@gmail.com")
 		private String email;
 		@NotEmpty(message = "The 'password' field is required.")
 		@Size(min = 8, message = "Password must be at least 8 characters long.")
-		@Schema(required = true, example = "passwordExample")
+		@Schema(required = true, example = "12345678")
 		private String password;
-		@Schema(required = true, example = "passwordExample")
+		@Schema(required = true, example = "12345678")
 		private String matchingPassword;
 		@Schema(example = "http://photoExample.com")
 		private String photo;

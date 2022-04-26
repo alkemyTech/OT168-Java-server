@@ -60,9 +60,7 @@ public class MemberControllerTest {
                 .andExpect(jsonPath("$.instagramUrl",is("wwww.instagram/jamespotter.com")))
                 .andExpect(jsonPath("$.linkedinUrl",is("wwww.linkedin/jamespotter.com")))
                 .andExpect(jsonPath("$.image",is("james.jpg")))
-                .andExpect(jsonPath("$.description",is("Some description about James Potter")))
-                .andExpect(jsonPath("$.createdAt",is("2022-03-29 18:58:56")))
-                .andExpect(jsonPath("$.updatedAt",is("2022-03-29 18:58:56")));
+                .andExpect(jsonPath("$.description",is("Some description about James Potter")));
 
     }
 
@@ -124,9 +122,7 @@ public class MemberControllerTest {
                 .andExpect(jsonPath("$.instagramUrl",is("wwww.instagram/jamespotter.com")))
                 .andExpect(jsonPath("$.linkedinUrl",is("wwww.linkedin/jamespotter.com")))
                 .andExpect(jsonPath("$.image",is("james.jpg")))
-                .andExpect(jsonPath("$.description",is("Some description about James Potter")))
-                .andExpect(jsonPath("$.createdAt",is("2022-03-29 18:58:56")))
-                .andExpect(jsonPath("$.updatedAt",is("2022-03-29 18:58:56")));
+                .andExpect(jsonPath("$.description",is("Some description about James Potter")));
 
     }
 
@@ -205,8 +201,6 @@ public class MemberControllerTest {
                 .linkedinUrl("wwww.linkedin/jamespotter.com")
                 .image("james.jpg")
                 .description("Some description about James Potter")
-                .createdAt(LocalDateTime.of(2022,03,29,18,58,56,555))
-                .updatedAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .build();
     }
 
@@ -219,8 +213,6 @@ public class MemberControllerTest {
                 .linkedinUrl("wwww.linkedin/jamespotter.com")
                 .image("james.jpg")
                 .description("Some description about James Potter")
-                .createdAt(LocalDateTime.of(2022,03,29,18,58,56,555))
-                .updatedAt(LocalDateTime.of(2022,03,29,18,58,56,555))
                 .build();
     }
     

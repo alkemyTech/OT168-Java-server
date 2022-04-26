@@ -80,7 +80,7 @@ public class DefaultCommentGateway implements CommentGateway {
                 .build();
     }
 
-    private Comment toModel(CommentEntity commentEntity) {
+    public Comment toModel(CommentEntity commentEntity) {
         return Comment.builder()
                 .id(commentEntity.getId())
                 .body(commentEntity.getBody())

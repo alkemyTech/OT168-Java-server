@@ -3,6 +3,7 @@ package com.alkemy.ong.web.controllers;
 import com.alkemy.ong.domain.mail.MailRequest;
 import com.alkemy.ong.domain.mail.MailService;
 import com.sendgrid.helpers.mail.Mail;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
+@Tag(name = "Mail")
 @RestController
 @RequestMapping("/mail")
 public class MailController {

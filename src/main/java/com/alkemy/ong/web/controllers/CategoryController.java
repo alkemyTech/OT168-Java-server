@@ -6,6 +6,7 @@ import javax.validation.constraints.Pattern;
 
 import com.alkemy.ong.web.pagination.PageDTO;
 import com.alkemy.ong.web.pagination.PageDTOMapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +36,7 @@ import java.time.LocalDateTime;
 
 import lombok.*;
 
+@Tag(name = "6. Categories")
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {

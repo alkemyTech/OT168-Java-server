@@ -1,31 +1,26 @@
 package com.alkemy.ong.web.controllers;
 
-import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentService;
-import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
-import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsService;
-import com.alkemy.ong.web.utils.WebUtils;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
 import static com.alkemy.ong.web.utils.WebUtils.*;
 
-@Controller
+@Tag(name = "Comments")
+@RestController
 @RequestMapping("/comments")
 public class CommentController {
 
@@ -49,11 +44,6 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(commentService.saveComment(toModel(commentDTO))));
     }
 
-    private CommentSlimDTO toSlimDTO(Comment comment) {
-        CommentSlimDTO newCommentSlimDTO = CommentSlimDTO.builder().body(comment.getBody()).build();
-        return newCommentSlimDTO;
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO) {
         validateDtoIdWithBodyId(id, commentDTO.getId());
@@ -71,8 +61,6 @@ public class CommentController {
                 .body(commentDTO.getBody())
                 .userId(commentDTO.getUser())
                 .newsId(commentDTO.getNewsId())
-                .createdAt(commentDTO.getCreatedAt())
-                .updatedAt(commentDTO.getUpdatedAt())
                 .build();
     }
 
@@ -82,9 +70,11 @@ public class CommentController {
                 .body(comment.getBody())
                 .user(comment.getUserId())
                 .newsId(comment.getNewsId())
-                .createdAt(comment.getCreatedAt())
-                .updatedAt(comment.getUpdatedAt())
                 .build();
+    }
+
+    private CommentSlimDTO toSlimDTO(Comment comment) {
+        return CommentSlimDTO.builder().body(comment.getBody()).build();
     }
 
     @Getter
@@ -92,7 +82,7 @@ public class CommentController {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class CommentDTO {
+    public static class CommentDTO {
 
         @Schema(example = "1", required = true)
         private Long id;
@@ -108,14 +98,6 @@ public class CommentController {
         @Schema(example = "1", required = true)
         @NotNull(message = "News can't be null")
         private Long newsId;
-
-        @Schema(example = "2022-04-05 00:15:48", required = true)
-        @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
-        private LocalDateTime createdAt;
-
-        @Schema(example = "2022-04-05 00:15:48", required = true)
-        @JsonFormat(pattern = "dd-MM-yyyy hh:mm")
-        private LocalDateTime updatedAt;
     }
 
     @Getter

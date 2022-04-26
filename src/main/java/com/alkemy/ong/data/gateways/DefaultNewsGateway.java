@@ -1,27 +1,34 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.data.entities.NewsEntity;
 import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.pagination.PageModelMapper;
 import com.alkemy.ong.data.repositories.NewsRepository;
+import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.data.utils.PaginationUtils;
+import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.news.News;
 import com.alkemy.ong.domain.news.NewsGateway;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
 import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class DefaultNewsGateway implements NewsGateway {
 
     private final NewsRepository newsRepository;
+    private final UserRepository userRepository;
     private final PageModelMapper<News, NewsEntity> pageModelMapper;
 
-    public DefaultNewsGateway(NewsRepository newsRepository, PageModelMapper pageModelMapper) {
+    public DefaultNewsGateway(NewsRepository newsRepository, PageModelMapper pageModelMapper,UserRepository userRepository) {
         this.newsRepository = newsRepository;
         this.pageModelMapper = pageModelMapper;
+        this.userRepository =userRepository;
     }
 
     @Override
@@ -68,10 +75,11 @@ public class DefaultNewsGateway implements NewsGateway {
                 .name(news.getName())
                 .content(news.getContent())
                 .image(news.getImage())
-                .createdAt(news.getCreatedAt())
-                .updatedAt(news.getUpdatedAt())
                 .type(news.getType())
-                .comments(news.getComments())
+                .comments(news.getComments()
+                        .stream()
+                        .map(this::toCommentEntity)
+                        .collect(toList()))
                 .build();
     }
 
@@ -81,10 +89,30 @@ public class DefaultNewsGateway implements NewsGateway {
                 .name(newsEntity.getName())
                 .content(newsEntity.getContent())
                 .image(newsEntity.getImage())
-                .createdAt(newsEntity.getCreatedAt())
-                .updatedAt(newsEntity.getUpdatedAt())
                 .type(newsEntity.getType())
-                .comments(newsEntity.getComments())
+                .comments(newsEntity.getComments()
+                        .stream()
+                        .map(this::toCommentModel)
+                        .collect(toList()))
                 .build();
     }
+
+    private Comment toCommentModel(CommentEntity commentEntity) {
+        return Comment.builder()
+                .id(commentEntity.getId())
+                .body(commentEntity.getBody())
+                .userId(commentEntity.getUserEntity().getId())
+                .newsId(commentEntity.getNewsEntity().getNewsId())
+                .build();
+    }
+
+    private CommentEntity toCommentEntity(Comment comment) {
+        return CommentEntity.builder()
+                .id(comment.getId())
+                .body(comment.getBody())
+                .userEntity(userRepository.findById(comment.getUserId()).orElseThrow(()->new ResourceNotFoundException(comment.getUserId(),"User")))
+                .newsEntity(newsRepository.findById(comment.getNewsId()).orElseThrow(()->new ResourceNotFoundException(comment.getNewsId(),"News")))
+                .build();
+    }
+
 }

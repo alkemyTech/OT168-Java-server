@@ -6,6 +6,6 @@ Swagger Documentation: http://localhost:8080/swagger-ui.html
 
 | user | password | role |
 |---|---|---|
-|admin@gmail.com|admin|ADMIN|
-|user@gmail.com|admin|USER|
+|admin@gmail.com|12345678|ADMIN|
+|user@gmail.com|12345678|USER|
 

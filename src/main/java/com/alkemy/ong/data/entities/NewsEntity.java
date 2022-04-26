@@ -1,7 +1,6 @@
 package com.alkemy.ong.data.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -56,7 +55,7 @@ public class NewsEntity {
     private String type;
 
     @OneToMany(mappedBy = "newsEntity")
-    @JsonIgnore
+    @JsonIgnoreProperties(value = "newsEntity")
     private List<CommentEntity> comments = new ArrayList<>();
 
     @Override

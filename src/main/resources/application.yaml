@@ -14,3 +14,4 @@ amazonProperties:
 sendgridProperties:
       apiKey: ${API_KEY}
       email: ${SENGRID_EMAIL}
+springdoc.swagger-ui.tagsSorter: alpha

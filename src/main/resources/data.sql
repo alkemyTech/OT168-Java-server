@@ -37,78 +37,106 @@ el programa 30 adolescentes.
 ● Paseos recreativos y educativos: Estos paseos están pensados para promover la participación y sentido de pertenencia de los niños, niñas
 y adolescentes al área educativa.', 'Foto 4.jpg');
 
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `role_id`) VALUES ('1', 'admin', 'admin', 'admin@gmail.com', '$2a$10$hT/Z5h0af5KTF//vIYiRwOCGbjyin8x.UE/rkaFA0nWPkRv1gf482', 'admin.png', '1');
-INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `role_id`) VALUES ('2', 'user', 'user', 'user@gmail.com', '$2a$10$hT/Z5h0af5KTF//vIYiRwOCGbjyin8x.UE/rkaFA0nWPkRv1gf482', 'user.png', '2');
+INSERT INTO `alkemy_ong`.`roles` (`id`, `name`, `description`) VALUES (1, 'ADMIN', 'ADMIN');
+INSERT INTO `alkemy_ong`.`roles` (`id`, `name`, `description`) VALUES (2, 'USER', 'USER');
+
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `role_id`) VALUES ('1', 'admin', 'admin', 'admin@gmail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'admin.png', '1');
+INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `role_id`) VALUES ('2', 'user', 'user', 'user@gmail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'user.png', '2');
 
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(3, 'Sofia', 'Gimenez', 'sofi@mail.com', '1234', 'sofi.jpg', NOW(), NOW(), 0, 1);
+(3, 'Sofia', 'Gimenez', 'sofi@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'sofi.jpg', NOW(), NOW(), 0, 1);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(4, 'Camila', 'Medina', 'cami@mail.com', '1234', 'cami.jpg', NOW(), NOW(), 0, 1);
+(4, 'Camila', 'Medina', 'cami@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'cami.jpg', NOW(), NOW(), 0, 1);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(5, 'Victoria', 'Medina', 'vicki@mail.com', '1234', 'vicki.jpg', NOW(), NOW(), 0, 1);
+(5, 'Victoria', 'Medina', 'vicki@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'vicki.jpg', NOW(), NOW(), 0, 1);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(6, 'Jorgue', 'Nogueira', 'jorge@mail.com', '1234', 'jorge.jpg', NOW(), NOW(), 0, 1);
+(6, 'Jorgue', 'Nogueira', 'jorge@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'jorge.jpg', NOW(), NOW(), 0, 1);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(7, 'Facundo', 'Benitez', 'facu@mail.com', '1234', 'facu.jpg', NOW(), NOW(), 0, 1);
+(7, 'Facundo', 'Benitez', 'facu@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'facu.jpg', NOW(), NOW(), 0, 1);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(8, 'Andrea', 'Reina', 'andre@mail.com', '1234', 'andre.jpg', NOW(), NOW(), 0, 1);
+(8, 'Andrea', 'Reina', 'andre@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'andre.jpg', NOW(), NOW(), 0, 1);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(9, 'Eliana', 'Paniagua', 'eli@mail.com', '1234', 'eli.jpg', NOW(), NOW(), 0, 1);
+(9, 'Eliana', 'Paniagua', 'eli@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'eli.jpg', NOW(), NOW(), 0, 1);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(10, 'Victor', 'Montivero', 'victor@mail.com', '1234', 'victor.jpg', NOW(), NOW(), 0, 1);
+(10, 'Victor', 'Montivero', 'victor@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'victor.jpg', NOW(), NOW(), 0, 1);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(11, 'Mauro', 'Montenegro', 'mauro@mail.com', '1234', 'mauro.jpg', NOW(), NOW(), 0, 2);
+(11, 'Mauro', 'Montenegro', 'mauro@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'mauro.jpg', NOW(), NOW(), 0, 2);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(12, 'Eugenia', 'Flores', 'euge@mail.com', '1234', 'euge.jpg', NOW(), NOW(), 0, 2);
+(12, 'Eugenia', 'Flores', 'euge@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'euge.jpg', NOW(), NOW(), 0, 2);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(13, 'Natalia', 'Ramirez', 'nati@mail.com', '1234', 'nati.jpg', NOW(), NOW(), 0, 2);
+(13, 'Natalia', 'Ramirez', 'nati@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'nati.jpg', NOW(), NOW(), 0, 2);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(14, 'Sergio', 'Suarez', 'sergio@mail.com', '1234', 'sergio.jpg', NOW(), NOW(), 0, 2);
+(14, 'Sergio', 'Suarez', 'sergio@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'sergio.jpg', NOW(), NOW(), 0, 2);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(15, 'Silvia', 'Otaka', 'sil@mail.com', '1234', 'sil.jpg', NOW(), NOW(), 0, 2);
+(15, 'Silvia', 'Otaka', 'sil@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'sil.jpg', NOW(), NOW(), 0, 2);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(16, 'Lucas', 'Spareche', 'lucas@mail.com', '1234', 'lucas.jpg', NOW(), NOW(), 0, 2);
+(16, 'Lucas', 'Spareche', 'lucas@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'lucas.jpg', NOW(), NOW(), 0, 2);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(17, 'Pamela', 'Diaz', 'pame@mail.com', '1234', 'pame.jpg', NOW(), NOW(), 0, 2);
+(17, 'Pamela', 'Diaz', 'pame@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'pame.jpg', NOW(), NOW(), 0, 2);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(18, 'Manuel', 'Orsini', 'mano@mail.com', '1234', 'mano.jpg', NOW(), NOW(), 0, 2);
+(18, 'Manuel', 'Orsini', 'mano@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'mano.jpg', NOW(), NOW(), 0, 2);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(19, 'Hector', 'Salamanca', 'hector@mail.com', '1234', 'hector.jpg', NOW(), NOW(), 0, 2);
+(19, 'Hector', 'Salamanca', 'hector@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'hector.jpg', NOW(), NOW(), 0, 2);
 
 INSERT INTO `alkemy_ong`.`users` (`id`, `firstName`, `lastName`, `email`, `password`, `photo`, `createdat`, `updatedat`, `deleted`, `role_id`)
 VALUES
-(20, 'Matias', 'Montoto', 'mumo@mail.com', '1234', 'mumo.jpg', NOW(), NOW(), 0, 2);
+(20, 'Matias', 'Montoto', 'mumo@mail.com', '$2a$10$ws3AMXjA5FmNduRJGHFkg.KLqZUZ13K921Q0s72zBaA7ik/T/2/Pi', 'mumo.jpg', NOW(), NOW(), 0, 2);
+
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (1,'Médicos Sin Fronteras cumple 50 años', 'La historia de los 13 jóvenes que crearon una ONG gigante.', 'medicos.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (2,'Embajada de Uruguay organizó una feria solidaria', 'Se trató de la exposición y venta de productos elaborados por distintas organizaciones.', 'embajada.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (3,'Proyecto "Libros Solidarios"', 'La Fundación Pequeños Puentes que busca padrinos y madrinas para proyectos literarios.', 'libros.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (4,'ONG logró captar financiamiento en el mercado', 'Sumatoria logró colocar un bono social de forma exitosa.', 'sumatoria.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (5,'El Banco de Alimentos en la pandemia', 'La organización sin fines de lucro registró una suba de donaciones del 66%.', 'banco.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (6,'La ONG que empodera a jóvenes sudafricanos', 'Cuenta con cinco campeonatos anuales por provincia.', 'sudafrica.jpg', '0',"news");
+INSERT INTO `alkemy_ong`.`news` (`news_id`,`name`, `content`, `image`, `deleted`,`type`) VALUES (7,'Campaña de salud de ONG', 'La campaña permite acceder a consultas y estudios ginecológicos gratuitos.', 'salud.jpg', '0',"news");
+
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (1,'Felicitaciones a los médicos integrantes', '3', '1', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (2,'Hermosa feria y productos riquísimos', '8', '2', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (3,'¿Dónde puedo donar libros de mis hijos?', '2', '3', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (4,'Los precios de los productos fueron bajísimos', '7', '2', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (5,'He colaborado toda mi vida con los doctores y lo voy a seguir haciendo', '4', '1', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (6,'Ojalá el Estado les diera el financiamiento necesario', '1', '4', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (7,'Gracias por esta acción solidaria para los que no tienen de comer', '1', '5', '0');
+INSERT INTO `alkemy_ong`.`comments` (`id`,`body`, `user_id`, `news_id`, `deleted`) VALUES (8,'Gracias por este aporte a la salud sexual femenina', '9', '7', '0');
+
+INSERT INTO `alkemy_ong`.`members` (`id`,`name`, `facebookurl`, `instagramurl`, `linkedinurl`, `image`, `description`, `deleted`)
+ VALUES
+(1,'Jose', 'www.faceJose.com', 'www.instaJose.com', 'www.linkJose', 'jose.jpg', 'Desc Jose', 0);
+
+INSERT INTO `alkemy_ong`.`members` (`id`,`name`, `facebookurl`, `instagramurl`, `linkedinurl`, `image`, `description`, `deleted`)
+ VALUES
+(2,'Camila', 'www.faceCami.com', 'www.instaCami.com', 'www.linkCami', 'cami.jpg', 'Desc de Camila', 0);

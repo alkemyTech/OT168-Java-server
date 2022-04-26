@@ -2,9 +2,9 @@ package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.domain.activities.Activity;
 import com.alkemy.ong.domain.activities.ActivityService;
-import com.alkemy.ong.web.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 import static com.alkemy.ong.web.utils.WebUtils.*;
 
+@Tag(name = "Activities")
 @RestController
 @RequestMapping("/activities")
 public class ActivityController {

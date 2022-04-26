@@ -2,6 +2,7 @@ package com.alkemy.ong.web.controllers;
 
 import com.alkemy.ong.data.entities.RoleEntity;
 import com.alkemy.ong.data.entities.UserEntity;
+import com.alkemy.ong.data.pagination.PageModel;
 import com.alkemy.ong.data.repositories.RoleRepository;
 import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -20,10 +23,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.alkemy.ong.data.utils.PaginationUtils.DEFAULT_PAGE_SIZE;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -94,23 +99,25 @@ public class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     void findAllSuccess() throws Exception {
-        List<UserEntity> userEntities = asList(buildEntity(1l,"USER"), buildEntity(2l,"USER"), buildEntity(3l,"USER"),buildEntity(4l,"USER"),buildEntity(5l,"USER"));
-        List<UserDTO> userDTOS = asList(buildDTO(1l), buildDTO(2l), buildDTO(3l),buildDTO(4l),buildDTO(5l));
+        PageModel<UserEntity> pageModel = buildPageModel();
 
-        when(userRepository.findAll()).thenReturn(userEntities);
+        when(userRepository.findAll(PageRequest.of(0,DEFAULT_PAGE_SIZE))).thenReturn(new PageImpl<>(pageModel.getBody()));
 
-        mockMvc.perform(get("/users")
+        mockMvc.perform(get("/users?page={page}",0)
                     .contentType(APPLICATION_JSON)
-                    .content(mapper.writeValueAsString(userDTOS)))
+                    .content(mapper.writeValueAsString(pageModel)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$",hasSize(5)))
-                .andExpect(jsonPath("$.[0].id",is(1)))
-                .andExpect(jsonPath("$.[1].id",is(2)))
-                .andExpect(jsonPath("$.[2].id",is(3)))
-                .andExpect(jsonPath("$.[3].id",is(4)))
-                .andExpect(jsonPath("$.[4].id",is(5)));
+                .andExpect(jsonPath("$.body",hasSize(5)))
+                .andExpect(jsonPath("$.body.[0].id",is(1)))
+                .andExpect(jsonPath("$.body.[1].id",is(2)))
+                .andExpect(jsonPath("$.body.[2].id",is(3)))
+                .andExpect(jsonPath("$.body.[3].id",is(4)))
+                .andExpect(jsonPath("$.body.[4].id",is(5)))
+                .andExpect(jsonPath("$.nextPage",is("This is the last page")))
+                .andExpect(jsonPath("$.previuosPage",is("This is the first page")))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -235,5 +242,13 @@ public class UserControllerTest {
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+roleName);
         UserDetails userDetails = new User(userRepository.save(userEntity).getEmail(), "12345678", Collections.singletonList(authority));
         return jwtUtil.generateToken(userDetails);
+    }
+
+    private PageModel buildPageModel(){
+        return PageModel.builder()
+                .body(Arrays.asList(buildEntity(1l,"USER"), buildEntity(2l,"USER"), buildEntity(3l,"USER"),buildEntity(4l,"USER"),buildEntity(5l,"USER")))
+                .nextPage("This is the last page")
+                .previousPage("This is the first page")
+                .build();
     }
 }
